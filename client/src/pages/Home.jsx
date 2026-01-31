@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Home() {
   const [activeAccordion, setActiveAccordion] = useState(null);
+  const location = useLocation();
 
   const toggleAccordion = (index) => {
     setActiveAccordion(activeAccordion === index ? null : index);
@@ -73,10 +76,100 @@ export default function Home() {
     }
   ];
 
+  const products = [
+    {
+      name: 'Mie Pedas Original',
+      desc: 'Menu klasik dengan tingkat kepedasan level 1-5',
+      price: 'Mulai dari Rp 15.000',
+      icon: '🍜',
+      badge: 'Best Seller',
+      color: 'from-rose-500 to-pink-500'
+    },
+    {
+      name: 'Mie Pedas Level 10',
+      desc: 'Tantangan untuk pecinta pedas sejati',
+      price: 'Mulai dari Rp 20.000',
+      icon: '🔥',
+      badge: 'Hot Choice',
+      color: 'from-orange-500 to-red-600'
+    },
+    {
+      name: 'Mie Special Wizzmie',
+      desc: 'Menu spesial dengan topping premium lengkap',
+      price: 'Mulai dari Rp 25.000',
+      icon: '⭐',
+      badge: 'Premium',
+      color: 'from-yellow-500 to-orange-500'
+    }
+  ];
+
+  const articles = [
+    {
+      title: 'Grand Opening Outlet Baru',
+      date: '15 Januari 2025',
+      category: 'Company News',
+      excerpt: 'Wizzmie kembali hadir di kota Bandung dengan konsep outlet terbaru yang lebih modern dan nyaman.',
+      image: '🏪',
+      readTime: '3 min read'
+    },
+    {
+      title: 'Tips Menikmati Mie Pedas',
+      date: '10 Januari 2025',
+      category: 'Food Tips',
+      excerpt: 'Rahasia menikmati mie pedas tanpa khawatir dengan perut sensitif. Simak tips dari chef kami!',
+      image: '💡',
+      readTime: '5 min read'
+    },
+    {
+      title: 'Wizzmie Goes to Campus',
+      date: '5 Januari 2025',
+      category: 'Event',
+      excerpt: 'Program roadshow Wizzmie mengunjungi berbagai kampus untuk berbagi pengalaman kuliner.',
+      image: '🎓',
+      readTime: '4 min read'
+    }
+  ];
+
+  const events = [
+    {
+      title: 'Promo Akhir Tahun',
+      date: '20 - 31 Des 2024',
+      type: 'Promo',
+      description: 'Diskon hingga 30% untuk semua menu. Ajak teman dan keluarga untuk makan bersama!',
+      icon: '🎉',
+      status: 'Active'
+    },
+    {
+      title: 'Festival Kuliner',
+      date: '15 Feb 2025',
+      type: 'Event',
+      description: 'Wizzmie hadir di Festival Kuliner Jakarta 2025. Jangan lewatkan booth spesial kami!',
+      icon: '🎪',
+      status: 'Coming Soon'
+    },
+    {
+      title: 'Opening Cabang Baru',
+      date: '1 Mar 2025',
+      type: 'Grand Opening',
+      description: 'Grand opening outlet Wizzmie Surabaya dengan berbagai hadiah menarik!',
+      icon: '🎊',
+      status: 'Coming Soon'
+    }
+  ];
+
+    useEffect(() => {
+    if (location.hash) {
+      const el = document.querySelector(location.hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-rose-600 via-pink-600 to-orange-500">
+      <section id="home" className="relative min-h-[75vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-rose-900 to-gray-900">
         {/* Decorative Elements */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl"></div>
@@ -103,36 +196,6 @@ export default function Home() {
                 cita rasa khas dan harga yang ramah di kantong.
               </p>
 
-              {/* Search Box */}
-              <div className="bg-white rounded-2xl p-3 shadow-2xl max-w-2xl">
-                <div className="flex flex-wrap gap-3">
-                  <div className="flex-1 min-w-[200px]">
-                    <div className="flex items-center gap-2 bg-gray-50 px-4 py-3 rounded-xl">
-                      <span>📍</span>
-                      <input 
-                        type="text" 
-                        placeholder="Location" 
-                        className="bg-transparent border-none outline-none w-full text-gray-700"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-[200px]">
-                    <div className="flex items-center gap-2 bg-gray-50 px-4 py-3 rounded-xl">
-                      <span>🍜</span>
-                      <select className="bg-transparent border-none outline-none w-full text-gray-700">
-                        <option>Menu Type</option>
-                        <option>Mie Pedas</option>
-                        <option>Mie Original</option>
-                        <option>Mie Special</option>
-                      </select>
-                    </div>
-                  </div>
-                  <button className="bg-gradient-to-r from-rose-600 to-orange-500 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-xl transition-all hover:scale-105">
-                    Search Menu
-                  </button>
-                </div>
-              </div>
-
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
                 {['Pedas Level 1-10', 'Halal Certified', 'Fresh Ingredients', 'Fast Service'].map((tag, i) => (
@@ -143,12 +206,16 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right Content - Image Placeholder */}
+            {/* Right Content - Image */}
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl blur-2xl opacity-50"></div>
               <div className="relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
-                <div className="aspect-[4/3] bg-gradient-to-br from-yellow-200 to-orange-300 rounded-2xl flex items-center justify-center text-6xl">
-                  🍜
+                <div className="aspect-[4/3] bg-gradient-to-br from-yellow-200 to-orange-300 rounded-2xl flex items-center justify-center overflow-hidden">
+                  <img
+                    src="/images/wizzmie.jpg"
+                    alt="Menu Ramen"
+                    className="object-cover w-full h-full rounded-2xl"
+                  />
                 </div>
                 <div className="absolute -top-6 -right-6 bg-yellow-400 text-rose-900 px-6 py-3 rounded-2xl font-bold shadow-xl transform rotate-6">
                   100% Halal
@@ -166,24 +233,50 @@ export default function Home() {
         </div>
       </section>
 
-      {/* KATA PENGANTAR */}
-      <section className="py-20 px-6 lg:px-16">
-        <div className="container mx-auto max-w-4xl">
-          <div className="bg-white rounded-3xl shadow-xl p-12 border-l-8 border-rose-600">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-5xl">👋</span>
-              <h2 className="text-4xl font-black text-gray-900">Selamat Datang</h2>
+      {/* PROFILE PERUSAHAAN - ENHANCED */}
+      <section id="profile" className="py-20 px-6 lg:px-16 bg-white relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{backgroundImage: 'radial-gradient(circle, #e11d48 1px, transparent 1px)', backgroundSize: '40px 40px'}}></div>
+        </div>
+
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <span className="text-rose-600 font-bold text-sm uppercase tracking-wider">About Company</span>
+            <h2 className="text-5xl font-black text-gray-900 mt-2 mb-6">Profil Perusahaan</h2>
+            <div className="h-2 w-24 bg-gradient-to-r from-rose-600 to-orange-500 rounded-full mx-auto mb-8"></div>
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-3xl p-12 shadow-xl border-l-8 border-rose-600 relative">
+              <div className="absolute top-8 right-8 text-8xl opacity-10">🍜</div>
+              <p className="text-gray-700 text-lg leading-relaxed mb-6 relative z-10">
+                <span className="font-bold text-rose-600 text-2xl">PT Wizzmie Boga Abadi</span> adalah perusahaan kuliner
+                yang berfokus pada pengembangan brand mie pedas modern dengan konsep kekinian.
+              </p>
+              <p className="text-gray-700 text-lg leading-relaxed relative z-10">
+                Kami hadir untuk menyajikan rasa terbaik, harga terjangkau, dan pengalaman makan yang berkesan
+                bagi seluruh pelanggan setia kami di berbagai kota di Indonesia.
+              </p>
+              
+              <div className="grid md:grid-cols-3 gap-6 mt-10">
+                <div className="bg-white rounded-xl p-6 shadow-lg text-center transform hover:scale-105 transition-all">
+                  <div className="text-4xl mb-3">🏆</div>
+                  <div className="text-2xl font-black text-rose-600">Top Brand</div>
+                  <div className="text-sm text-gray-600">Kuliner Mie Pedas</div>
+                </div>
+                <div className="bg-white rounded-xl p-6 shadow-lg text-center transform hover:scale-105 transition-all">
+                  <div className="text-4xl mb-3">✅</div>
+                  <div className="text-2xl font-black text-rose-600">Certified</div>
+                  <div className="text-sm text-gray-600">BPOM & Halal MUI</div>
+                </div>
+                <div className="bg-white rounded-xl p-6 shadow-lg text-center transform hover:scale-105 transition-all">
+                  <div className="text-4xl mb-3">🌟</div>
+                  <div className="text-2xl font-black text-rose-600">Excellence</div>
+                  <div className="text-sm text-gray-600">Service Quality</div>
+                </div>
+              </div>
             </div>
-            <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              Selamat datang di <span className="font-bold text-rose-600">Mie Wizzmie</span>, 
-              brand kuliner di bawah naungan <span className="font-bold">PT Wizzmie Boga Abadi</span> yang 
-              menghadirkan pengalaman makan mie pedas dengan harga terjangkau dan cita rasa khas.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Kami berkomitmen untuk menyajikan hidangan berkualitas tinggi dengan bahan-bahan pilihan, 
-              menciptakan momen kebersamaan yang hangat, dan memberikan pengalaman kuliner yang tak terlupakan 
-              untuk setiap pelanggan kami.
-            </p>
           </div>
         </div>
       </section>
@@ -228,7 +321,7 @@ export default function Home() {
       </section>
 
       {/* VISI & MISI */}
-      <section className="py-20 px-6 lg:px-16 bg-gray-900 text-white relative overflow-hidden">
+      <section id="visimisi" className="py-20 px-6 lg:px-16 bg-gray-900 text-white relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full" 
@@ -262,7 +355,7 @@ export default function Home() {
                   'Menghadirkan produk kuliner mi yang inovatif dengan berbagai varian tingkat kepedasan.',
                   'Memberikan pengalaman bersantap yang cepat, modern, dan kreatif, khususnya bagi generasi muda.',
                   'Berinovasi terus-menerus dalam menu dan pelayanan untuk kepuasan pelanggan',
-                  'Menerapkan strategi pemasaran yang unik dan viral untuk memperkuat brand identity. '
+                  'Menerapkan strategi pemasaran yang unik dan viral untuk memperkuat brand identity.'
                 ].map((mission, i) => (
                   <div key={i} className="flex gap-4 items-start bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all">
                     <div className="bg-rose-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">
@@ -277,8 +370,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PROFILE PERUSAHAAN */}
-      <section className="py-20 px-6 lg:px-16">
+      {/* About PERUSAHAAN */}
+      <section id="about" className="py-20 px-6 lg:px-16">
         <div className="container mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -327,6 +420,86 @@ export default function Home() {
         </div>
       </section>
 
+      {/* PRODUK - ENHANCED */}
+      <section id="produk" className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-20 w-96 h-96 bg-rose-600 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-orange-600 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <span className="text-yellow-400 font-bold text-sm uppercase tracking-wider">Our Menu</span>
+            <h2 className="text-5xl font-black mt-2 mb-6">
+              Produk <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-orange-400">Unggulan</span>
+            </h2>
+            <div className="h-2 w-24 bg-gradient-to-r from-rose-600 to-orange-500 rounded-full mx-auto mb-8"></div>
+            <p className="text-gray-300 max-w-2xl mx-auto text-lg">
+              Nikmati berbagai varian mie pedas dengan tingkat kepedasan yang bisa disesuaikan dengan seleramu
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {products.map((product, i) => (
+              <div key={i} className="group relative">
+                {/* Card */}
+                <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-white/40 transition-all hover:-translate-y-2 shadow-2xl">
+                  {/* Badge */}
+                  <div className={`absolute -top-4 -right-4 bg-gradient-to-r ${product.color} text-white px-6 py-2 rounded-full font-bold text-sm shadow-xl transform rotate-6 group-hover:rotate-12 transition-transform`}>
+                    {product.badge}
+                  </div>
+
+                  {/* Icon */}
+                  <div className="text-7xl mb-6 text-center group-hover:scale-110 transition-transform">
+                    {product.icon}
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="text-2xl font-black text-white mb-3 text-center">
+                    {product.name}
+                  </h3>
+                  <p className="text-gray-300 text-center mb-6">
+                    {product.desc}
+                  </p>
+
+                  {/* Price */}
+                  <div className="bg-white/10 rounded-xl p-4 text-center border border-white/20">
+                    <div className="text-yellow-400 font-black text-2xl">
+                      {product.price}
+                    </div>
+                  </div>
+
+                  {/* Button */}
+                  <button className="w-full mt-6 bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 rounded-xl font-bold hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-lg">
+                    Order Now
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Extra Info */}
+          <div className="mt-16 grid md:grid-cols-3 gap-6">
+            <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 text-center">
+              <div className="text-4xl mb-3">🌶️</div>
+              <div className="font-bold text-lg mb-2">Level Pedas Custom</div>
+              <div className="text-sm text-gray-400">Pilih tingkat kepedasan 1-10 sesuai selera</div>
+            </div>
+            <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 text-center">
+              <div className="text-4xl mb-3">🥚</div>
+              <div className="font-bold text-lg mb-2">Topping Beragam</div>
+              <div className="text-sm text-gray-400">Tambahan telur, ayam, bakso, dan lainnya</div>
+            </div>
+            <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 text-center">
+              <div className="text-4xl mb-3">🥤</div>
+              <div className="font-bold text-lg mb-2">Paket Combo</div>
+              <div className="text-sm text-gray-400">Hemat dengan paket mie + minuman</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* TESTIMONIALS */}
       <section className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="container mx-auto">
@@ -363,8 +536,362 @@ export default function Home() {
         </div>
       </section>
 
+      {/* GALERI - NEW SECTION */}
+      <section id="galeri" className="py-20 px-6 lg:px-16 bg-white relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{backgroundImage: 'radial-gradient(circle, #f97316 1px, transparent 1px)', backgroundSize: '40px 40px'}}></div>
+        </div>
+
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <span className="text-rose-600 font-bold text-sm uppercase tracking-wider">Gallery</span>
+            <h2 className="text-5xl font-black text-gray-900 mt-2 mb-6">
+              Galeri <span className="text-rose-600">Kami</span>
+            </h2>
+            <div className="h-2 w-24 bg-gradient-to-r from-rose-600 to-orange-500 rounded-full mx-auto mb-8"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+              Lihat momen-momen terbaik dari outlet, menu, dan kegiatan Mie Wizzmie
+            </p>
+          </div>
+
+          {/* Gallery Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {/* Large Featured Image */}
+            <div className="col-span-2 row-span-2 group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all">
+              <div className="aspect-square bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center text-9xl group-hover:scale-110 transition-transform duration-500">
+                🍜
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h3 className="text-2xl font-bold mb-2">Mie Pedas Signature</h3>
+                  <p className="text-sm text-white/90">Menu andalan kami dengan level pedas custom</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Small Images */}
+            {[
+              { icon: '🔥', title: 'Level 10 Challenge', desc: 'Berani coba?' },
+              { icon: '🏪', title: 'Outlet Modern', desc: 'Suasana nyaman' },
+              { icon: '👨‍🍳', title: 'Chef Profesional', desc: 'Tim berpengalaman' },
+              { icon: '🥚', title: 'Topping Premium', desc: 'Pilihan lengkap' },
+              { icon: '🎉', title: 'Event & Promo', desc: 'Seru setiap hari' },
+              { icon: '😋', title: 'Happy Customers', desc: 'Pelanggan puas' },
+              { icon: '🍲', title: 'Fresh Ingredients', desc: 'Bahan berkualitas' },
+              { icon: '⭐', title: 'Best Seller', desc: 'Menu favorit' }
+            ].map((item, i) => (
+              <div key={i} className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all aspect-square">
+                <div className="absolute inset-0 bg-gradient-to-br from-rose-400 to-orange-400 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform duration-500">
+                  {item.icon}
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <h3 className="font-bold mb-1">{item.title}</h3>
+                    <p className="text-xs text-white/90">{item.desc}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* Medium Featured Image */}
+            <div className="col-span-2 group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all">
+              <div className="aspect-video bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-8xl group-hover:scale-110 transition-transform duration-500">
+                🎊
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h3 className="text-xl font-bold mb-2">Grand Opening Events</h3>
+                  <p className="text-sm text-white/90">Momen pembukaan outlet baru kami</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Gallery Categories */}
+          <div className="mt-16 flex flex-wrap justify-center gap-4">
+            {['Semua', 'Menu', 'Outlet', 'Event', 'Behind The Scenes', 'Customers'].map((category, i) => (
+              <button 
+                key={i}
+                className={`px-6 py-3 rounded-full font-bold transition-all hover:scale-105 ${
+                  i === 0 
+                    ? 'bg-gradient-to-r from-rose-600 to-orange-500 text-white shadow-lg' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
+          {/* Load More Button */}
+          <div className="text-center mt-12">
+            <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-4 rounded-xl font-bold hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-xl">
+              Lihat Lebih Banyak Foto
+            </button>
+          </div>
+
+          {/* Instagram CTA */}
+          <div className="mt-16 bg-gradient-to-br from-pink-50 to-orange-50 rounded-3xl p-12 text-center border-l-8 border-rose-600">
+            <div className="text-6xl mb-4">📷</div>
+            <h3 className="text-3xl font-black text-gray-900 mb-4">
+              Follow Our Instagram!
+            </h3>
+            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+              Dapatkan update foto terbaru, promo eksklusif, dan konten menarik lainnya di Instagram kami
+            </p>
+            <button className="bg-gradient-to-r from-pink-500 to-rose-600 text-white px-8 py-4 rounded-xl font-bold hover:from-pink-600 hover:to-rose-700 transition-all hover:scale-105 shadow-xl inline-flex items-center gap-2">
+              <span>📱</span>
+              Follow @mie.wizzmie
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* PARTNERS SECTION */}
+      <section id="partners" className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{backgroundImage: 'radial-gradient(circle, #f97316 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
+        </div>
+
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <span className="text-rose-600 font-bold text-sm uppercase tracking-wider">Our Partners</span>
+            <h2 className="text-5xl font-black text-gray-900 mt-2 mb-6">
+              Trusted By <span className="text-rose-600">Industry Leaders</span>
+            </h2>
+            <div className="h-2 w-24 bg-gradient-to-r from-rose-600 to-orange-500 rounded-full mx-auto mb-8"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+              Kami bangga bekerja sama dengan berbagai mitra terpercaya untuk menghadirkan pengalaman terbaik
+            </p>
+          </div>
+
+          {/* Partners Grid */}
+          <div className="flex justify-center mb-16">
+  <div className="flex gap-6">
+    {[
+      { name: 'GoFood', icon: '🍔', color: 'from-green-500 to-green-600' },
+      { name: 'GrabFood', icon: '🛵', color: 'from-green-600 to-green-700' },
+      { name: 'ShopeeFood', icon: '🛒', color: 'from-orange-500 to-red-500' },
+    ].map((partner, i) => (
+      <div key={i} className="group">
+        <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border border-gray-100 flex flex-col items-center justify-center h-36 w-36">
+          <div className="text-5xl mb-3 group-hover:scale-110 transition-transform">
+            {partner.icon}
+          </div>
+          <div className="font-bold text-gray-900 text-sm text-center">
+            {partner.name}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+
+          {/* Partnership Benefits */}
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-2xl p-8 text-center border-l-4 border-rose-600">
+              <div className="text-5xl mb-4">🤝</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Strategic Partnerships</h3>
+              <p className="text-gray-600">
+                Kolaborasi strategis dengan platform digital terkemuka untuk jangkauan lebih luas
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 text-center border-l-4 border-blue-600">
+              <div className="text-5xl mb-4">📦</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Supply Chain Partners</h3>
+              <p className="text-gray-600">
+                Bekerja sama dengan supplier premium untuk menjaga kualitas bahan baku
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 text-center border-l-4 border-purple-600">
+              <div className="text-5xl mb-4">💼</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Business Partners</h3>
+              <p className="text-gray-600">
+                Peluang kemitraan franchise dengan sistem dan support yang komprehensif
+              </p>
+            </div>
+          </div>
+
+          {/* CTA for Partnership */}
+          <div className="mt-16 bg-gradient-to-r from-rose-600 to-orange-500 rounded-3xl p-12 text-center text-white">
+            <h3 className="text-3xl font-black mb-4">Tertarik Menjadi Partner Kami?</h3>
+            <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
+              Bergabunglah dengan jaringan mitra Wizzmie dan kembangkan bisnis Anda bersama kami
+            </p>
+            <button className="bg-white text-rose-600 px-8 py-4 rounded-xl font-bold hover:bg-yellow-300 hover:text-rose-700 transition-all hover:scale-105 shadow-xl">
+              Hubungi Partnership Team
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ARTIKEL - ENHANCED */}
+      <section id="artikel" className="py-20 px-6 lg:px-16 bg-white relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{backgroundImage: 'linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48), linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48)', backgroundSize: '60px 60px', backgroundPosition: '0 0, 30px 30px'}}></div>
+        </div>
+
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <span className="text-rose-600 font-bold text-sm uppercase tracking-wider">Latest News</span>
+            <h2 className="text-5xl font-black text-gray-900 mt-2 mb-6">
+              Artikel & <span className="text-rose-600">Berita</span>
+            </h2>
+            <div className="h-2 w-24 bg-gradient-to-r from-rose-600 to-orange-500 rounded-full mx-auto mb-8"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+              Update terbaru seputar Wizzmie, tips kuliner, dan berbagai kegiatan menarik kami
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {articles.map((article, i) => (
+              <div key={i} className="group bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-2">
+                {/* Image/Icon Section */}
+                <div className="bg-gradient-to-br from-rose-500 to-orange-500 h-48 flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="text-8xl relative z-10 group-hover:scale-110 transition-transform">
+                    {article.image}
+                  </div>
+                  {/* Category Badge */}
+                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold text-rose-600">
+                    {article.category}
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6">
+                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                    <span className="flex items-center gap-1">
+                      📅 {article.date}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      ⏱️ {article.readTime}
+                    </span>
+                  </div>
+
+                  <h3 className="font-black text-xl text-gray-900 mb-3 group-hover:text-rose-600 transition-colors">
+                    {article.title}
+                  </h3>
+                  
+                  <p className="text-gray-600 mb-6 leading-relaxed">
+                    {article.excerpt}
+                  </p>
+
+                  <button className="flex items-center gap-2 text-rose-600 font-bold hover:gap-4 transition-all group">
+                    Baca Selengkapnya
+                    <span className="group-hover:translate-x-1 transition-transform">→</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Button */}
+          <div className="text-center mt-12">
+            <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-4 rounded-xl font-bold hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-xl">
+              Lihat Semua Artikel
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* EVENT - ENHANCED */}
+      <section id="event" className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-900 via-rose-900 to-gray-900 text-white relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-full h-full">
+            <div className="absolute top-10 left-10 w-72 h-72 bg-yellow-400 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-20 right-20 w-96 h-96 bg-rose-500 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+          </div>
+        </div>
+
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <span className="text-yellow-400 font-bold text-sm uppercase tracking-wider">What's Happening</span>
+            <h2 className="text-5xl font-black mt-2 mb-6">
+              Event & <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">Promo</span>
+            </h2>
+            <div className="h-2 w-24 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mx-auto mb-8"></div>
+            <p className="max-w-2xl mx-auto text-white/80 text-lg">
+              Jangan lewatkan berbagai event menarik dan promo spesial dari Mie Wizzmie
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {events.map((event, i) => (
+              <div key={i} className="group relative">
+                {/* Status Badge */}
+                <div className={`absolute -top-3 right-6 z-20 px-4 py-2 rounded-full font-bold text-sm shadow-lg ${
+                  event.status === 'Active' 
+                    ? 'bg-green-500 text-white animate-pulse' 
+                    : 'bg-yellow-400 text-gray-900'
+                }`}>
+                  {event.status}
+                </div>
+
+                {/* Card */}
+                <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-white/40 transition-all hover:-translate-y-2 shadow-2xl h-full flex flex-col">
+                  {/* Icon */}
+                  <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">
+                    {event.icon}
+                  </div>
+
+                  {/* Type Badge */}
+                  <div className="inline-block bg-rose-600 px-3 py-1 rounded-full text-xs font-bold mb-4 w-fit">
+                    {event.type}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-2xl font-black mb-3">
+                    {event.title}
+                  </h3>
+
+                  {/* Date */}
+                  <div className="flex items-center gap-2 text-yellow-400 mb-4">
+                    <span>📅</span>
+                    <span className="font-bold">{event.date}</span>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-white/80 leading-relaxed mb-6 flex-grow">
+                    {event.description}
+                  </p>
+
+                  {/* Button */}
+                  <button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 py-3 rounded-xl font-bold hover:from-yellow-500 hover:to-orange-600 transition-all hover:scale-105 shadow-lg">
+                    {event.status === 'Active' ? 'Dapatkan Sekarang' : 'Ingatkan Saya'}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Additional CTA */}
+          <div className="mt-16 bg-white/10 backdrop-blur-lg rounded-3xl p-12 border border-white/20 text-center">
+            <h3 className="text-3xl font-black mb-4">Ingin Tahu Event Terbaru?</h3>
+            <p className="text-white/80 mb-8 max-w-2xl mx-auto">
+              Daftarkan email Anda untuk mendapatkan notifikasi tentang event dan promo eksklusif dari Wizzmie
+            </p>
+            <div className="flex gap-4 max-w-xl mx-auto">
+              <input 
+                type="email" 
+                placeholder="Masukkan email Anda"
+                className="flex-1 px-6 py-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/50 outline-none focus:border-white transition-colors"
+              />
+              <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-8 py-4 rounded-xl font-bold hover:from-yellow-500 hover:to-orange-600 transition-all hover:scale-105 shadow-lg">
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
-      <section className="py-20 px-6 lg:px-16">
+      <section className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-16">
             <span className="text-rose-600 font-bold text-sm uppercase tracking-wider">04</span>
@@ -400,7 +927,7 @@ export default function Home() {
       </section>
 
       {/* KONTAK */}
-      <section className="py-20 px-6 lg:px-16 bg-gradient-to-br from-rose-600 via-pink-600 to-orange-500 text-white relative overflow-hidden">
+      <section id="kontak" className="py-20 px-6 lg:px-16 bg-gradient-to-br from-rose-600 via-pink-600 to-orange-500 text-white relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-10 right-10 w-96 h-96 bg-yellow-300 rounded-full blur-3xl"></div>

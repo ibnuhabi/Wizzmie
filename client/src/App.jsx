@@ -7,9 +7,7 @@ import Produk from "./pages/Produk";
 import Artikel from "./pages/Artikel";
 import Event from "./pages/Event";
 import Galeri from "./pages/Galeri";
-import Branches from "./pages/Branches";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 
 export default function App() {
   return (
@@ -21,9 +19,7 @@ export default function App() {
         <Route path="/artikel" element={<Artikel />} />
         <Route path="/event" element={<Event />} />
         <Route path="/galeri" element={<Galeri />} />
-        <Route path="/branches" element={<Branches />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
       </Routes>
     </Layout>
   );
