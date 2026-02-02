@@ -233,53 +233,89 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PROFILE PERUSAHAAN - ENHANCED */}
-      <section id="profile" className="py-20 px-6 lg:px-16 bg-white relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{backgroundImage: 'radial-gradient(circle, #e11d48 1px, transparent 1px)', backgroundSize: '40px 40px'}}></div>
+{/* PROFILE PERUSAHAAN - ENHANCED */}
+<section id="profile" className="py-20 px-6 lg:px-16 bg-white relative overflow-hidden">
+  {/* Background Pattern */}
+  <div className="absolute inset-0 opacity-5">
+    <div className="absolute inset-0" style={{backgroundImage: 'radial-gradient(circle, #e11d48 1px, transparent 1px)', backgroundSize: '40px 40px'}}></div>
+  </div>
+
+  <div className="container mx-auto relative z-10">
+    <div className="text-center mb-16">
+      <span className="text-rose-600 font-bold text-sm uppercase tracking-wider">About Company</span>
+      <h2 className="text-5xl font-black text-gray-900 mt-2 mb-6">Profil Perusahaan</h2>
+      <div className="h-2 w-24 bg-gradient-to-r from-rose-600 to-orange-500 rounded-full mxAbadi-auto mb-8"></div>
+    </div>
+
+    {/* Main Grid - Company Profile */}
+    <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
+      
+      {/* Left Column - Company Description */}
+      <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-3xl p-10 shadow-xl border-l-8 border-rose-600 relative">
+        <div className="absolute top-8 right-8 text-8xl opacity-10"></div>
+        <p className="text-gray-700 text-lg leading-relaxed mb-6 relative z-10">
+          <span className="font-bold text-rose-600 text-2xl">PT Wizzmie Boga Abadi</span> PT. Dapur Boga Lestari sebagai Wizzmie Restaurant adalah restaurant cepat saji yang manyajikan mie dan menu terbaik di Indonesia
+           dengan harga terjangkau. Wizzmie Restaurant berdiri sejak tahun 2022 tepatnya pada tanggal 2 Maret 2022 di Surabaya, Indonesia.
+        </p>
+        <p className="text-gray-700 text-lg leading-relaxed relative z-10">
+          Produk utamanya adalah Mie Pedas yang memiliki cita rasa Asia dengan produk unggulannya adalah Mie Goyang, Mie Disko, dan Mie Manja, 
+          serta menu pendukung lainnya yaitu Dimsum dan Sushi yang dikemas dengan konsep modern.
+        </p>
+        
+        <div className="grid grid-cols-3 gap-4 mt-10">
+          <div className="bg-white rounded-xl p-6 shadow-lg text-center transform hover:scale-105 transition-all">
+            <div className="text-4xl mb-1"></div>
+            <div className="text-xl font-black text-rose-600">Top Brand</div>
+            <div className="text-xs text-gray-600">Kuliner Mie Pedas</div>
+          </div>
+          <div className="bg-white rounded-xl p-6 shadow-lg text-center transform hover:scale-105 transition-all">
+            <div className="text-4xl mb-1"></div>
+            <div className="text-xl font-black text-rose-600">Certified</div>
+            <div className="text-xs text-gray-600">BPOM & Halal MUI</div>
+          </div>
+          <div className="bg-white rounded-xl p-6 shadow-lg text-center transform hover:scale-105 transition-all">
+            <div className="text-4xl mb-1"></div>
+            <div className="text-xl font-black text-rose-600">Excellence</div>
+            <div className="text-xs text-gray-600">Service Quality</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Column - Pengalaman & Kelebihan Perusahaan */}
+      <div className="space-y-6">
+        
+        {/* Pengalaman Perusahaan */}
+        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 shadow-xl border-l-8 border-blue-600">
+          <div className="flex items-center gap-3 mb-4">
+            <h3 className="text-2xl font-black text-gray-900">Pengalaman </h3>
+          </div>
+          <ul className="space-y-3">
+            <li className="flex items-start gap-3">
+              <span className="text-gray-700">Hingga saat ini Wizzmie sudah memulai pengembangannya di luar kota 
+                Surabaya, antara lain Sidoarjo, Mojokerto, Malang, Provinsi Jawa Timur, Jawa Tengah, Jawa Barat, 
+                Bali, Sulawesi, Sumatra, and kota – kota lainnya.</span>
+            </li>
+          </ul>
         </div>
 
-        <div className="container mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <span className="text-rose-600 font-bold text-sm uppercase tracking-wider">About Company</span>
-            <h2 className="text-5xl font-black text-gray-900 mt-2 mb-6">Profil Perusahaan</h2>
-            <div className="h-2 w-24 bg-gradient-to-r from-rose-600 to-orange-500 rounded-full mx-auto mb-8"></div>
+        {/* Kelebihan Perusahaan */}
+        <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 shadow-xl border-l-8 border-purple-600">
+          <div className="flex items-center gap-3 mb-4">
+            <h3 className="text-2xl font-black text-gray-900">Perkembangan </h3>
           </div>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-3xl p-12 shadow-xl border-l-8 border-rose-600 relative">
-              <div className="absolute top-8 right-8 text-8xl opacity-10">🍜</div>
-              <p className="text-gray-700 text-lg leading-relaxed mb-6 relative z-10">
-                <span className="font-bold text-rose-600 text-2xl">PT Wizzmie Boga Abadi</span> adalah perusahaan kuliner
-                yang berfokus pada pengembangan brand mie pedas modern dengan konsep kekinian.
-              </p>
-              <p className="text-gray-700 text-lg leading-relaxed relative z-10">
-                Kami hadir untuk menyajikan rasa terbaik, harga terjangkau, dan pengalaman makan yang berkesan
-                bagi seluruh pelanggan setia kami di berbagai kota di Indonesia.
-              </p>
-              
-              <div className="grid md:grid-cols-3 gap-6 mt-10">
-                <div className="bg-white rounded-xl p-6 shadow-lg text-center transform hover:scale-105 transition-all">
-                  <div className="text-4xl mb-3">🏆</div>
-                  <div className="text-2xl font-black text-rose-600">Top Brand</div>
-                  <div className="text-sm text-gray-600">Kuliner Mie Pedas</div>
-                </div>
-                <div className="bg-white rounded-xl p-6 shadow-lg text-center transform hover:scale-105 transition-all">
-                  <div className="text-4xl mb-3">✅</div>
-                  <div className="text-2xl font-black text-rose-600">Certified</div>
-                  <div className="text-sm text-gray-600">BPOM & Halal MUI</div>
-                </div>
-                <div className="bg-white rounded-xl p-6 shadow-lg text-center transform hover:scale-105 transition-all">
-                  <div className="text-4xl mb-3">🌟</div>
-                  <div className="text-2xl font-black text-rose-600">Excellence</div>
-                  <div className="text-sm text-gray-600">Service Quality</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ul className="space-y-3">
+            <li className="flex items-start gap-3">
+              <span className="text-gray-700"><strong>Restoran Wizzmie</strong> pertama kali buka di Surabaya pada tanggal 24 Juli 2022 dijalan Jemursari. 
+                Hingga saat ini PT. Wizzmie Boga Abadi masih membuka peluang kemitraan di seluruh pelosok lndonesia. 
+                PT. Wizzmie Boga Abadi melalui Wizzmie lndonesia berkomitmen menyajikan makanan dan minuman terbaik dan berkualitas dengan harga terjangkau, 
+                disertai pelayanan yang ramah bagi pelanggan, dan dapat memberikan kontribusi yang berarti bagi masyarakat di lndonesia.</span>
+            </li>
+          </ul>
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* STATS SECTION */}
       <section className="py-16 px-6 lg:px-16 bg-gradient-to-r from-rose-600 to-orange-500">
@@ -409,7 +445,7 @@ export default function Home() {
               <div className="absolute -inset-4 bg-gradient-to-br from-rose-400 to-orange-400 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative bg-gradient-to-br from-rose-600 to-orange-500 rounded-3xl p-12">
                 <div className="aspect-square bg-white/10 backdrop-blur-lg rounded-2xl flex items-center justify-center text-9xl border border-white/20">
-                  🍜
+                  
                 </div>
                 <div className="absolute -bottom-6 -right-6 bg-yellow-400 text-rose-900 px-8 py-4 rounded-2xl font-black shadow-2xl text-xl">
                   Since 2012
@@ -607,30 +643,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          {/* Gallery Categories */}
-          <div className="mt-16 flex flex-wrap justify-center gap-4">
-            {['Semua', 'Menu', 'Outlet', 'Event', 'Behind The Scenes', 'Customers'].map((category, i) => (
-              <button 
-                key={i}
-                className={`px-6 py-3 rounded-full font-bold transition-all hover:scale-105 ${
-                  i === 0 
-                    ? 'bg-gradient-to-r from-rose-600 to-orange-500 text-white shadow-lg' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-
-          {/* Load More Button */}
-          <div className="text-center mt-12">
-            <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-4 rounded-xl font-bold hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-xl">
-              Lihat Lebih Banyak Foto
-            </button>
-          </div>
-
+          
           {/* Instagram CTA */}
           <div className="mt-16 bg-gradient-to-br from-pink-50 to-orange-50 rounded-3xl p-12 text-center border-l-8 border-rose-600">
             <div className="text-6xl mb-4">📷</div>
@@ -688,33 +701,7 @@ export default function Home() {
     ))}
   </div>
 </div>
-
-
-          {/* Partnership Benefits */}
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-2xl p-8 text-center border-l-4 border-rose-600">
-              <div className="text-5xl mb-4">🤝</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Strategic Partnerships</h3>
-              <p className="text-gray-600">
-                Kolaborasi strategis dengan platform digital terkemuka untuk jangkauan lebih luas
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 text-center border-l-4 border-blue-600">
-              <div className="text-5xl mb-4">📦</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Supply Chain Partners</h3>
-              <p className="text-gray-600">
-                Bekerja sama dengan supplier premium untuk menjaga kualitas bahan baku
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 text-center border-l-4 border-purple-600">
-              <div className="text-5xl mb-4">💼</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Business Partners</h3>
-              <p className="text-gray-600">
-                Peluang kemitraan franchise dengan sistem dan support yang komprehensif
-              </p>
-            </div>
-          </div>
-
+       
           {/* CTA for Partnership */}
           <div className="mt-16 bg-gradient-to-r from-rose-600 to-orange-500 rounded-3xl p-12 text-center text-white">
             <h3 className="text-3xl font-black mb-4">Tertarik Menjadi Partner Kami?</h3>
