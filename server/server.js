@@ -1,10 +1,11 @@
-
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import db from "./db/connection.js";
+
 import adminRoutes from "./routes/adminRoutes.js";
-import artikelRoutes from "./routes/artikelRoutes.js";
+// import artikelRoutes from "./routes/artikelRoutes.js";
+import artikelRoutes from './routes/artikelRoutes.js'
 import eventsRoutes from "./routes/eventsRoutes.js";
 import galleryRoutes from "./routes/galleryRoutes.js";
 import partnersRoutes from "./routes/partnersRoutes.js";
@@ -15,21 +16,22 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/api/admin",adminRoutes);
 
-//route
-app.use("api/artikel", artikelRoutes);
-app.use("api/events", eventsRoutes);
-app.use("api/gallery", galleryRoutes);
-app.use("api/partners", partnersRoutes);
-app.use("api/products", productsRoutes);
-// contoh route awal
+// Routes
+app.use("/api/admin", adminRoutes);
+app.use("/api/artikel", artikelRoutes);
+app.use("/api/events", eventsRoutes);
+app.use("/api/gallery", galleryRoutes);
+app.use("/api/partners", partnersRoutes);
+app.use("/api/products", productsRoutes);
+
+// Route test
 app.get("/", (req, res) => {
-res.json({ message: "API berhasil berjalan 🚀" });
+  res.json({ message: "API berhasil berjalan 🚀" });
 });
 
-// jalankan server
+// Jalankan server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
