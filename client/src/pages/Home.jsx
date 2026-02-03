@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [activeAccordion, setActiveAccordion] = useState(null);
@@ -103,59 +102,32 @@ export default function Home() {
     }
   ];
 
-  const articles = [
-    {
-      title: 'Grand Opening Outlet Baru',
-      date: '15 Januari 2025',
-      category: 'Company News',
-      excerpt: 'Wizzmie kembali hadir di kota Bandung dengan konsep outlet terbaru yang lebih modern dan nyaman.',
-      image: '🏪',
-      readTime: '3 min read'
-    },
-    {
-      title: 'Tips Menikmati Mie Pedas',
-      date: '10 Januari 2025',
-      category: 'Food Tips',
-      excerpt: 'Rahasia menikmati mie pedas tanpa khawatir dengan perut sensitif. Simak tips dari chef kami!',
-      image: '💡',
-      readTime: '5 min read'
-    },
-    {
-      title: 'Wizzmie Goes to Campus',
-      date: '5 Januari 2025',
-      category: 'Event',
-      excerpt: 'Program roadshow Wizzmie mengunjungi berbagai kampus untuk berbagi pengalaman kuliner.',
-      image: '🎓',
-      readTime: '4 min read'
-    }
-  ];
 
-  const events = [
-    {
-      title: 'Promo Akhir Tahun',
-      date: '20 - 31 Des 2024',
-      type: 'Promo',
-      description: 'Diskon hingga 30% untuk semua menu. Ajak teman dan keluarga untuk makan bersama!',
-      icon: '🎉',
-      status: 'Active'
-    },
-    {
-      title: 'Festival Kuliner',
-      date: '15 Feb 2025',
-      type: 'Event',
-      description: 'Wizzmie hadir di Festival Kuliner Jakarta 2025. Jangan lewatkan booth spesial kami!',
-      icon: '🎪',
-      status: 'Coming Soon'
-    },
-    {
-      title: 'Opening Cabang Baru',
-      date: '1 Mar 2025',
-      type: 'Grand Opening',
-      description: 'Grand opening outlet Wizzmie Surabaya dengan berbagai hadiah menarik!',
-      icon: '🎊',
-      status: 'Coming Soon'
-    }
-  ];
+  const [events, setEvents] = useState([]);
+   useEffect(() => {
+    // Ganti url ini ke endpoint API kamu
+    fetch("http://localhost:5000/api/events")
+      .then(res => res.json())
+      .then(data => setEvents(data))
+      .catch(err => console.error("Failed to fetch events:", err));
+  }, []);
+
+const [articles, setArticles] = useState([]);
+useEffect(() => {
+  fetch("http://localhost:5000/api/artikel")
+    .then((res) => res.json())
+    .then((data) => setArticles(data))
+    .catch((err) => console.error("Gagal fetch artikel:", err));
+}, []);
+
+  const [partners, setPartners] = useState([]);
+useEffect(() => {
+  fetch("http://localhost:5000/api/partners")
+    .then(res => res.json())
+    .then(data => setPartners(data))
+    .catch(err => console.error("Gagal ambil partners:", err));
+}, []);
+
 
     useEffect(() => {
     if (location.hash) {
@@ -225,12 +197,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white rounded-full flex items-start justify-center p-2">
-            <div className="w-1 h-2 bg-white rounded-full"></div>
-          </div>
-        </div>
+        
       </section>
 
 {/* PROFILE PERUSAHAAN - ENHANCED */}
@@ -675,30 +642,28 @@ export default function Home() {
               Trusted By <span className="text-rose-600">Industry Leaders</span>
             </h2>
             <div className="h-2 w-24 bg-gradient-to-r from-rose-600 to-orange-500 rounded-full mx-auto mb-8"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Kami bangga bekerja sama dengan berbagai mitra terpercaya untuk menghadirkan pengalaman terbaik
-            </p>
           </div>
 
           {/* Partners Grid */}
           <div className="flex justify-center mb-16">
   <div className="flex gap-6">
-    {[
-      { name: 'GoFood', icon: '🍔', color: 'from-green-500 to-green-600' },
-      { name: 'GrabFood', icon: '🛵', color: 'from-green-600 to-green-700' },
-      { name: 'ShopeeFood', icon: '🛒', color: 'from-orange-500 to-red-500' },
-    ].map((partner, i) => (
-      <div key={i} className="group">
-        <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border border-gray-100 flex flex-col items-center justify-center h-36 w-36">
-          <div className="text-5xl mb-3 group-hover:scale-110 transition-transform">
-            {partner.icon}
-          </div>
-          <div className="font-bold text-gray-900 text-sm text-center">
-            {partner.name}
-          </div>
-        </div>
+    {partners.map((partner, i) => (
+  <div key={i} className="group">
+    <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border border-gray-100 flex flex-col items-center justify-center h-36 w-36">
+      <div className="h-20 flex items-center justify-center mb-3">
+  <img
+    src={partner.logo}
+    alt={partner.name}
+    className="max-h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-300 group-hover:scale-110"
+  />
+</div>
+      <div className="font-bold text-gray-900 text-sm text-center">
+        {partner.name}
       </div>
-    ))}
+    </div>
+  </div>
+))}
+
   </div>
 </div>
        
@@ -735,46 +700,45 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {articles.map((article, i) => (
-              <div key={i} className="group bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-2">
-                {/* Image/Icon Section */}
-                <div className="bg-gradient-to-br from-rose-500 to-orange-500 h-48 flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="text-8xl relative z-10 group-hover:scale-110 transition-transform">
-                    {article.image}
-                  </div>
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold text-rose-600">
-                    {article.category}
-                  </div>
-                </div>
+            {articles.map((article) => (
+  <div key={article.id} className="group bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-2">
 
-                {/* Content */}
-                <div className="p-6">
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
-                    <span className="flex items-center gap-1">
-                      📅 {article.date}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      ⏱️ {article.readTime}
-                    </span>
-                  </div>
+    {/* Image */}
+    <div className="h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
+      <img
+        src={article.thumbnail}
+        alt={article.judul}
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+      />
+    </div>
 
-                  <h3 className="font-black text-xl text-gray-900 mb-3 group-hover:text-rose-600 transition-colors">
-                    {article.title}
-                  </h3>
-                  
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {article.excerpt}
-                  </p>
+    {/* Content */}
+    <div className="p-6">
+      <div className="text-sm text-gray-500 mb-2">
+        📅 {new Date(article.created_at).toLocaleDateString()}
+      </div>
 
-                  <button className="flex items-center gap-2 text-rose-600 font-bold hover:gap-4 transition-all group">
-                    Baca Selengkapnya
-                    <span className="group-hover:translate-x-1 transition-transform">→</span>
-                  </button>
-                </div>
-              </div>
-            ))}
+      <h3 className="font-black text-xl text-gray-900 mb-3 group-hover:text-rose-600 transition-colors">
+        {article.judul}
+      </h3>
+
+      <p className="text-gray-600 mb-6 leading-relaxed line-clamp-3">
+        {article.isi}
+      </p>
+
+      <a
+  href={article.slug}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center gap-2 text-rose-600 font-bold hover:gap-4 transition-all"
+>
+  Baca Selengkapnya →
+</a>
+
+    </div>
+  </div>
+))}
+
           </div>
 
           {/* CTA Button */}
@@ -786,21 +750,32 @@ export default function Home() {
         </div>
       </section>
 
-      {/* EVENT - ENHANCED */}
-      <section id="event" className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-900 via-rose-900 to-gray-900 text-white relative overflow-hidden">
+      {/* Section Event */}
+      <section
+        id="event"
+        className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-900 via-rose-900 to-gray-900 text-white relative overflow-hidden"
+      >
         {/* Animated Background */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 left-0 w-full h-full">
             <div className="absolute top-10 left-10 w-72 h-72 bg-yellow-400 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-20 right-20 w-96 h-96 bg-rose-500 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+            <div
+              className="absolute bottom-20 right-20 w-96 h-96 bg-rose-500 rounded-full blur-3xl animate-pulse"
+              style={{ animationDelay: "1s" }}
+            ></div>
           </div>
         </div>
 
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-16">
-            <span className="text-yellow-400 font-bold text-sm uppercase tracking-wider">What's Happening</span>
+            <span className="text-yellow-400 font-bold text-sm uppercase tracking-wider">
+              What's Happening
+            </span>
             <h2 className="text-5xl font-black mt-2 mb-6">
-              Event & <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">Promo</span>
+              Event &{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">
+                Promo
+              </span>
             </h2>
             <div className="h-2 w-24 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mx-auto mb-8"></div>
             <p className="max-w-2xl mx-auto text-white/80 text-lg">
@@ -809,63 +784,68 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {events.map((event, i) => (
-              <div key={i} className="group relative">
-                {/* Status Badge */}
-                <div className={`absolute -top-3 right-6 z-20 px-4 py-2 rounded-full font-bold text-sm shadow-lg ${
-                  event.status === 'Active' 
-                    ? 'bg-green-500 text-white animate-pulse' 
-                    : 'bg-yellow-400 text-gray-900'
-                }`}>
-                  {event.status}
+            {events.length === 0 ? (
+              <p className="text-center text-white">Loading events...</p>
+            ) : (
+              events.map((event, i) => (
+                <div key={i} className="group relative">
+                  {/* Status Badge */}
+                  <div
+                    className={`absolute -top-3 right-6 z-20 px-4 py-2 rounded-full font-bold text-sm shadow-lg ${
+                      event.status === "Active"
+                        ? "bg-green-500 text-white animate-pulse"
+                        : "bg-yellow-400 text-gray-900"
+                    }`}
+                  >
+                    {event.status}
+                  </div>
+
+                  {/* Card */}
+                  <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-white/40 transition-all hover:-translate-y-2 shadow-2xl h-full flex flex-col">
+                    {/* Icon */}
+                    <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">
+                      {event.icon}
+                    </div>
+
+                    {/* Type Badge */}
+                    <div className="inline-block bg-rose-600 px-3 py-1 rounded-full text-xs font-bold mb-4 w-fit">
+                      {event.type}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-2xl font-black mb-3">{event.title}</h3>
+
+                    {/* Date */}
+                    <div className="flex items-center gap-2 text-yellow-400 mb-4">
+                      <span>📅</span>
+                      <span className="font-bold">{event.date}</span>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-white/80 leading-relaxed mb-6 flex-grow">
+                      {event.description}
+                    </p>
+
+                    {/* Button */}
+                    <button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 py-3 rounded-xl font-bold hover:from-yellow-500 hover:to-orange-600 transition-all hover:scale-105 shadow-lg">
+                      {event.status === "Active" ? "Dapatkan Sekarang" : "Ingatkan Saya"}
+                    </button>
+                  </div>
                 </div>
-
-                {/* Card */}
-                <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-white/40 transition-all hover:-translate-y-2 shadow-2xl h-full flex flex-col">
-                  {/* Icon */}
-                  <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">
-                    {event.icon}
-                  </div>
-
-                  {/* Type Badge */}
-                  <div className="inline-block bg-rose-600 px-3 py-1 rounded-full text-xs font-bold mb-4 w-fit">
-                    {event.type}
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-2xl font-black mb-3">
-                    {event.title}
-                  </h3>
-
-                  {/* Date */}
-                  <div className="flex items-center gap-2 text-yellow-400 mb-4">
-                    <span>📅</span>
-                    <span className="font-bold">{event.date}</span>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-white/80 leading-relaxed mb-6 flex-grow">
-                    {event.description}
-                  </p>
-
-                  {/* Button */}
-                  <button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 py-3 rounded-xl font-bold hover:from-yellow-500 hover:to-orange-600 transition-all hover:scale-105 shadow-lg">
-                    {event.status === 'Active' ? 'Dapatkan Sekarang' : 'Ingatkan Saya'}
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
           {/* Additional CTA */}
           <div className="mt-16 bg-white/10 backdrop-blur-lg rounded-3xl p-12 border border-white/20 text-center">
             <h3 className="text-3xl font-black mb-4">Ingin Tahu Event Terbaru?</h3>
             <p className="text-white/80 mb-8 max-w-2xl mx-auto">
-              Daftarkan email Anda untuk mendapatkan notifikasi tentang event dan promo eksklusif dari Wizzmie
+              Daftarkan email Anda untuk mendapatkan notifikasi tentang event dan promo eksklusif
+              dari Wizzmie
             </p>
             <div className="flex gap-4 max-w-xl mx-auto">
-              <input 
-                type="email" 
+              <input
+                type="email"
                 placeholder="Masukkan email Anda"
                 className="flex-1 px-6 py-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/50 outline-none focus:border-white transition-colors"
               />
@@ -877,41 +857,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-16">
-            <span className="text-rose-600 font-bold text-sm uppercase tracking-wider">04</span>
-            <h2 className="text-5xl font-black text-gray-900 mt-2">FAQ</h2>
-          </div>
 
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-                <button
-                  onClick={() => toggleAccordion(index)}
-                  className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <span className="bg-rose-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
-                      {index + 1}
-                    </span>
-                    <span className="font-bold text-gray-900 text-lg">{faq.question}</span>
-                  </div>
-                  <span className="text-2xl text-rose-600 flex-shrink-0">
-                    {activeAccordion === index ? '−' : '+'}
-                  </span>
-                </button>
-                <div className={`overflow-hidden transition-all duration-300 ${activeAccordion === index ? 'max-h-96' : 'max-h-0'}`}>
-                  <div className="p-6 pt-0 text-gray-700 leading-relaxed">
-                    {faq.answer}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* KONTAK */}
       <section id="kontak" className="py-20 px-6 lg:px-16 bg-gradient-to-br from-rose-600 via-pink-600 to-orange-500 text-white relative overflow-hidden">

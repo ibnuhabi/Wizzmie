@@ -14,6 +14,7 @@ const EventAdmin = () => {
     lokasi: "",
     gambar: "",
     deskripsi: "",
+    link: "",  // tambah ini
   });
 
   /* =====================
@@ -21,7 +22,7 @@ const EventAdmin = () => {
   ===================== */
   const fetchEvents = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/event");
+      const res = await fetch("http://localhost:5000/api/events");
       const data = await res.json();
       setEvents(data);
     } catch (err) {
@@ -42,7 +43,7 @@ const EventAdmin = () => {
     if (!confirm("Yakin hapus event ini?")) return;
 
     try {
-      await fetch(`http://localhost:5000/api/event/${id}`, {
+      await fetch(`http://localhost:5000/api/events/${id}`, {
         method: "DELETE",
       });
       fetchEvents();
@@ -57,8 +58,8 @@ const EventAdmin = () => {
   const handleSubmit = async () => {
     try {
       const url = isEdit
-        ? `http://localhost:5000/api/event/${editId}`
-        : "http://localhost:5000/api/event";
+        ? `http://localhost:5000/api/events/${editId}`
+        : "http://localhost:5000/api/events";
 
       const method = isEdit ? "PUT" : "POST";
 
@@ -238,6 +239,14 @@ const EventAdmin = () => {
                   setForm({ ...form, gambar: e.target.value })
                 }
               />
+
+              <input
+  className="w-full mb-3 p-3 border rounded"
+  placeholder="Link Event (optional)"
+  value={form.link || ""}
+  onChange={(e) => setForm({ ...form, link: e.target.value })}
+/>
+
 
               <textarea
                 className="w-full mb-4 p-3 border rounded"

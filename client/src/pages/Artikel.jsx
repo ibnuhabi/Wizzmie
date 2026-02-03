@@ -120,7 +120,8 @@ const Artikel = () => {
                   <td className="p-4">
                     <img
                       src={item.thumbnail || "/images/no-image.png"}
-                      className="w-20 h-16 object-cover rounded"
+                            className="w-24 h-20 object-cover rounded-xl shadow-md group-hover:shadow-xl transition-shadow"
+                            alt={item.judul}
                     />
                   </td>
                   <td className="p-4 font-semibold">{item.judul}</td>

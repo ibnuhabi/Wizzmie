@@ -4,7 +4,7 @@ import db from "../db/connection.js";
    GET ALL EVENTS
 ===================== */
 export const getAllEvent = (req, res) => {
-  const sql = "SELECT * FROM events ORDER BY date DESC";
+  const sql = "SELECT * FROM events ORDER BY tanggal DESC";
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -21,22 +21,22 @@ export const getAllEvent = (req, res) => {
    CREATE EVENT
 ===================== */
 export const createEvent = (req, res) => {
-  const { title, description, date, location, image } = req.body;
+  const { judul, deskripsi, tanggal, lokasi, gambar, link } = req.body;
 
-  if (!title || !date) {
+  if (!judul || !tanggal || !lokasi) {
     return res.status(400).json({
-      message: "Judul dan tanggal wajib diisi",
+      message: "Judul, tanggal, dan lokasi wajib diisi",
     });
   }
 
   const sql = `
-    INSERT INTO events (title, description, date, location, image)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO events (judul, deskripsi, tanggal, lokasi, gambar, link)
+    VALUES (?, ?, ?, ?, ?, ?)
   `;
 
   db.query(
     sql,
-    [title, description, date, location, image],
+    [judul, deskripsi, tanggal, lokasi, gambar, link],
     (err, result) => {
       if (err) {
         console.error("ERROR DB:", err);
@@ -58,17 +58,17 @@ export const createEvent = (req, res) => {
 ===================== */
 export const updateEvent = (req, res) => {
   const { id } = req.params;
-  const { title, description, date, location, image } = req.body;
+  const { judul, deskripsi, tanggal, lokasi, gambar, link } = req.body;
 
   const sql = `
     UPDATE events 
-    SET title=?, description=?, date=?, location=?, image=?
+    SET judul=?, deskripsi=?, tanggal=?, lokasi=?, gambar=?, link=?
     WHERE id=?
   `;
 
   db.query(
     sql,
-    [title, description, date, location, image, id],
+    [judul, deskripsi, tanggal, lokasi, gambar, link, id],
     (err, result) => {
       if (err) {
         console.error("ERROR DB:", err);
