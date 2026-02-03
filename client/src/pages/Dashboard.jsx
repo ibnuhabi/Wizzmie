@@ -53,10 +53,10 @@ const Dashboard = () => {
   ];
 
   const stats = [
-    { label: "Total Articles", value: "24", change: "+12%", icon: "📝" },
-    { label: "Active Events", value: "8", change: "+5%", icon: "📅" },
-    { label: "Gallery Items", value: "156", change: "+23%", icon: "🖼️" },
-    { label: "Products", value: "42", change: "+8%", icon: "📦" },
+    { label: "Total Articles", value: "-"},
+    { label: "Active Events", value: "-"},
+    { label: "Gallery Items", value: "-"},
+    { label: "Products", value: "-",},
   ];
 
   return (

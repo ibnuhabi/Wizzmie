@@ -8,7 +8,7 @@ const Partners = () => {
   const [editId, setEditId] = useState(null);
 
   const [form, setForm] = useState({
-    nama: "",
+    name: "",
     logo: "",
   });
 
@@ -23,7 +23,8 @@ const Partners = () => {
   }, []);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+
     const url = isEdit
       ? `http://localhost:5000/api/partners/${editId}`
       : "http://localhost:5000/api/partners";
@@ -38,10 +39,9 @@ const Partners = () => {
 
     setShowModal(false);
     setIsEdit(false);
-    setForm({ nama: "", logo: "" });
+    setForm({ name: "", logo: "" });
     fetchPartners();
   };
-
 
   const handleDelete = async (id) => {
     if (!confirm("Yakin hapus partner ini?")) return;
@@ -64,7 +64,7 @@ const Partners = () => {
           <button
             onClick={() => {
               setIsEdit(false);
-              setForm({ nama: "", logo: "" });
+              setForm({ name: "", logo: "" });
               setShowModal(true);
             }}
             className="bg-[#EC008C] text-white px-5 py-2 rounded-lg"
@@ -78,31 +78,35 @@ const Partners = () => {
           <table className="w-full">
             <thead className="bg-gray-100">
               <tr>
-                <th className="p-4">Logo</th>
-                <th className="p-4">Nama Partner</th>
-                <th className="p-4">Aksi</th>
+                <th className="p-4 text-center">Logo</th>
+                <th className="p-4 text-center">Nama Partner</th>
+                <th className="p-4 text-center">Aksi</th>
               </tr>
             </thead>
 
             <tbody>
               {partners.map((item) => (
                 <tr key={item.id} className="border-t">
-                  <td className="p-4">
+                  <td className="p-4 text-center">
                     <img
                       src={item.logo}
-                      alt={item.nama}
-                      className="h-16 object-contain"
+                      alt={item.name}
+                      className="h-16 object-contain mx-auto"
                     />
                   </td>
-                  <td className="p-4 font-semibold">{item.nama}</td>
-                  <td className="p-4 flex gap-2">
+
+                  <td className="p-4 font-semibold text-center">
+                    {item.name}
+                  </td>
+
+                  <td className="p-4 flex justify-center gap-2">
                     <button
                       onClick={() => {
                         setIsEdit(true);
                         setEditId(item.id);
                         setForm({
-                        nama: item.nama,
-                        logo: item.logo,
+                          name: item.name,
+                          logo: item.logo,
                         });
                         setShowModal(true);
                       }}
@@ -142,9 +146,9 @@ const Partners = () => {
               <input
                 className="w-full mb-3 p-3 border rounded"
                 placeholder="Nama Partner"
-                value={form.nama}
+                value={form.name}
                 onChange={(e) =>
-                  setForm({ ...form, nama: e.target.value })
+                  setForm({ ...form, name: e.target.value })
                 }
               />
 
@@ -165,13 +169,12 @@ const Partners = () => {
                   Batal
                 </button>
                 <button
-  type="button"
-  onClick={(e) => handleSubmit(e)}
-  className="bg-[#EC008C] text-white px-4 py-2 rounded"
->
-  Simpan
-</button>
-
+                  type="button"
+                  onClick={handleSubmit}
+                  className="bg-[#EC008C] text-white px-4 py-2 rounded"
+                >
+                  Simpan
+                </button>
               </div>
             </div>
           </div>

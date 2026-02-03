@@ -7,7 +7,7 @@ const AdminSidebar = () => {
   const menus = [
     { name: "Articles", table: "articles",  },
     { name: "Partners", table: "partners",  },
-    { name: "Events", table: "events",  },
+    { name: "Events", table: "event",  },
     { name: "Gallery", table: "gallery",  },
     { name: "Products", table: "products", },
   ];
@@ -25,9 +25,9 @@ const AdminSidebar = () => {
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         <button
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/admin/dashboard")}
           className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center gap-3 ${
-            isActive("/dashboard")
+            isActive("/admin/dashboard")
               ? "bg-blue-600 text-white shadow-lg shadow-blue-600/50 scale-105"
               : "bg-slate-700/50 hover:bg-slate-700 hover:translate-x-1"
           }`}

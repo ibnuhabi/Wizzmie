@@ -9,9 +9,7 @@ export const getAllPartners = (req, res) => {
   db.query(sql, (err, results) => {
     if (err) {
       console.error("ERROR DB:", err);
-      return res.status(500).json({
-        message: "Gagal mengambil data partners",
-      });
+      return res.status(500).json({ message: "Gagal mengambil data partners" });
     }
     res.json(results);
   });
@@ -21,36 +19,28 @@ export const getAllPartners = (req, res) => {
    CREATE PARTNER
 ===================== */
 export const createPartner = (req, res) => {
-  const { name, logo, website, description, type } = req.body;
+  const { name, logo } = req.body;
 
   if (!name || !logo) {
-    return res.status(400).json({
-      message: "Nama dan logo wajib diisi",
-    });
+    return res.status(400).json({ message: "Nama dan logo wajib diisi" });
   }
 
   const sql = `
-    INSERT INTO partners (name, logo, website, description, type)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO partners (name, logo)
+    VALUES (?, ?)
   `;
 
-  db.query(
-    sql,
-    [name, logo, website, description, type],
-    (err, result) => {
-      if (err) {
-        console.error("ERROR DB:", err);
-        return res.status(500).json({
-          message: "Gagal menambah partner",
-        });
-      }
-
-      res.json({
-        message: "Partner berhasil ditambahkan",
-        id: result.insertId,
-      });
+  db.query(sql, [name, logo], (err, result) => {
+    if (err) {
+      console.error("ERROR DB:", err);
+      return res.status(500).json({ message: "Gagal menambah partner" });
     }
-  );
+
+    res.json({
+      message: "Partner berhasil ditambahkan",
+      id: result.insertId,
+    });
+  });
 };
 
 /* =====================
@@ -58,34 +48,26 @@ export const createPartner = (req, res) => {
 ===================== */
 export const updatePartner = (req, res) => {
   const { id } = req.params;
-  const { name, logo, website, description, type } = req.body;
+  const { name, logo } = req.body;
 
   const sql = `
     UPDATE partners 
-    SET name=?, logo=?, website=?, description=?, type=?
+    SET name=?, logo=?
     WHERE id=?
   `;
 
-  db.query(
-    sql,
-    [name, logo, website, description, type, id],
-    (err, result) => {
-      if (err) {
-        console.error("ERROR DB:", err);
-        return res.status(500).json({
-          message: "Gagal update partner",
-        });
-      }
-
-      if (result.affectedRows === 0) {
-        return res.status(404).json({
-          message: "Partner tidak ditemukan",
-        });
-      }
-
-      res.json({ message: "Partner berhasil diupdate" });
+  db.query(sql, [name, logo, id], (err, result) => {
+    if (err) {
+      console.error("ERROR DB:", err);
+      return res.status(500).json({ message: "Gagal update partner" });
     }
-  );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Partner tidak ditemukan" });
+    }
+
+    res.json({ message: "Partner berhasil diupdate" });
+  });
 };
 
 /* =====================
@@ -99,15 +81,11 @@ export const deletePartner = (req, res) => {
   db.query(sql, [id], (err, result) => {
     if (err) {
       console.error("ERROR DB:", err);
-      return res.status(500).json({
-        message: "Gagal menghapus partner",
-      });
+      return res.status(500).json({ message: "Gagal menghapus partner" });
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({
-        message: "Partner tidak ditemukan",
-      });
+      return res.status(404).json({ message: "Partner tidak ditemukan" });
     }
 
     res.json({ message: "Partner berhasil dihapus" });
