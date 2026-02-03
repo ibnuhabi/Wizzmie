@@ -32,7 +32,7 @@ const AdminSidebar = () => {
               : "bg-slate-700/50 hover:bg-slate-700 hover:translate-x-1"
           }`}
         >
-          <span className="text-xl">🏠</span>
+
           <span>Dashboard</span>
         </button>
 
@@ -67,7 +67,6 @@ const AdminSidebar = () => {
           }}
           className="w-full bg-red-600 text-white py-3 rounded-xl font-bold hover:bg-red-700 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2"
         >
-          <span>🚪</span>
           <span>Logout</span>
         </button>
       </div>

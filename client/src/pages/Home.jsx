@@ -39,42 +39,6 @@ export default function Home() {
     }
   ];
 
-  const testimonials = [
-    {
-      name: 'Rina Kusuma',
-      role: 'Food Blogger',
-      text: 'Mie Wizzmie adalah tempat favorit saya! Rasa pedasnya pas banget dan harganya sangat terjangkau.',
-      avatar: '👩'
-    },
-    {
-      name: 'Ahmad Fauzi',
-      role: 'Student',
-      text: 'Suasana outlet-nya nyaman banget buat nongkrong sambil makan mie pedas. Highly recommended!',
-      avatar: '👨'
-    },
-    {
-      name: 'Sarah Dewi',
-      role: 'Office Worker',
-      text: 'Pelayanannya cepat, rasanya enak, cocok untuk lunch break. Saya sudah jadi pelanggan setia!',
-      avatar: '👩‍💼'
-    }
-  ];
-
-  const faqs = [
-    {
-      question: 'Dimana saja lokasi outlet Mie Wizzmie?',
-      answer: 'Saat ini kami memiliki outlet di berbagai kota besar di Indonesia. Silakan hubungi kami untuk informasi lokasi terdekat.'
-    },
-    {
-      question: 'Apakah tersedia menu non-pedas?',
-      answer: 'Ya, kami menyediakan berbagai varian rasa termasuk non-pedas untuk yang tidak suka pedas.'
-    },
-    {
-      question: 'Bagaimana cara menjadi mitra franchise?',
-      answer: 'Anda bisa menghubungi tim kami melalui email atau telepon untuk informasi kemitraan franchise.'
-    }
-  ];
-
   const products = [
     {
       name: 'Mie Pedas Original',
@@ -503,42 +467,7 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <span className="text-rose-600 font-bold text-sm uppercase tracking-wider">03</span>
-            <h2 className="text-5xl font-black text-gray-900 mt-2 mb-4">
-              What Our <span className="text-rose-600">Clients Say?</span>
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Dengarkan testimoni dari pelanggan setia kami yang telah merasakan kelezatan Mie Wizzmie
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2">
-                <div className="text-5xl mb-4">"</div>
-                <p className="text-gray-700 mb-6 italic">{testimonial.text}</p>
-                <div className="flex items-center gap-4">
-                  <div className="text-4xl">{testimonial.avatar}</div>
-                  <div>
-                    <div className="font-bold text-gray-900">{testimonial.name}</div>
-                    <div className="text-sm text-gray-500">{testimonial.role}</div>
-                  </div>
-                </div>
-                <div className="flex gap-1 mt-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-yellow-400 text-xl">⭐</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+    
       {/* GALERI - NEW SECTION */}
       <section id="galeri" className="py-20 px-6 lg:px-16 bg-white relative overflow-hidden">
         {/* Background Pattern */}
@@ -751,111 +680,96 @@ useEffect(() => {
       </section>
 
       {/* Section Event */}
-      <section
-        id="event"
-        className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-900 via-rose-900 to-gray-900 text-white relative overflow-hidden"
-      >
-        {/* Animated Background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-full h-full">
-            <div className="absolute top-10 left-10 w-72 h-72 bg-yellow-400 rounded-full blur-3xl animate-pulse"></div>
-            <div
-              className="absolute bottom-20 right-20 w-96 h-96 bg-rose-500 rounded-full blur-3xl animate-pulse"
-              style={{ animationDelay: "1s" }}
-            ></div>
-          </div>
-        </div>
+<section
+  id="event"
+  className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-900 via-rose-900 to-gray-900 text-white relative overflow-hidden"
+>
+  {/* Animated Background */}
+  <div className="absolute inset-0 opacity-20">
+    <div className="absolute top-0 left-0 w-full h-full">
+      <div className="absolute top-10 left-10 w-72 h-72 bg-yellow-400 rounded-full blur-3xl animate-pulse"></div>
+      <div
+        className="absolute bottom-20 right-20 w-96 h-96 bg-rose-500 rounded-full blur-3xl animate-pulse"
+        style={{ animationDelay: "1s" }}
+      ></div>
+    </div>
+  </div>
 
-        <div className="container mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <span className="text-yellow-400 font-bold text-sm uppercase tracking-wider">
-              What's Happening
-            </span>
-            <h2 className="text-5xl font-black mt-2 mb-6">
-              Event &{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">
-                Promo
-              </span>
-            </h2>
-            <div className="h-2 w-24 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mx-auto mb-8"></div>
-            <p className="max-w-2xl mx-auto text-white/80 text-lg">
-              Jangan lewatkan berbagai event menarik dan promo spesial dari Mie Wizzmie
-            </p>
-          </div>
+  <div className="container mx-auto relative z-10">
+    <div className="text-center mb-16">
+      <span className="text-yellow-400 font-bold text-sm uppercase tracking-wider">
+        What's Happening
+      </span>
+      <h2 className="text-5xl font-black mt-2 mb-6">
+        Event &{" "}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">
+          Promo
+        </span>
+      </h2>
+      <div className="h-2 w-24 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mx-auto mb-8"></div>
+    </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {events.length === 0 ? (
-              <p className="text-center text-white">Loading events...</p>
-            ) : (
-              events.map((event, i) => (
-                <div key={i} className="group relative">
-                  {/* Status Badge */}
-                  <div
-                    className={`absolute -top-3 right-6 z-20 px-4 py-2 rounded-full font-bold text-sm shadow-lg ${
-                      event.status === "Active"
-                        ? "bg-green-500 text-white animate-pulse"
-                        : "bg-yellow-400 text-gray-900"
-                    }`}
-                  >
-                    {event.status}
-                  </div>
+    <div className="grid md:grid-cols-3 gap-8">
+      {events.length === 0 ? (
+        <p className="text-center text-white">Loading events...</p>
+      ) : (
+        events.map((event, i) => (
+          <div key={event.id} className="group relative">
+            {/* Card */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-white/40 transition-all hover:-translate-y-2 shadow-2xl h-full flex flex-col">
+              {/* Gambar */}
+              {event.gambar && (
+                <img
+                  src={event.gambar}
+                  alt={event.judul}
+                  className="w-full h-48 object-cover rounded-xl mb-4"
+                />
+              )}
 
-                  {/* Card */}
-                  <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-white/40 transition-all hover:-translate-y-2 shadow-2xl h-full flex flex-col">
-                    {/* Icon */}
-                    <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">
-                      {event.icon}
-                    </div>
+              {/* Judul */}
+              <h3 className="text-2xl font-black mb-3">{event.judul}</h3>
 
-                    {/* Type Badge */}
-                    <div className="inline-block bg-rose-600 px-3 py-1 rounded-full text-xs font-bold mb-4 w-fit">
-                      {event.type}
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-2xl font-black mb-3">{event.title}</h3>
-
-                    {/* Date */}
-                    <div className="flex items-center gap-2 text-yellow-400 mb-4">
-                      <span>📅</span>
-                      <span className="font-bold">{event.date}</span>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-white/80 leading-relaxed mb-6 flex-grow">
-                      {event.description}
-                    </p>
-
-                    {/* Button */}
-                    <button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 py-3 rounded-xl font-bold hover:from-yellow-500 hover:to-orange-600 transition-all hover:scale-105 shadow-lg">
-                      {event.status === "Active" ? "Dapatkan Sekarang" : "Ingatkan Saya"}
-                    </button>
-                  </div>
+              {/* Tanggal dan Lokasi */}
+              <div className="flex items-center gap-4 text-yellow-400 mb-4">
+                <div className="flex items-center gap-1">
+                  <span>📅</span>
+                  <span className="font-bold">
+                    {new Date(event.tanggal).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
                 </div>
-              ))
-            )}
-          </div>
+                <div className="flex items-center gap-1">
+                  <span>📍</span>
+                  <span>{event.lokasi}</span>
+                </div>
+              </div>
 
-          {/* Additional CTA */}
-          <div className="mt-16 bg-white/10 backdrop-blur-lg rounded-3xl p-12 border border-white/20 text-center">
-            <h3 className="text-3xl font-black mb-4">Ingin Tahu Event Terbaru?</h3>
-            <p className="text-white/80 mb-8 max-w-2xl mx-auto">
-              Daftarkan email Anda untuk mendapatkan notifikasi tentang event dan promo eksklusif
-              dari Wizzmie
-            </p>
-            <div className="flex gap-4 max-w-xl mx-auto">
-              <input
-                type="email"
-                placeholder="Masukkan email Anda"
-                className="flex-1 px-6 py-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/50 outline-none focus:border-white transition-colors"
-              />
-              <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-8 py-4 rounded-xl font-bold hover:from-yellow-500 hover:to-orange-600 transition-all hover:scale-105 shadow-lg">
-                Subscribe
-              </button>
+              {/* Deskripsi */}
+              <p className="text-white/80 leading-relaxed mb-6 flex-grow">{event.deskripsi}</p>
+
+              {/* Tombol Link */}
+              {event.link && (
+                <a
+                  href={event.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 py-3 rounded-xl font-bold hover:from-yellow-500 hover:to-orange-600 transition-all hover:scale-105 shadow-lg text-center"
+                >
+                  Info Selengkapnya
+                </a>
+              )}
             </div>
           </div>
-        </div>
-      </section>
+        ))
+      )}
+    </div>
+  </div>
+</section>
+
+
 
 
 

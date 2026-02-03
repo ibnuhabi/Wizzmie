@@ -9,7 +9,7 @@ import artikelRoutes from './routes/artikelRoutes.js'
 import eventsRoutes from "./routes/eventsRoutes.js";
 import galleryRoutes from "./routes/galleryRoutes.js";
 import partnersRoutes from "./routes/partnersRoutes.js";
-import productsRoutes from "./routes/productsRoutes.js";
+import produkRoutes from "./routes/produkRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -23,7 +23,7 @@ app.use("/api/artikel", artikelRoutes);
 app.use("/api/events", eventsRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/partners", partnersRoutes);
-app.use("/api/products", productsRoutes);
+app.use("/api/produk", produkRoutes);
 
 // Route test
 app.get("/", (req, res) => {

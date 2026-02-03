@@ -7,14 +7,14 @@ const Galeri = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
 
-  const [form, setForm] = useState({
-    judul: "",
-    deskripsi: "",
-    file_gambar: "",
-  });
+const [form, setForm] = useState({
+  judul: "",
+  gambar: "",
+  keterangan: "",
+});
 
   const fetchGaleri = async () => {
-    const res = await fetch("http://localhost:5000/api/galeri");
+    const res = await fetch("http://localhost:5000/api/gallery");
     const data = await res.json();
     setGaleri(data);
   };
@@ -86,7 +86,7 @@ const Galeri = () => {
                 <tr key={item.id} className="border-t">
                   <td className="p-4">
                     <img
-                      src={item.file_gambar}
+                      src={item.gambar}
                       className="w-20 h-16 object-cover rounded"
                     />
                   </td>
@@ -144,19 +144,20 @@ const Galeri = () => {
               <input
                 className="w-full mb-3 p-3 border rounded"
                 placeholder="Path Gambar (/images/gallery/xxx.jpg)"
-                value={form.file_gambar}
-                onChange={(e) =>
-                  setForm({ ...form, file_gambar: e.target.value })
+              value={form.gambar}
+              onChange={(e) =>
+              setForm({ ...form, gambar: e.target.value })
                 }
               />
 
               <textarea
                 className="w-full mb-4 p-3 border rounded"
                 placeholder="Deskripsi"
-                value={form.deskripsi}
-                onChange={(e) =>
-                  setForm({ ...form, deskripsi: e.target.value })
-                }
+               value={form.keterangan}
+               onChange={(e) =>
+               setForm({ ...form, keterangan: e.target.value })
+              }
+
               />
 
               <div className="flex justify-end gap-2">

@@ -3,14 +3,14 @@ import db from "../db/connection.js";
 /* =====================
    GET ALL PRODUCTS
 ===================== */
-export const getAllProducts = (req, res) => {
+export const getAllProduk = (req, res) => {
   const sql = "SELECT * FROM products ORDER BY name ASC";
 
   db.query(sql, (err, results) => {
     if (err) {
       console.error("ERROR DB:", err);
       return res.status(500).json({
-        message: "Gagal mengambil data products",
+        message: "Gagal mengambil data produk",
       });
     }
     res.json(results);
@@ -20,7 +20,7 @@ export const getAllProducts = (req, res) => {
 /* =====================
    CREATE PRODUCT
 ===================== */
-export const createProduct = (req, res) => {
+export const createProduk = (req, res) => {
   const { name, description, price, image, category, stock } = req.body;
 
   if (!name || !price) {
@@ -41,12 +41,12 @@ export const createProduct = (req, res) => {
       if (err) {
         console.error("ERROR DB:", err);
         return res.status(500).json({
-          message: "Gagal menambah product",
+          message: "Gagal menambah produk",
         });
       }
 
       res.json({
-        message: "Product berhasil ditambahkan",
+        message: "Produk berhasil ditambahkan",
         id: result.insertId,
       });
     }
@@ -56,7 +56,7 @@ export const createProduct = (req, res) => {
 /* =====================
    UPDATE PRODUCT
 ===================== */
-export const updateProduct = (req, res) => {
+export const updateProduk = (req, res) => {
   const { id } = req.params;
   const { name, description, price, image, category, stock } = req.body;
 
@@ -73,17 +73,17 @@ export const updateProduct = (req, res) => {
       if (err) {
         console.error("ERROR DB:", err);
         return res.status(500).json({
-          message: "Gagal update product",
+          message: "Gagal update produk",
         });
       }
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
-          message: "Product tidak ditemukan",
+          message: "Produk tidak ditemukan",
         });
       }
 
-      res.json({ message: "Product berhasil diupdate" });
+      res.json({ message: "Produk berhasil diupdate" });
     }
   );
 };
@@ -91,7 +91,7 @@ export const updateProduct = (req, res) => {
 /* =====================
    DELETE PRODUCT
 ===================== */
-export const deleteProduct = (req, res) => {
+export const deleteProduk = (req, res) => {
   const { id } = req.params;
 
   const sql = "DELETE FROM products WHERE id=?";
@@ -100,16 +100,16 @@ export const deleteProduct = (req, res) => {
     if (err) {
       console.error("ERROR DB:", err);
       return res.status(500).json({
-        message: "Gagal menghapus product",
+        message: "Gagal menghapus produk",
       });
     }
 
     if (result.affectedRows === 0) {
       return res.status(404).json({
-        message: "Product tidak ditemukan",
+        message: "Produk tidak ditemukan",
       });
     }
 
-    res.json({ message: "Product berhasil dihapus" });
+    res.json({ message: "Produk berhasil dihapus" });
   });
 };

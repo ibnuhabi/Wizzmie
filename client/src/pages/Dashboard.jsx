@@ -81,7 +81,7 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="bg-gray-900 text-white px-6 py-3 rounded-2xl shadow-lg">
-              <p className="text-sm opacity-90">Admin Dashboard</p>
+ 
               <p className="text-2xl font-bold">{currentTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</p>
             </div>
           </div>
