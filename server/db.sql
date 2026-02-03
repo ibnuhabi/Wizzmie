@@ -54,10 +54,12 @@ CREATE TABLE partners (
 -- =========================================
 CREATE TABLE IF NOT EXISTS events (
   id INT(11) NOT NULL AUTO_INCREMENT,
-  nama_event VARCHAR(150) NOT NULL,
+  judul VARCHAR(150) NOT NULL,
+  tanggal DATE NOT NULL,
+  lokasi VARCHAR(150) NOT NULL,
+  gambar VARCHAR(255) DEFAULT NULL,
   deskripsi TEXT DEFAULT NULL,
-  tanggal_mulai DATE DEFAULT NULL,
-  tanggal_selesai DATE DEFAULT NULL,
+  link TEXT DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
