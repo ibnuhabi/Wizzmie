@@ -71,14 +71,16 @@ COLLATE=utf8mb4_general_ci;
 CREATE TABLE IF NOT EXISTS articles (
   id INT(11) NOT NULL AUTO_INCREMENT,
   judul VARCHAR(150) NOT NULL,
+  slug VARCHAR(255) DEFAULT NULL,
   isi TEXT NOT NULL,
-  gambar VARCHAR(255) DEFAULT NULL,
-  author VARCHAR(100) DEFAULT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  thumbnail VARCHAR(255) DEFAULT NULL,
+  penulis VARCHAR(100) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_general_ci;
+
 
 -- =========================================
 -- TABLE: admins
