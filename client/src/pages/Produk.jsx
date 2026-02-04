@@ -7,11 +7,13 @@ const ProdukAdmin = () => {
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [form, setForm] = useState({
-    nama_produk: "",
-    tipe: "",
-    harga: "",
-    image: "",
-  });
+   nama_produk: "",
+   deskripsi: "",
+   harga: "",
+   tipe: "",
+   image: "",
+});
+
   const [editId, setEditId] = useState(null);
   const TIPE_PRODUK = ["noodle", "beverage", "dimsum"];
 
@@ -103,64 +105,78 @@ const ProdukAdmin = () => {
           <table className="w-full text-left">
             <thead className="bg-gray-100 text-gray-600">
               <tr>
-                <th className="p-4">Nama</th>
-                <th className="p-4">Tipe</th>
-                <th className="p-4">Harga</th>
+                <th>Nama</th>
+                <th>Produk</th>
+                 <th>Tipe</th>
+              <th>Harga</th>
                 <th className="p-4 text-center">Aksi</th>
               </tr>
             </thead>
 
-            <tbody>
-              {produk.map((item) => (
-                <tr key={item.id} className="border-t hover:bg-gray-50">
-                  <td className="p-4 font-semibold">
-                    {item.nama_produk}
-                  </td>
+           <tbody>
+  {produk.map((item) => (
+    <tr key={item.id} className="border-t hover:bg-gray-50">
+      <td className="p-4 font-semibold">
+        {item.nama_produk}
+      </td>
 
-                  <td className="p-4 capitalize">{item.tipe}</td>
+      {/* GAMBAR */}
+      <td className="p-4">
+        {item.image ? (
+          <img
+            src={item.image}
+            alt={item.nama_produk}
+            className="w-20 h-20 object-cover rounded-lg"
+          />
+        ) : (
+          <span className="text-gray-400 italic">No Image</span>
+        )}
+      </td>
 
-                  <td className="p-4">
-                    Rp {Number(item.harga).toLocaleString("id-ID")}
-                  </td>
+      <td className="p-4 capitalize">{item.tipe}</td>
 
-                  <td className="p-4 flex justify-center gap-2">
-                    <button
-                      onClick={() => {
-                        setIsEdit(true);
-                        setEditId(item.id);
-                        setForm({
-                          nama_produk: item.nama_produk,
-                          tipe: item.tipe,
-                          harga: item.harga,
-                          image: item.image,
-                        });
-                        setShowModal(true);
-                      }}
-                      className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
-                    >
-                      Hapus
-                    </button>
-                  </td>
-                </tr>
-              ))}
+      <td className="p-4">
+        Rp {Number(item.harga).toLocaleString("id-ID")}
+      </td>
 
-              {produk.length === 0 && (
-                <tr>
-                  <td
-                    colSpan="4"
-                    className="p-6 text-center text-gray-500"
-                  >
-                    Belum ada produk
-                  </td>
-                </tr>
-              )}
-            </tbody>
+      <td className="p-4 flex justify-center gap-2">
+        <button
+          onClick={() => {
+            setIsEdit(true);
+            setEditId(item.id);
+            setForm({
+              nama_produk: item.nama_produk,
+              deskripsi: item.deskripsi,
+              harga: item.harga,
+              tipe: item.tipe,
+              image: item.image,
+            });
+            setShowModal(true);
+          }}
+          className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Edit
+        </button>
+
+        <button
+          onClick={() => handleDelete(item.id)}
+          className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          Hapus
+        </button>
+      </td>
+    </tr>
+  ))}
+
+  {produk.length === 0 && (
+    <tr>
+      <td colSpan="5" className="p-6 text-center text-gray-500">
+        Belum ada produk
+      </td>
+    </tr>
+  )}
+</tbody>
+
           </table>
           {showModal && (
   <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">

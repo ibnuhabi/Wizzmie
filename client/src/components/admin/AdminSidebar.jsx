@@ -10,6 +10,7 @@ const AdminSidebar = () => {
     { name: "Events", table: "event",  },
     { name: "Gallery", table: "gallery",  },
     { name: "Products", table: "products", },
+    { name: "Contacts", table: "contacts" }
   ];
 
   const isActive = (path) => location.pathname === path;

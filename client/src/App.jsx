@@ -9,6 +9,7 @@ import Galeri from "./pages/Galeri";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Partners from "./pages/Partners";
+import ContactAdmin from "./pages/Contact";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       {/* ===== CLIENT (PAKAI LAYOUT) ===== */}
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/gallery" element={<Galeri />} /> {/* ⬅️ TAMBAH INI */}
       </Route>
 
       {/* ===== ADMIN (TANPA LAYOUT) ===== */}
@@ -26,6 +28,7 @@ export default function App() {
       <Route path="/admin/partners" element={<Partners />} />
       <Route path="/admin/event" element={<Event />} />
       <Route path="/admin/articles" element={<Artikel />} />
+      <Route path="/admin/contacts" element={<ContactAdmin/>}/>
     </Routes>
   );
 }

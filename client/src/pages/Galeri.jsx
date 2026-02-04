@@ -25,8 +25,8 @@ const [form, setForm] = useState({
 
   const handleSubmit = async () => {
     const url = isEdit
-      ? `http://localhost:5000/api/galeri/${editId}`
-      : "http://localhost:5000/api/galeri";
+      ? `http://localhost:5000/api/gallery/${editId}`
+      : "http://localhost:5000/api/gallery";
 
     const method = isEdit ? "PUT" : "POST";
 
@@ -45,7 +45,7 @@ const [form, setForm] = useState({
   const handleDelete = async (id) => {
     if (!confirm("Yakin hapus galeri ini?")) return;
 
-    await fetch(`http://localhost:5000/api/galeri/${id}`, {
+    await fetch(`http://localhost:5000/api//${id}`, {
       method: "DELETE",
     });
     fetchGaleri();

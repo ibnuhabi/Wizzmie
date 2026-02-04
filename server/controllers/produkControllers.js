@@ -4,14 +4,12 @@ import db from "../db/connection.js";
    GET ALL PRODUCTS
 ===================== */
 export const getAllProduk = (req, res) => {
-  const sql = "SELECT * FROM products ORDER BY name ASC";
+  const sql = "SELECT * FROM products ORDER BY nama_produk ASC";
 
   db.query(sql, (err, results) => {
     if (err) {
       console.error("ERROR DB:", err);
-      return res.status(500).json({
-        message: "Gagal mengambil data produk",
-      });
+      return res.status(500).json({ message: "Gagal mengambil data produk" });
     }
     res.json(results);
   });
@@ -21,66 +19,57 @@ export const getAllProduk = (req, res) => {
    CREATE PRODUCT
 ===================== */
 export const createProduk = (req, res) => {
-  const { name, description, price, image, category, stock } = req.body;
+  const { nama_produk, deskripsi, harga, tipe, image } = req.body;
 
-  if (!name || !price) {
+  if (!nama_produk || !harga || !tipe) {
     return res.status(400).json({
-      message: "Nama dan harga wajib diisi",
+      message: "Nama, harga, dan tipe wajib diisi",
     });
   }
 
   const sql = `
-    INSERT INTO products (name, description, price, image, category, stock)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO products (nama_produk, deskripsi, harga, tipe, image)
+    VALUES (?, ?, ?, ?, ?)
   `;
 
-  db.query(
-    sql,
-    [name, description, price, image, category, stock],
-    (err, result) => {
-      if (err) {
-        console.error("ERROR DB:", err);
-        return res.status(500).json({
-          message: "Gagal menambah produk",
-        });
-      }
-
-      res.json({
-        message: "Produk berhasil ditambahkan",
-        id: result.insertId,
-      });
+  db.query(sql, [nama_produk, deskripsi, harga, tipe, image], (err, result) => {
+    if (err) {
+      console.error("ERROR DB:", err);
+      return res.status(500).json({ message: "Gagal menambah produk" });
     }
-  );
+
+    res.json({
+      message: "Produk berhasil ditambahkan",
+      id: result.insertId,
+    });
+  });
 };
+
 
 /* =====================
    UPDATE PRODUCT
 ===================== */
 export const updateProduk = (req, res) => {
   const { id } = req.params;
-  const { name, description, price, image, category, stock } = req.body;
+  const { nama_produk, deskripsi, harga, tipe, image } = req.body;
 
   const sql = `
     UPDATE products 
-    SET name=?, description=?, price=?, image=?, category=?, stock=?
+    SET nama_produk=?, deskripsi=?, harga=?, tipe=?, image=?
     WHERE id=?
   `;
 
   db.query(
     sql,
-    [name, description, price, image, category, stock, id],
+    [nama_produk, deskripsi, harga, tipe, image, id],
     (err, result) => {
       if (err) {
         console.error("ERROR DB:", err);
-        return res.status(500).json({
-          message: "Gagal update produk",
-        });
+        return res.status(500).json({ message: "Gagal update produk" });
       }
 
       if (result.affectedRows === 0) {
-        return res.status(404).json({
-          message: "Produk tidak ditemukan",
-        });
+        return res.status(404).json({ message: "Produk tidak ditemukan" });
       }
 
       res.json({ message: "Produk berhasil diupdate" });
@@ -99,15 +88,11 @@ export const deleteProduk = (req, res) => {
   db.query(sql, [id], (err, result) => {
     if (err) {
       console.error("ERROR DB:", err);
-      return res.status(500).json({
-        message: "Gagal menghapus produk",
-      });
+      return res.status(500).json({ message: "Gagal menghapus produk" });
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({
-        message: "Produk tidak ditemukan",
-      });
+      return res.status(404).json({ message: "Produk tidak ditemukan" });
     }
 
     res.json({ message: "Produk berhasil dihapus" });

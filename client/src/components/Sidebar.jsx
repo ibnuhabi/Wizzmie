@@ -4,22 +4,22 @@ export default function Sidebar({ isOpen, onClose }) {
   const location = useLocation();
 
   const menuItems = [
-    { icon: "🏠", label: "Home", path: "/" },
-    { icon: "👥", label: "Partners Kami", path: "/#partners" },
-    { icon: "📰", label: "Artikel", path: "/#artikel" },
-    { icon: "🎉", label: "Event", path: "/#event" },
-    { icon: "🖼️", label: "Galeri", path: "/#galeri" },
+    { icon: "", label: "Home", path: "/" },
+    { icon: "", label: "Partners Kami", path: "/#partners" },
+    { icon: "", label: "Artikel", path: "/#artikel" },
+    { icon: "", label: "Event", path: "/#event" },
+    { icon: "", label: "Galeri", path: "/#galeri" },
 
   ];
 
   const bottomItems = [
-    { icon: "❓", label: "Help", path: "/help" },
-    { icon: "🚪", label: "Log out", path: "/logout" }
+    { icon: "", label: "Help", path: "/help" },
+    { icon: "", label: "Log out", path: "/logout" }
   ];
 
   const authItems = [
-    { icon: "🔐", label: "Login", path: "/login" },
-    { icon: "📝", label: "Register", path: "/register" }
+    { icon: "", label: "Login", path: "/login" },
+    { icon: "", label: "Register", path: "/register" }
   ];
 
   const isActive = (path) => location.pathname === path;
