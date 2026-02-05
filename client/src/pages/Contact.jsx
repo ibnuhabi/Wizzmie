@@ -38,7 +38,7 @@ const ContactAdmin = () => {
 
       <main className="flex-1 p-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
-          📩 Pesan Masuk
+          Pesan Masuk
         </h1>
 
         <div className="bg-white rounded-xl shadow overflow-x-auto">

@@ -1,16 +1,26 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import {
+  FaHome,
+  FaNewspaper,
+  FaHandshake,
+  FaCalendarAlt,
+  FaImages,
+  FaBoxOpen,
+  FaEnvelopeOpenText,
+  FaSignOutAlt,
+} from "react-icons/fa";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const menus = [
-    { name: "Articles", table: "articles",  },
-    { name: "Partners", table: "partners",  },
-    { name: "Events", table: "event",  },
-    { name: "Gallery", table: "gallery",  },
-    { name: "Products", table: "products", },
-    { name: "Contacts", table: "contacts" }
+    { name: "Articles", table: "articles", icon: <FaNewspaper /> },
+    { name: "Partners", table: "partners", icon: <FaHandshake /> },
+    { name: "Events", table: "event", icon: <FaCalendarAlt /> },
+    { name: "Gallery", table: "gallery", icon: <FaImages /> },
+    { name: "Products", table: "products", icon: <FaBoxOpen /> },
+    { name: "Contacts", table: "contacts", icon: <FaEnvelopeOpenText /> },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -33,7 +43,7 @@ const AdminSidebar = () => {
               : "bg-slate-700/50 hover:bg-slate-700 hover:translate-x-1"
           }`}
         >
-
+          <FaHome className="text-xl" />
           <span>Dashboard</span>
         </button>
 
@@ -68,6 +78,7 @@ const AdminSidebar = () => {
           }}
           className="w-full bg-red-600 text-white py-3 rounded-xl font-bold hover:bg-red-700 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2"
         >
+          <FaSignOutAlt />
           <span>Logout</span>
         </button>
       </div>
