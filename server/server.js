@@ -21,10 +21,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-
-
 app.use("/api/admin", adminRoutes);
-app.use("/api/contact", contactRoutes);
+app.use("/api/contacts", contactRoutes);
 app.use("/api/artikel", artikelRoutes);
 app.use("/api/events", eventsRoutes);
 app.use("/api/gallery", galleryRoutes);

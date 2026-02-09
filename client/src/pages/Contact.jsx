@@ -5,7 +5,7 @@ const ContactAdmin = () => {
   const [contacts, setContacts] = useState([]);
 
   const fetchContacts = async () => {
-    const res = await fetch("http://localhost:5000/api/contact");
+    const res = await fetch("http://localhost:5000/api/contacts");
     const data = await res.json();
     setContacts(data);
   };
@@ -14,23 +14,21 @@ const ContactAdmin = () => {
     fetchContacts();
   }, []);
 
-  const handleReply = async (email) => {
-    const message = prompt("Tulis balasan email:");
+  // DELETE
+  const handleDelete = async (id) => {
+    if (!window.confirm("Yakin mau menghapus pesan ini?")) return;
 
-    if (!message) return;
-
-    await fetch("http://localhost:5000/api/contact/reply", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        to: email,
-        subject: "Balasan dari Wizzmie",
-        message,
-      }),
+    const res = await fetch(`http://localhost:5000/api/contacts/${id}`, {
+      method: "DELETE",
     });
 
-    alert("Email berhasil dikirim!");
+    const data = await res.json();
+    alert(data.message);
+
+    // 🔁 PASTI REFRESH DATA DARI SERVER
+    await fetchContacts();
   };
+
 
   return (
     <div className="min-h-screen flex bg-gray-100">
@@ -62,10 +60,10 @@ const ContactAdmin = () => {
                   </td>
                   <td className="p-4 text-center">
                     <button
-                      onClick={() => handleReply(c.email)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                      onClick={() => handleDelete(c.id)}
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
                     >
-                      Reply
+                      Hapus
                     </button>
                   </td>
                 </tr>

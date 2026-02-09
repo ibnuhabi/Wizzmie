@@ -42,30 +42,27 @@ export const getAllContacts = (req, res) => {
 };
 
 /* =====================
-   REPLY EMAIL
+   DELETE CONTACT
 ===================== */
-export const replyContact = async (req, res) => {
-    const { to, subject, message } = req.body;
+export const deleteContact = (req, res) => {
+    const { id } = req.params; // ambil ID dari URL
 
-    const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: process.env.MAIL_USER,
-            pass: process.env.MAIL_PASS,
-        },
-    });
-
-    try {
-        await transporter.sendMail({
-            from: `"Wizzmie Admin" <${process.env.MAIL_USER}>`,
-            to,
-            subject,
-            text: message,
-        });
-
-        res.json({ message: "Email berhasil dikirim" });
-    } catch (err) {
-        console.error("MAIL ERROR:", err);
-        res.status(500).json({ message: "Gagal kirim email" });
+    if (!id) {
+        return res.status(400).json({ message: "ID contact wajib ada" });
     }
+
+    const sql = "DELETE FROM contacts WHERE id = ?";
+
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("DB ERROR:", err);
+            return res.status(500).json({ message: "Gagal menghapus pesan" });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Data tidak ditemukan" });
+        }
+
+        res.json({ message: "Pesan berhasil dihapus" });
+    });
 };

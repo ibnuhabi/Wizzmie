@@ -24,22 +24,22 @@ export default function Home() {
   ];
 
   const benefits = [
-  {
-    title: "Rasa Pedas Autentik",
-    desc: "Level pedas khas Wizzmie yang bikin nagih dan beda dari yang lain.",
-    icon: <FaPepperHot className="w-7 h-7 text-rose-600" />,
-  },
-  {
-    title: "Bahan Premium",
-    desc: "Menggunakan bahan pilihan berkualitas tinggi dan segar setiap hari.",
-    icon: <HiOutlineShoppingBag className="w-7 h-7 text-rose-600" />,
-  },
-  {
-    title: "Pelayanan Cepat",
-    desc: "Proses penyajian cepat tanpa mengurangi kualitas rasa.",
-    icon: <HiOutlineLightningBolt className="w-7 h-7 text-rose-600" />,
-  },
-];
+    {
+      title: "Rasa Pedas Autentik",
+      desc: "Level pedas khas Wizzmie yang bikin nagih dan beda dari yang lain.",
+      icon: <FaPepperHot className="w-7 h-7 text-rose-600" />,
+    },
+    {
+      title: "Bahan Premium",
+      desc: "Menggunakan bahan pilihan berkualitas tinggi dan segar setiap hari.",
+      icon: <HiOutlineShoppingBag className="w-7 h-7 text-rose-600" />,
+    },
+    {
+      title: "Pelayanan Cepat",
+      desc: "Proses penyajian cepat tanpa mengurangi kualitas rasa.",
+      icon: <HiOutlineLightningBolt className="w-7 h-7 text-rose-600" />,
+    },
+  ];
 
 
 
@@ -83,7 +83,7 @@ export default function Home() {
   useEffect(() => {
     fetch("http://localhost:5000/api/produk")
       .then((res) => res.json())
-      .then(setProducts) 
+      .then(setProducts)
       .catch(console.error);
   }, []);
 
@@ -205,7 +205,7 @@ export default function Home() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl blur-2xl opacity-50"></div>
               <div className="relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
-                <div className="aspect-[4/3] bg-gradient-to-br from-yellow-200 to-orange-300 rounded-2xl flex items-center justify-center overflow-hidden">
+                <div className="aspect-[4/5] bg-gradient-to-br from-yellow-200 to-orange-300 rounded-2xl flex items-center justify-center overflow-hidden">
                   <img
                     src="/images/wizzmie.jpg"
                     alt="Menu Ramen"
@@ -322,66 +322,66 @@ export default function Home() {
       </section>
 
       <section className="py-20 px-6 lg:px-16 bg-white">
-      <div className="container mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
-          <div>
-            <span className="inline-block bg-rose-100 text-rose-600 font-bold text-sm uppercase tracking-wider px-4 py-2 rounded-lg mb-4">
-              01 • Keunggulan Kami
-            </span>
-            <h2 className="text-5xl lg:text-7xl font-black text-gray-900 mb-6 leading-tight">
-              Why Choose <span className="text-rose-600">Us?</span>
-            </h2>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              Temukan keunggulan yang membuat Mie Wizzmie menjadi pilihan utama para pecinta kuliner pedas di Indonesia
-            </p>
-
-            <div className="flex gap-8">
-              <div>
-                <div className="text-4xl font-black text-rose-600">500+</div>
-                <div className="text-sm text-gray-600">Happy Customers</div>
-              </div>
-              <div>
-                <div className="text-4xl font-black text-rose-600">4.9★</div>
-                <div className="text-sm text-gray-600">Rating</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -top-8 -right-8 w-64 h-64 bg-rose-100 rounded-full blur-3xl opacity-50"></div>
-            <div className="relative bg-rose-600 rounded-3xl p-12 text-white shadow-2xl">
-              <FaStar  className="w-16 h-16 mb-4 opacity-80" />
-              <h3 className="text-3xl font-bold mb-3">Premium Quality</h3>
-              <p className="text-white/90 leading-relaxed">
-                Kami berkomitmen menghadirkan cita rasa terbaik dengan bahan-bahan pilihan berkualitas premium
+        <div className="container mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
+            <div>
+              <span className="inline-block bg-rose-100 text-rose-600 font-bold text-sm uppercase tracking-wider px-4 py-2 rounded-lg mb-4">
+                01 • Keunggulan Kami
+              </span>
+              <h2 className="text-5xl lg:text-7xl font-black text-gray-900 mb-6 leading-tight">
+                Why Choose <span className="text-rose-600">Us?</span>
+              </h2>
+              <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                Temukan keunggulan yang membuat Mie Wizzmie menjadi pilihan utama para pecinta kuliner pedas di Indonesia
               </p>
-            </div>
-          </div>
-        </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {benefits.map((benefit, index) => (
-            <div
-              key={index}
-              className="group relative bg-gray-50 rounded-3xl p-8 hover:bg-white border-2 border-transparent hover:border-rose-200 transition-all duration-300 hover:shadow-xl"
-            >
-              <div className="flex items-start gap-4 mb-4">
-                <div className="w-14 h-14 bg-rose-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-rose-200 transition-colors">
-                  {benefit.icon}
+              <div className="flex gap-8">
+                <div>
+                  <div className="text-4xl font-black text-rose-600">500+</div>
+                  <div className="text-sm text-gray-600">Happy Customers</div>
                 </div>
                 <div>
-                  <span className="text-xs font-bold text-rose-600">0{index + 1}</span>
-                  <h3 className="text-xl font-bold text-gray-900 mt-1">
-                    {benefit.title}
-                  </h3>
+                  <div className="text-4xl font-black text-rose-600">4.9★</div>
+                  <div className="text-sm text-gray-600">Rating</div>
                 </div>
               </div>
-              <p className="text-gray-600 leading-relaxed">{benefit.desc}</p>
             </div>
-          ))}
+
+            <div className="relative">
+              <div className="absolute -top-8 -right-8 w-64 h-64 bg-rose-100 rounded-full blur-3xl opacity-50"></div>
+              <div className="relative bg-rose-600 rounded-3xl p-12 text-white shadow-2xl">
+                <FaStar className="w-16 h-16 mb-4 opacity-80" />
+                <h3 className="text-3xl font-bold mb-3">Premium Quality</h3>
+                <p className="text-white/90 leading-relaxed">
+                  Kami berkomitmen menghadirkan cita rasa terbaik dengan bahan-bahan pilihan berkualitas premium
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {benefits.map((benefit, index) => (
+              <div
+                key={index}
+                className="group relative bg-gray-50 rounded-3xl p-8 hover:bg-white border-2 border-transparent hover:border-rose-200 transition-all duration-300 hover:shadow-xl"
+              >
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-14 h-14 bg-rose-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-rose-200 transition-colors">
+                    {benefit.icon}
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-rose-600">0{index + 1}</span>
+                    <h3 className="text-xl font-bold text-gray-900 mt-1">
+                      {benefit.title}
+                    </h3>
+                  </div>
+                </div>
+                <p className="text-gray-600 leading-relaxed">{benefit.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
       {/* VISI & MISI */}
       <section id="visimisi" className="py-20 px-6 lg:px-16 bg-gray-900 text-white relative overflow-hidden">
@@ -483,67 +483,111 @@ export default function Home() {
         </div>
       </section>
 
+      {/*Produk Unggulan */}
       <section
         id="produk"
-        className="py-20 px-6 lg:px-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden"
+        className="py-16 px-6 lg:px-12 bg-white relative overflow-hidden"
       >
-        {/* Background */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-96 h-96 bg-rose-600 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-orange-600 rounded-full blur-3xl"></div>
+        {/* Background Pattern - Same as Artikel */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48), linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48)',
+            backgroundSize: '60px 60px',
+            backgroundPosition: '0 0, 30px 30px'
+          }}></div>
         </div>
 
+        {/* Decorative Blurs */}
+        <div className="absolute top-10 right-20 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 left-20 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+
         <div className="container mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <span className="text-yellow-400 font-bold text-sm uppercase tracking-wider">
-              Our Menu
-            </span>
-            <h2 className="text-5xl font-black mt-2 mb-6">
+          {/* Header Section - Compact */}
+          <div className="text-center mb-12">
+            <div className="inline-block mb-4">
+              <span className="text-rose-600 font-extrabold text-xs uppercase tracking-widest bg-gradient-to-r from-rose-100 to-orange-100 px-5 py-2 rounded-full border-2 border-rose-200/50">
+                Our Menu
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mt-3 mb-4 leading-tight">
               Produk{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-orange-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 via-rose-500 to-orange-500">
                 Unggulan
               </span>
             </h2>
-            <div className="h-2 w-24 bg-gradient-to-r from-rose-600 to-orange-500 rounded-full mx-auto mb-8"></div>
-            <p className="text-gray-300 max-w-2xl mx-auto text-lg">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-rose-400 to-rose-600 rounded-full"></div>
+              <div className="h-2 w-2 bg-rose-600 rounded-full"></div>
+              <div className="h-1 w-12 bg-gradient-to-r from-rose-600 via-orange-400 to-transparent rounded-full"></div>
+            </div>
+            <p className="text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
               Nikmati berbagai varian mie pedas dengan tingkat kepedasan yang bisa disesuaikan dengan seleramu
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          {/* Products Grid - Compact & Efficient */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {products.map((product) => (
               <div key={product.id} className="group relative">
-                <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-white/40 transition-all hover:-translate-y-2 shadow-2xl">
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl hover:border-rose-300 transition-all duration-300 hover:-translate-y-2">
 
-                  {/* IMAGE */}
+                  {/* Image Container - 4:5 Aspect Ratio */}
                   {product.image && (
-                    <img
-                      src={product.image}
-                      alt={product.nama_produk}
-                      className="w-full h-40 object-cover rounded-xl mb-6"
-                    />
+                    <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-rose-50 to-orange-50">
+                      <img
+                        src={product.image}
+                        alt={product.nama_produk}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      {/* Overlay on Hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
                   )}
 
-                  <h3 className="text-2xl font-black text-white mb-3 text-center">
-                    {product.nama_produk}
-                  </h3>
+                  {/* Content Section - Very Compact */}
+                  <div className="p-3">
+                    {/* Product Name */}
+                    <h3 className="text-sm font-black text-gray-900 mb-1 text-center group-hover:text-rose-600 transition-colors line-clamp-1">
+                      {product.nama_produk}
+                    </h3>
 
-                  <p className="text-gray-300 text-center mb-6">
-                    {product.deskripsi}
-                  </p>
+                    {/* Description - Optional, can be hidden on mobile */}
+                    <p className="text-gray-600 text-center mb-2 text-xs line-clamp-1 hidden sm:block">
+                      {product.deskripsi}
+                    </p>
 
-                  <div className="bg-white/10 rounded-xl p-4 text-center border border-white/20">
-                    <div className="text-yellow-400 font-black text-2xl">
-                      Rp {Number(product.harga).toLocaleString("id-ID")}
+                    {/* Price - Compact */}
+                    <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-lg p-2 text-center border border-rose-200/50 mb-2">
+                      <div className="text-rose-600 font-black text-base">
+                        {Number(product.harga).toLocaleString("id-ID", {
+                          style: 'currency',
+                          currency: 'IDR',
+                          minimumFractionDigits: 0
+                        })}
+                      </div>
                     </div>
-                  </div>
 
-                  <button onClick={() => handlePayment(product)} className="w-full mt-6 bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 rounded-xl font-bold hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-lg">
-                    Order Now
-                  </button>
+                    {/* Order Button - Small */}
+                    <button
+                      onClick={() => handlePayment(product)}
+                      className="w-full bg-gradient-to-r from-rose-600 to-orange-600 text-white py-2 rounded-lg font-bold text-xs hover:from-rose-700 hover:to-orange-700 transition-all duration-300 hover:scale-105 shadow-md"
+                    >
+                      Order
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* CTA Section - Compact */}
+          <div className="text-center mt-10">
+            <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-3 rounded-xl font-bold text-base hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-lg inline-flex items-center gap-2">
+              Lihat Semua Menu
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         </div>
       </section>
@@ -586,13 +630,13 @@ export default function Home() {
 
           {/* Gallery Grid - Show only first 4 items initially */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-  {(showAll ? gallery : gallery.slice(0, 4)).map((item) => (
-    <div key={item.id} className="group relative overflow-hidden rounded-3xl shadow-xl">
-      <img
-        src={item.gambar}
-        alt={item.judul}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+            {(showAll ? gallery : gallery.slice(0, 4)).map((item) => (
+              <div key={item.id} className="group relative overflow-hidden rounded-3xl shadow-xl aspect-[4/3]">
+                <img
+                  src={item.gambar}
+                  alt={item.judul}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
 
                 {/* Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -627,17 +671,30 @@ export default function Home() {
 
           {/* "Lihat Semua" Button - Only show if gallery has more than 4 items */}
           {gallery.length > 4 && !showAll && (
-  <div className="text-center">
-    <button
-      onClick={() => setShowAll(true)}
-      className="group relative inline-flex items-center justify-center bg-gradient-to-r from-rose-600 to-orange-500 text-white font-bold text-lg px-10 py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-    >
-      <span className="relative z-10">Lihat Semua Galeri</span>
-    </button>
-  </div>
-)}
+            <div className="text-center">
+            </div>
+          )}
 
-
+          {/* TOGGLE BUTTON */}
+          {gallery.length > 4 && (
+            <div className="text-center">
+              {!showAll ? (
+                <button
+                  onClick={() => setShowAll(true)}
+                  className="group relative inline-flex items-center justify-center bg-gradient-to-r from-rose-600 to-orange-500 text-white font-bold text-lg px-10 py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                >
+                  <span className="relative z-10">Lihat Semua Galeri</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowAll(false)}
+                  className="group relative inline-flex items-center justify-center bg-gray-800 text-white font-bold text-lg px-10 py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                >
+                  <span className="relative z-10">Sembunyikan Galeri</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </section>
 

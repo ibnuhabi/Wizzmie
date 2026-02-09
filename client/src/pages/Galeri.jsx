@@ -7,11 +7,11 @@ const Galeri = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
 
-const [form, setForm] = useState({
-  judul: "",
-  gambar: "",
-  keterangan: "",
-});
+  const [form, setForm] = useState({
+    judul: "",
+    gambar: "",
+    keterangan: "",
+  });
 
   const fetchGaleri = async () => {
     const res = await fetch("http://localhost:5000/api/gallery");
@@ -38,14 +38,14 @@ const [form, setForm] = useState({
 
     setShowModal(false);
     setIsEdit(false);
-    setForm({ judul: "", deskripsi: "", file_gambar: "" });
+    setForm({ judul: "", gambar: "", keterangan: "" });
     fetchGaleri();
   };
 
   const handleDelete = async (id) => {
     if (!confirm("Yakin hapus galeri ini?")) return;
 
-    await fetch(`http://localhost:5000/api//${id}`, {
+    await fetch(`http://localhost:5000/api/gallery/${id}`, {
       method: "DELETE",
     });
     fetchGaleri();
@@ -61,7 +61,7 @@ const [form, setForm] = useState({
           <button
             onClick={() => {
               setIsEdit(false);
-              setForm({ judul: "", deskripsi: "", file_gambar: "" });
+              setForm({ judul: "", gambar: "", keterangan: "" });
               setShowModal(true);
             }}
             className="bg-[#EC008C] text-white px-5 py-2 rounded-lg"
@@ -70,7 +70,6 @@ const [form, setForm] = useState({
           </button>
         </div>
 
-        {/* TABLE */}
         <div className="bg-white rounded-xl shadow overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-100">
@@ -82,7 +81,7 @@ const [form, setForm] = useState({
             </thead>
 
             <tbody>
-              {galeri.map(item => (
+              {galeri.map((item) => (
                 <tr key={item.id} className="border-t">
                   <td className="p-4">
                     <img
@@ -124,7 +123,6 @@ const [form, setForm] = useState({
           </table>
         </div>
 
-        {/* MODAL */}
         {showModal && (
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-xl w-full max-w-md">
@@ -143,21 +141,20 @@ const [form, setForm] = useState({
 
               <input
                 className="w-full mb-3 p-3 border rounded"
-                placeholder="Path Gambar (/images/gallery/xxx.jpg)"
-              value={form.gambar}
-              onChange={(e) =>
-              setForm({ ...form, gambar: e.target.value })
+                placeholder="Nama file gambar (contoh: mie1.jpg)"
+                value={form.gambar}
+                onChange={(e) =>
+                  setForm({ ...form, gambar: e.target.value })
                 }
               />
 
               <textarea
                 className="w-full mb-4 p-3 border rounded"
-                placeholder="Deskripsi"
-               value={form.keterangan}
-               onChange={(e) =>
-               setForm({ ...form, keterangan: e.target.value })
-              }
-
+                placeholder="Keterangan"
+                value={form.keterangan}
+                onChange={(e) =>
+                  setForm({ ...form, keterangan: e.target.value })
+                }
               />
 
               <div className="flex justify-end gap-2">
