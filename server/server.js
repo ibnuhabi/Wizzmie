@@ -11,6 +11,7 @@ import galleryRoutes from "./routes/galleryRoutes.js";
 import partnersRoutes from "./routes/partnersRoutes.js";
 import produkRoutes from "./routes/produkRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import checkoutRoutes from "./routes/checkoutRoutes.js";
 
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use("/api/events", eventsRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/partners", partnersRoutes);
 app.use("/api/produk", produkRoutes);
+app.use("/api/checkout", checkoutRoutes);
 
 // Route test
 app.get("/", (req, res) => {

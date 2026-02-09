@@ -4,14 +4,17 @@ import { FaPepperHot } from "react-icons/fa";
 import { HiOutlineLightningBolt } from "react-icons/hi";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { FaStar } from "react-icons/fa";
+import axios from "axios";
 
 export default function Home() {
   const [activeAccordion, setActiveAccordion] = useState(null);
   const location = useLocation();
+  const [showAll, setShowAll] = useState(false);
 
   const toggleAccordion = (index) => {
     setActiveAccordion(activeAccordion === index ? null : index);
   };
+
 
   const stats = [
     { number: '20+', label: 'Menu Variants' },
@@ -80,9 +83,54 @@ export default function Home() {
   useEffect(() => {
     fetch("http://localhost:5000/api/produk")
       .then((res) => res.json())
-      .then(setProducts) // 🔥 INI SEKARANG VALID
+      .then(setProducts) 
       .catch(console.error);
   }, []);
+
+  const handlePayment = async (product) => {
+    try {
+      // 1. Request token ke backend
+      const res = await axios.post("http://localhost:5000/api/checkout", {
+        orderId: `INV-${Date.now()}`, // ID unik
+        grossAmount: product.harga, // total bayar
+        customer: {
+          firstName: "Alif",
+          lastName: "Ramadhani",
+          email: "alif@example.com",
+          phone: "081234567890",
+        },
+      });
+
+      const token = res.data.token;
+
+      // 2. Panggil Snap popup
+      window.snap.pay(token, {
+        onSuccess: function (result) {
+          console.log("success:", result);
+          alert("Pembayaran berhasil!");
+        },
+        onPending: function (result) {
+          console.log("pending:", result);
+          alert("Pembayaran pending!");
+        },
+        onError: function (result) {
+          console.log("error:", result);
+          alert("Terjadi kesalahan pembayaran!");
+        },
+        onClose: function () {
+          console.log("popup closed");
+          alert("Anda menutup popup tanpa membayar");
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Gagal membuat transaksi!");
+    }
+  };
+
+  const displayedProducts = showAll
+    ? products
+    : products.slice(0, 4);
 
   useEffect(() => {
     if (location.hash) {
@@ -490,7 +538,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <button className="w-full mt-6 bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 rounded-xl font-bold hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-lg">
+                  <button onClick={() => handlePayment(product)} className="w-full mt-6 bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 rounded-xl font-bold hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-lg">
                     Order Now
                   </button>
                 </div>
@@ -538,17 +586,13 @@ export default function Home() {
 
           {/* Gallery Grid - Show only first 4 items initially */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {gallery.slice(0, 4).map((item) => (
-              <div
-                key={item.id}
-                className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 aspect-square"
-              >
-                {/* Image */}
-                <img
-                  src={item.gambar}
-                  alt={item.judul}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
+  {(showAll ? gallery : gallery.slice(0, 4)).map((item) => (
+    <div key={item.id} className="group relative overflow-hidden rounded-3xl shadow-xl">
+      <img
+        src={item.gambar}
+        alt={item.judul}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
 
                 {/* Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -582,16 +626,17 @@ export default function Home() {
           </div>
 
           {/* "Lihat Semua" Button - Only show if gallery has more than 4 items */}
-          {gallery.length > 4 && (
-            <div className="text-center">
-              <button className="group relative inline-flex items-center justify-center bg-gradient-to-r from-rose-600 to-orange-500 text-white font-bold text-lg px-10 py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <span className="relative z-10">Lihat Semua Galeri</span>
+          {gallery.length > 4 && !showAll && (
+  <div className="text-center">
+    <button
+      onClick={() => setShowAll(true)}
+      className="group relative inline-flex items-center justify-center bg-gradient-to-r from-rose-600 to-orange-500 text-white font-bold text-lg px-10 py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+    >
+      <span className="relative z-10">Lihat Semua Galeri</span>
+    </button>
+  </div>
+)}
 
-                {/* Hover Shine */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-              </button>
-            </div>
-          )}
 
         </div>
       </section>
