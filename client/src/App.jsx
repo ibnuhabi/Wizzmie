@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Partners from "./pages/Partners";
 import ContactAdmin from "./pages/Contact";
 import ProductDetail from "./pages/ProductDetail";
+import Orders from "./pages/Orders";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
       <Route path="/admin/partners" element={<Partners />} />
       <Route path="/admin/event" element={<Event />} />
       <Route path="/admin/articles" element={<Artikel />} />
+       <Route path="/admin/orders" element={<Orders />} /> 
       <Route path="/admin/contacts" element={<ContactAdmin/>}/>
     </Routes>
   );

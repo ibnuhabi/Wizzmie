@@ -56,42 +56,82 @@ const ProdukAdmin = () => {
   /* =====================
      SUBMIT (FormData)
   ===================== */
+  /* =====================
+   SUBMIT (FormData)
+===================== */
   const handleSubmit = async () => {
-    const url = isEdit
-      ? `http://localhost:5000/api/products/${editId}`
-      : "http://localhost:5000/api/products";
+    try {
+      // Validasi input
+      if (!form.nama_produk || !form.harga || !form.tipe) {
+        alert("Nama produk, harga, dan tipe wajib diisi!");
+        return;
+      }
 
-    const method = isEdit ? "PUT" : "POST";
+      // Validasi gambar untuk produk baru
+      if (!isEdit && !imageFile) {
+        alert("Gambar wajib diupload untuk produk baru!");
+        return;
+      }
 
-    const data = new FormData();
-    data.append("nama_produk", form.nama_produk);
-    data.append("deskripsi", form.deskripsi);
-    data.append("harga", form.harga);
-    data.append("tipe", form.tipe);
+      const url = isEdit
+        ? `http://localhost:5000/api/products/${editId}`
+        : "http://localhost:5000/api/products";
 
-    if (imageFile) {
-      data.append("image", imageFile); // ⬅️ sesuai upload.single("image")
+      const method = isEdit ? "PUT" : "POST";
+
+      const data = new FormData();
+      data.append("nama_produk", form.nama_produk);
+      data.append("deskripsi", form.deskripsi);
+      data.append("harga", form.harga);
+      data.append("tipe", form.tipe);
+
+      if (imageFile) {
+        data.append("image", imageFile);
+      }
+
+      console.log("📤 Sending request to:", url);
+      console.log("📦 FormData contents:");
+      for (let pair of data.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      const response = await fetch(url, {
+        method,
+        body: data,
+      });
+
+      const result = await response.json();
+
+      console.log("📥 Response:", result);
+
+      if (!response.ok) {
+        alert(result.message || "Gagal menyimpan produk");
+        return;
+      }
+
+      alert(result.message || "Produk berhasil disimpan!");
+
+      // Reset form
+      setShowModal(false);
+      setIsEdit(false);
+      setEditId(null);
+      setImageFile(null);
+      setPreview(null);
+      setForm({
+        nama_produk: "",
+        deskripsi: "",
+        harga: "",
+        tipe: "",
+        image: "",
+      });
+
+      // Refresh data
+      fetchProduk();
+
+    } catch (error) {
+      console.error("❌ Error submitting form:", error);
+      alert("Terjadi kesalahan saat menyimpan produk: " + error.message);
     }
-
-    await fetch(url, {
-      method,
-      body: data,
-    });
-
-    setShowModal(false);
-    setIsEdit(false);
-    setEditId(null);
-    setImageFile(null);
-    setPreview(null);
-    setForm({
-      nama_produk: "",
-      deskripsi: "",
-      harga: "",
-      tipe: "",
-      image: "",
-    });
-
-    fetchProduk();
   };
 
   if (loading) return <p className="text-center mt-10">Loading produk...</p>;

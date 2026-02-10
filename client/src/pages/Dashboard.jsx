@@ -44,10 +44,10 @@ const Dashboard = () => {
       };
 
       // Fetch data dari setiap endpoint
-      const articlesRes = await axios.get("http://localhost:5000/api/artikel", config);  // articles → artikel
+      const articlesRes = await axios.get("http://localhost:5000/api/articles", config);  // articles → artikel
       const eventsRes = await axios.get("http://localhost:5000/api/events", config);
       const galleryRes = await axios.get("http://localhost:5000/api/gallery", config);
-      const productsRes = await axios.get("http://localhost:5000/api/produk", config);   // products → produk
+      const productsRes = await axios.get("http://localhost:5000/api/products", config);   // products → produk
 
       // Update stats dengan data real
       setStats([

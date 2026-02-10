@@ -78,7 +78,7 @@ export default function Home() {
 
   const [articles, setArticles] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/api/artikel")
+    fetch("http://localhost:5000/api/articles")
       .then((res) => res.json())
       .then((data) => setArticles(data))
       .catch((err) => console.error("Gagal fetch artikel:", err));

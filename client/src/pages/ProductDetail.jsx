@@ -5,11 +5,12 @@ import axios from "axios";
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-  
+  const [processingPayment, setProcessingPayment] = useState(false);
+
   const [formCheckout, setFormCheckout] = useState({
     firstName: "",
     lastName: "",
@@ -36,16 +37,42 @@ export default function ProductDetail() {
   const handleCheckout = async (e) => {
     e.preventDefault();
 
+    // Validasi form
     if (!formCheckout.firstName || !formCheckout.email || !formCheckout.phone) {
-      alert("Mohon isi data yang diperlukan!");
+      alert("Mohon isi semua data yang diperlukan!");
       return;
     }
+
+    // Validasi email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formCheckout.email)) {
+      alert("Format email tidak valid!");
+      return;
+    }
+
+    // Validasi nomor HP (Indonesia)
+    const phoneRegex = /^(\+62|62|0)[0-9]{9,12}$/;
+    if (!phoneRegex.test(formCheckout.phone)) {
+      alert("Format nomor HP tidak valid!");
+      return;
+    }
+
+    setProcessingPayment(true);
 
     try {
       const totalAmount = product.harga * quantity;
 
+      console.log("🔄 Starting checkout process...");
+      console.log("📤 Request data:", {
+        orderId: `WIZZMIE-${Date.now()}`,
+        grossAmount: totalAmount,
+        productId: product.id,
+        customer: formCheckout
+      });
+
+      // ✅ KIRIM DATA LENGKAP KE BACKEND
       const res = await axios.post("http://localhost:5000/api/checkout", {
-        orderId: `INV-${Date.now()}`,
+        orderId: `WIZZMIE-${Date.now()}`,
         grossAmount: totalAmount,
         customer: {
           firstName: formCheckout.firstName,
@@ -63,31 +90,68 @@ export default function ProductDetail() {
         ],
       });
 
-      const token = res.data.token;
+      console.log("✅ Backend response:", res.data);
 
-      // Panggil Snap popup
-      window.snap.pay(token, {
+      if (!res.data.success) {
+        console.error("❌ Backend returned error:", res.data.message);
+        throw new Error(res.data.message || "Checkout failed");
+      }
+
+      const snapToken = res.data.token;
+
+      if (!snapToken) {
+        throw new Error("No payment token received from server");
+      }
+
+      console.log("🔗 Snap token received:", snapToken.substring(0, 20) + "...");
+
+      // Pastikan Snap.js sudah loaded
+      if (typeof window.snap === 'undefined') {
+        throw new Error("Midtrans Snap.js not loaded");
+      }
+
+      // Panggil Midtrans Snap
+      window.snap.pay(snapToken, {
         onSuccess: function (result) {
-          console.log("success:", result);
-          alert("Pembayaran berhasil!");
-          navigate("/");
+          console.log("✅ Payment Success:", result);
+          alert("✅ Pembayaran berhasil! Terima kasih telah berbelanja.");
+          navigate("/", { state: { paymentSuccess: true } });
         },
         onPending: function (result) {
-          console.log("pending:", result);
-          alert("Pembayaran pending!");
+          console.log("⏳ Payment Pending:", result);
+          alert("⏳ Pembayaran sedang diproses. Silakan selesaikan pembayaran Anda.");
+          navigate("/", { state: { paymentPending: true } });
         },
         onError: function (result) {
-          console.log("error:", result);
-          alert("Terjadi kesalahan pembayaran!");
+          console.log("❌ Payment Error:", result);
+          alert("❌ Terjadi kesalahan dalam pembayaran. Silakan coba lagi.");
+          setProcessingPayment(false);
         },
         onClose: function () {
-          console.log("popup closed");
-          alert("Anda menutup popup tanpa membayar");
+          console.log("⚠️ Payment popup closed");
+          alert("⚠️ Anda menutup popup pembayaran. Transaksi dibatalkan.");
+          setProcessingPayment(false);
         },
       });
     } catch (err) {
-      console.error(err);
-      alert("Gagal membuat transaksi!");
+      console.error("❌ Checkout Error Details:");
+      console.error("Error message:", err.message);
+      console.error("Error response:", err.response?.data);
+      console.error("Error status:", err.response?.status);
+
+      // Tampilkan error spesifik
+      let errorMessage = "❌ Gagal membuat transaksi. Silakan coba lagi.";
+
+      if (err.response?.data?.message) {
+        errorMessage = `❌ ${err.response.data.message}`;
+      } else if (err.message.includes("Network Error")) {
+        errorMessage = "❌ Koneksi ke server terputus. Periksa koneksi internet Anda.";
+      } else if (err.message.includes("timeout")) {
+        errorMessage = "❌ Waktu permintaan habis. Server mungkin sibuk.";
+      }
+
+      alert(errorMessage);
+      setProcessingPayment(false);
     }
   };
 

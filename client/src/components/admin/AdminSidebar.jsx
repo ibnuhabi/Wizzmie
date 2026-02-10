@@ -8,6 +8,7 @@ import {
   FaBoxOpen,
   FaEnvelopeOpenText,
   FaSignOutAlt,
+  FaShoppingCart,
 } from "react-icons/fa";
 
 const AdminSidebar = () => {
@@ -21,6 +22,7 @@ const AdminSidebar = () => {
     { name: "Gallery", table: "gallery", icon: <FaImages /> },
     { name: "Products", table: "products", icon: <FaBoxOpen /> },
     { name: "Contacts", table: "contacts", icon: <FaEnvelopeOpenText /> },
+    { name: "Orders", table: "orders", icon: <FaShoppingCart /> },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -37,11 +39,10 @@ const AdminSidebar = () => {
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         <button
           onClick={() => navigate("/admin/dashboard")}
-          className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center gap-3 ${
-            isActive("/admin/dashboard")
+          className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center gap-3 ${isActive("/admin/dashboard")
               ? "bg-blue-600 text-white shadow-lg shadow-blue-600/50 scale-105"
               : "bg-slate-700/50 hover:bg-slate-700 hover:translate-x-1"
-          }`}
+            }`}
         >
           <FaHome className="text-xl" />
           <span>Dashboard</span>
@@ -57,11 +58,10 @@ const AdminSidebar = () => {
           <button
             key={menu.table}
             onClick={() => navigate(`/admin/${menu.table}`)}
-            className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 flex items-center gap-3 ${
-              isActive(`/admin/${menu.table}`)
+            className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 flex items-center gap-3 ${isActive(`/admin/${menu.table}`)
                 ? "bg-blue-600 text-white shadow-lg shadow-blue-600/50 scale-105 font-semibold"
                 : "hover:bg-slate-700 hover:translate-x-1"
-            }`}
+              }`}
           >
             <span className="text-xl">{menu.icon}</span>
             <span>{menu.name}</span>

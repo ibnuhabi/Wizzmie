@@ -104,3 +104,38 @@ CREATE TABLE contacts (
   pesan TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- =========================================
+-- TABLE: orders
+-- =========================================
+CREATE TABLE IF NOT EXISTS orders (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  order_code VARCHAR(50) NOT NULL UNIQUE,
+  product_id INT(11) NOT NULL,
+  price DECIMAL(12,2) NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  status ENUM('pending', 'processing', 'completed', 'cancelled') DEFAULT 'pending',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- =========================================
+-- TABLE: payments
+-- =========================================
+CREATE TABLE IF NOT EXISTS payments (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  order_id INT(11) NOT NULL,
+  customer_name VARCHAR(150),
+  customer_email VARCHAR(150),
+  customer_phone VARCHAR(20),
+  gateway VARCHAR(50),
+  method VARCHAR(50),
+  amount DECIMAL(12,2),
+  status VARCHAR(50) DEFAULT 'pending',
+  transaction_id VARCHAR(100),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

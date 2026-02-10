@@ -24,7 +24,7 @@ const Artikel = () => {
   ===================== */
   const fetchArtikel = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/artikel");
+      const res = await fetch("http://localhost:5000/api/articles");
       const data = await res.json();
       setArtikels(data);
     } catch (err) {
@@ -44,7 +44,7 @@ const Artikel = () => {
   const handleDelete = async (id) => {
     if (!confirm("Yakin hapus artikel ini?")) return;
 
-    await fetch(`http://localhost:5000/api/artikel/${id}`, {
+    await fetch(`http://localhost:5000/api/articles/${id}`, {
       method: "DELETE",
     });
 
@@ -56,8 +56,8 @@ const Artikel = () => {
   ===================== */
   const handleSubmit = async () => {
     const url = isEdit
-      ? `http://localhost:5000/api/artikel/${editId}`
-      : "http://localhost:5000/api/artikel";
+      ? `http://localhost:5000/api/articles/${editId}`
+      : "http://localhost:5000/api/articles";
 
     const method = isEdit ? "PUT" : "POST";
 
