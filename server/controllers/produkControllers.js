@@ -16,6 +16,27 @@ export const getAllProduk = (req, res) => {
 };
 
 /* =====================
+   GET SINGLE PRODUK BY ID
+===================== */
+export const getProdukById = (req, res) => {
+  const { id } = req.params;
+  const sql = "SELECT * FROM products WHERE id = ?";
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error("ERROR DB:", err);
+      return res.status(500).json({ message: "Gagal mengambil data produk" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Produk tidak ditemukan" });
+    }
+
+    res.json(results[0]); // Return single object, bukan array
+  });
+};
+
+/* =====================
    CREATE PRODUK
 ===================== */
 export const createProduk = (req, res) => {

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaPepperHot } from "react-icons/fa";
 import { HiOutlineLightningBolt } from "react-icons/hi";
@@ -21,6 +21,7 @@ export default function Home() {
   const location = useLocation();
   const [showAll, setShowAll] = useState(false);
   const [showAllArticles, setShowAllArticles] = useState(false);
+  const navigate = useNavigate()
 
 
   const toggleAccordion = (index) => {
@@ -506,23 +507,7 @@ export default function Home() {
 
 
       {/* Produk Unggulan */}
-      <section
-        id="produk"
-        className="py-16 px-6 lg:px-12 bg-white relative overflow-hidden"
-      >
-        {/* Background */}
-        <div className="absolute inset-0 opacity-5">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48), linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48)",
-              backgroundSize: "60px 60px",
-              backgroundPosition: "0 0, 30px 30px",
-            }}
-          ></div>
-        </div>
-
+      <section id="produk" className="py-16 px-6 lg:px-12 bg-white relative overflow-hidden">
         <div className="container mx-auto relative z-10">
           {/* Header */}
           <div className="text-center mb-12">
@@ -542,8 +527,10 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {(showAll ? products : products.slice(0, 4)).map((product) => (
               <div key={product.id} className="group">
-                <div className="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden hover:shadow-xl transition">
-
+                <div
+                  onClick={() => navigate(`/product/${product.id}`)}
+                  className="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden hover:shadow-xl transition cursor-pointer"
+                >
                   <div className="aspect-[4/5] overflow-hidden">
                     <img
                       src={`http://localhost:5000/images/produk/${product.image}`}
@@ -563,10 +550,13 @@ export default function Home() {
                     </div>
 
                     <button
-                      onClick={() => handlePayment(product)}
-                      className="w-full bg-gradient-to-r from-rose-600 to-orange-600 text-white py-2 rounded-lg text-xs font-bold"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent card click
+                        navigate(`/product/${product.id}`);
+                      }}
+                      className="w-full bg-gradient-to-r from-rose-600 to-orange-600 text-white py-2 rounded-lg text-xs font-bold hover:from-rose-700 hover:to-orange-700 transition"
                     >
-                      Order
+                      Order Now
                     </button>
                   </div>
                 </div>

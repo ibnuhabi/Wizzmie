@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Partners from "./pages/Partners";
 import ContactAdmin from "./pages/Contact";
+import ProductDetail from "./pages/ProductDetail";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Galeri />} /> {/* ⬅️ TAMBAH INI */}
+         <Route path="/product/:id" element={<ProductDetail />} />
       </Route>
 
       {/* ===== ADMIN (TANPA LAYOUT) ===== */}
