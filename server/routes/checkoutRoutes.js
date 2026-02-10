@@ -1,8 +1,8 @@
 import express from "express";
 import {
   createCheckout,
-  getCheckoutStatus,
-  handleNotification
+  // getCheckoutStatus,
+  // handleNotification
 } from "../controllers/checkoutController.js";
 
 const router = express.Router();
@@ -11,9 +11,9 @@ const router = express.Router();
 router.post("/", createCheckout);
 
 // GET /api/checkout/:id - Get checkout status (by order_id or order_code)
-router.get("/:id", getCheckoutStatus);
+// router.get("/:id", getCheckoutStatus);
 
-// POST /api/checkout/notification - Midtrans webhook
-router.post("/notification", handleNotification);
+// // POST /api/checkout/notification - Midtrans webhook
+// router.post("/notification", handleNotification);
 
 export default router;

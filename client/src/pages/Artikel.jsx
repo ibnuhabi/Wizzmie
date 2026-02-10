@@ -69,27 +69,75 @@ const Artikel = () => {
 
     if (thumbnailFile) {
       data.append("thumbnail", thumbnailFile);
+    } else if (isEdit && form.thumbnail) {
+      // Kirim existing thumbnail name untuk update
+      data.append("existingThumbnail", form.thumbnail);
     }
 
-    await fetch(url, {
-      method,
-      body: data,
-    });
+    console.log("📤 FormData akan dikirim ke:", url);
+    console.log("📤 Method:", method);
 
-    setShowModal(false);
-    setIsEdit(false);
-    setEditId(null);
-    setThumbnailFile(null);
-    setPreview(null);
-    setForm({
-      judul: "",
-      slug: "",
-      isi: "",
-      penulis: "",
-      thumbnail: "",
-    });
+    // Log semua isi FormData
+    for (let [key, value] of data.entries()) {
+      console.log(`${key}:`, value instanceof File ? `File: ${value.name}` : value);
+    }
 
-    fetchArtikel();
+    try {
+      console.log("🔄 Mengirim request ke backend...");
+
+      const response = await fetch(url, {
+        method,
+        body: data,
+        // JANGAN set Content-Type header untuk FormData!
+        // Browser akan otomatis set boundary untuk multipart/form-data
+      });
+
+      console.log("📥 Response status:", response.status, response.statusText);
+
+      // Coba baca response text dulu
+      const responseText = await response.text();
+      console.log("📥 Raw response:", responseText);
+
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("❌ Response bukan JSON:", responseText);
+        throw new Error(`Server error: ${responseText.substring(0, 100)}...`);
+      }
+
+      console.log("✅ Parsed response:", result);
+
+      if (!response.ok) {
+        throw new Error(result.message || `Error ${response.status}`);
+      }
+
+      // Reset form
+      setShowModal(false);
+      setIsEdit(false);
+      setEditId(null);
+      setThumbnailFile(null);
+      setPreview(null);
+      setForm({
+        judul: "",
+        slug: "",
+        isi: "",
+        penulis: "",
+        thumbnail: "",
+      });
+
+      // Refresh data
+      fetchArtikel();
+
+      alert(result.message || "Artikel berhasil disimpan!");
+
+    } catch (error) {
+      console.error("❌ Submit error details:");
+      console.error("- Message:", error.message);
+      console.error("- Full error:", error);
+
+      alert(`❌ Gagal menyimpan artikel: ${error.message}`);
+    }
   };
 
   if (loading) return <p className="text-center mt-10">Loading artikel...</p>;

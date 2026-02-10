@@ -323,46 +323,46 @@ export const createCheckout = async (req, res) => {
   }
 };
 
-// Optional: Add a test endpoint
-export const testCheckout = async (req, res) => {
-  console.log("🧪 TEST CHECKOUT ENDPOINT");
+// // Optional: Add a test endpoint
+// export const testCheckout = async (req, res) => {
+//   console.log("🧪 TEST CHECKOUT ENDPOINT");
   
-  try {
-    // Test database connection
-    const [dbTest] = await db.execute('SELECT 1 as test');
+//   try {
+//     // Test database connection
+//     const [dbTest] = await db.execute('SELECT 1 as test');
     
-    // Test order insertion
-    const testOrderId = `TEST-${Date.now()}`;
-    await db.execute(
-      'INSERT INTO orders (order_code, product_id, quantity, price, status) VALUES (?, 1, 1, 10000, "pending")',
-      [testOrderId]
-    );
+//     // Test order insertion
+//     const testOrderId = `TEST-${Date.now()}`;
+//     await db.execute(
+//       'INSERT INTO orders (order_code, product_id, quantity, price, status) VALUES (?, 1, 1, 10000, "pending")',
+//       [testOrderId]
+//     );
     
-    // Test payment insertion
-    const [order] = await db.execute('SELECT id FROM orders WHERE order_code = ?', [testOrderId]);
+//     // Test payment insertion
+//     const [order] = await db.execute('SELECT id FROM orders WHERE order_code = ?', [testOrderId]);
     
-    if (order.length > 0) {
-      await db.execute(
-        'INSERT INTO payments (order_id, customer_name, customer_email, amount, status) VALUES (?, "Test User", "test@email.com", 10000, "pending")',
-        [order[0].id]
-      );
-    }
+//     if (order.length > 0) {
+//       await db.execute(
+//         'INSERT INTO payments (order_id, customer_name, customer_email, amount, status) VALUES (?, "Test User", "test@email.com", 10000, "pending")',
+//         [order[0].id]
+//       );
+//     }
     
-    res.json({
-      success: true,
-      message: "Test completed successfully",
-      tests: {
-        database: dbTest[0].test === 1 ? "OK" : "FAILED",
-        order_created: testOrderId,
-        payment_created: order.length > 0 ? "OK" : "FAILED"
-      }
-    });
+//     res.json({
+//       success: true,
+//       message: "Test completed successfully",
+//       tests: {
+//         database: dbTest[0].test === 1 ? "OK" : "FAILED",
+//         order_created: testOrderId,
+//         payment_created: order.length > 0 ? "OK" : "FAILED"
+//       }
+//     });
     
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Test failed",
-      error: error.message
-    });
-  }
-};
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Test failed",
+//       error: error.message
+//     });
+//   }
+// };
