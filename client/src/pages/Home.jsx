@@ -4,12 +4,24 @@ import { FaPepperHot } from "react-icons/fa";
 import { HiOutlineLightningBolt } from "react-icons/hi";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { FaStar } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaEnvelope,
+  FaInstagram,
+  FaPhoneAlt,
+  FaMapMarkerAlt
+} from "react-icons/fa";
 import axios from "axios";
+
+
 
 export default function Home() {
   const [activeAccordion, setActiveAccordion] = useState(null);
   const location = useLocation();
   const [showAll, setShowAll] = useState(false);
+  const [showAllArticles, setShowAllArticles] = useState(false);
+
 
   const toggleAccordion = (index) => {
     setActiveAccordion(activeAccordion === index ? null : index);
@@ -94,10 +106,10 @@ export default function Home() {
         orderId: `INV-${Date.now()}`, // ID unik
         grossAmount: product.harga, // total bayar
         customer: {
-          firstName: "Alif",
-          lastName: "Ramadhani",
-          email: "alif@example.com",
-          phone: "081234567890",
+          firstName: "Ibnu",
+          lastName: "Habibullah",
+          email: "ibnu@example.com",
+          phone: "085774333001",
         },
       });
 
@@ -150,7 +162,7 @@ export default function Home() {
   const handleSubmitKontak = async (e) => {
     e.preventDefault();
 
-    await fetch("http://localhost:5000/api/contact", {
+    await fetch("http://localhost:5000/api/contacts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formKontak),
@@ -163,65 +175,68 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* HERO SECTION */}
-      <section id="home" className="relative min-h-[75vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-rose-900 to-gray-900">
+      <section
+        id="home"
+        className="relative min-h-[75vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-rose-900 to-gray-900"
+      >
         {/* Decorative Elements */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-yellow-300 rounded-full blur-3xl"></div>
+          <div className="absolute top-20 left-20 w-56 h-56 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-20 w-72 h-72 bg-yellow-300 rounded-full blur-3xl"></div>
         </div>
 
         <div className="container mx-auto px-6 lg:px-16 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="text-white space-y-8">
+            {/* Left Content - Image */}
+            <div className="relative max-w-md mx-auto w-full lg:order-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl blur-2xl opacity-40"></div>
+              <div className="relative bg-white/10 backdrop-blur-lg rounded-3xl p-6 border border-white/20 shadow-lg">
+                <div className="aspect-[4/5] rounded-2xl overflow-hidden">
+                  <img
+                    src="/images/wizzmie.jpg"
+                    alt="Menu Ramen"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <div className="absolute -top-5 -right-5 bg-yellow-400 text-rose-900 px-4 py-2 rounded-2xl font-bold shadow-md transform rotate-6 text-sm">
+                  100% Halal
+                </div>
+              </div>
+            </div>
+
+            {/* Right Content - Text */}
+            <div className="text-white space-y-8 lg:order-2">
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-sm">
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
                 PT Wizzmie Boga Abadi
               </div>
 
-              <h1 className="text-6xl lg:text-7xl font-black leading-tight">
+              <h1 className="text-5xl lg:text-6xl font-black leading-tight">
                 Find Your
                 <br />
                 <span className="text-yellow-300">Dream Taste</span>
               </h1>
 
-              <p className="text-xl text-white/90 max-w-lg">
-                Rasakan pengalaman makan mie pedas yang tak terlupakan dengan
-                cita rasa khas dan harga yang ramah di kantong.
+              <p className="text-lg text-white/90 max-w-md">
+                Rasakan pengalaman makan mie pedas yang tak terlupakan dengan cita rasa khas dan harga yang ramah di kantong.
               </p>
 
               {/* Tags */}
-              <div className="flex flex-wrap gap-2">
-                {['Pedas Level 1-10', 'Halal Certified', 'Fresh Ingredients', 'Fast Service'].map((tag, i) => (
-                  <span key={i} className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-sm border border-white/30">
+              <div className="flex flex-wrap gap-2 max-w-md">
+                {['Halal Certified', 'Fresh Ingredients', 'Fast Service'].map((tag, i) => (
+                  <span
+                    key={i}
+                    className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-sm border border-white/30"
+                  >
                     {tag}
                   </span>
                 ))}
               </div>
             </div>
-
-            {/* Right Content - Image */}
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl blur-2xl opacity-50"></div>
-              <div className="relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
-                <div className="aspect-[4/5] bg-gradient-to-br from-yellow-200 to-orange-300 rounded-2xl flex items-center justify-center overflow-hidden">
-                  <img
-                    src="/images/wizzmie.jpg"
-                    alt="Menu Ramen"
-                    className="object-cover w-full h-full rounded-2xl"
-                  />
-                </div>
-                <div className="absolute -top-6 -right-6 bg-yellow-400 text-rose-900 px-6 py-3 rounded-2xl font-bold shadow-xl transform rotate-6">
-                  100% Halal
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-
-
       </section>
+
 
       {/* PROFILE PERUSAHAAN - ENHANCED */}
       <section id="profile" className="py-20 px-6 lg:px-16 bg-white relative overflow-hidden">
@@ -468,14 +483,20 @@ export default function Home() {
               </div>
             </div>
 
+            {/* CARD GAMBAR */}
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-br from-rose-400 to-orange-400 rounded-3xl blur-2xl opacity-20"></div>
-              <div className="relative bg-gradient-to-br from-rose-600 to-orange-500 rounded-3xl p-12">
-                <div className="aspect-square bg-white/10 backdrop-blur-lg rounded-2xl flex items-center justify-center text-9xl border border-white/20">
+              <div className="relative bg-white/30 backdrop-blur-xl rounded-3xl p-12 border border-white/40 shadow-xl">
+                <div className="aspect-square bg-white/40 backdrop-blur-md rounded-2xl overflow-hidden border border-white/50 shadow-lg">
 
+                  <img
+                    src="/images/ilustrasi.jpg"
+                    alt="Tentang Mie Wizzmie"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="absolute -bottom-6 -right-6 bg-yellow-400 text-rose-900 px-8 py-4 rounded-2xl font-black shadow-2xl text-xl">
-                  Since 2012
+                  Since 2022
                 </div>
               </div>
             </div>
@@ -483,94 +504,67 @@ export default function Home() {
         </div>
       </section>
 
-      {/*Produk Unggulan */}
+
+      {/* Produk Unggulan */}
       <section
         id="produk"
         className="py-16 px-6 lg:px-12 bg-white relative overflow-hidden"
       >
-        {/* Background Pattern - Same as Artikel */}
+        {/* Background */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48), linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48)',
-            backgroundSize: '60px 60px',
-            backgroundPosition: '0 0, 30px 30px'
-          }}></div>
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48), linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48)",
+              backgroundSize: "60px 60px",
+              backgroundPosition: "0 0, 30px 30px",
+            }}
+          ></div>
         </div>
 
-        {/* Decorative Blurs */}
-        <div className="absolute top-10 right-20 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 left-20 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
-
         <div className="container mx-auto relative z-10">
-          {/* Header Section - Compact */}
+          {/* Header */}
           <div className="text-center mb-12">
-            <div className="inline-block mb-4">
-              <span className="text-rose-600 font-extrabold text-xs uppercase tracking-widest bg-gradient-to-r from-rose-100 to-orange-100 px-5 py-2 rounded-full border-2 border-rose-200/50">
-                Our Menu
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mt-3 mb-4 leading-tight">
+            <span className="text-rose-600 font-extrabold text-xs uppercase tracking-widest bg-gradient-to-r from-rose-100 to-orange-100 px-5 py-2 rounded-full border-2 border-rose-200/50">
+              Our Menu
+            </span>
+
+            <h2 className="text-4xl font-black mt-4">
               Produk{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 via-rose-500 to-orange-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">
                 Unggulan
               </span>
             </h2>
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-rose-400 to-rose-600 rounded-full"></div>
-              <div className="h-2 w-2 bg-rose-600 rounded-full"></div>
-              <div className="h-1 w-12 bg-gradient-to-r from-rose-600 via-orange-400 to-transparent rounded-full"></div>
-            </div>
-            <p className="text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
-              Nikmati berbagai varian mie pedas dengan tingkat kepedasan yang bisa disesuaikan dengan seleramu
-            </p>
           </div>
 
-          {/* Products Grid - Compact & Efficient */}
+          {/* Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
-            {products.map((product) => (
-              <div key={product.id} className="group relative">
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl hover:border-rose-300 transition-all duration-300 hover:-translate-y-2">
+            {(showAll ? products : products.slice(0, 4)).map((product) => (
+              <div key={product.id} className="group">
+                <div className="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden hover:shadow-xl transition">
 
-                  {/* Image Container - 4:5 Aspect Ratio */}
-                  {product.image && (
-                    <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-rose-50 to-orange-50">
-                      <img
-                        src={product.image}
-                        alt={product.nama_produk}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      {/* Overlay on Hover */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                  )}
+                  <div className="aspect-[4/5] overflow-hidden">
+                    <img
+                      src={`http://localhost:5000/images/produk/${product.image}`}
+                      alt={product.nama_produk}
+                      className="w-full h-full object-cover group-hover:scale-110 transition"
+                    />
+                  </div>
 
-                  {/* Content Section - Very Compact */}
-                  <div className="p-3">
-                    {/* Product Name */}
-                    <h3 className="text-sm font-black text-gray-900 mb-1 text-center group-hover:text-rose-600 transition-colors line-clamp-1">
-                      {product.nama_produk}
-                    </h3>
-
-                    {/* Description - Optional, can be hidden on mobile */}
-                    <p className="text-gray-600 text-center mb-2 text-xs line-clamp-1 hidden sm:block">
-                      {product.deskripsi}
-                    </p>
-
-                    {/* Price - Compact */}
-                    <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-lg p-2 text-center border border-rose-200/50 mb-2">
-                      <div className="text-rose-600 font-black text-base">
-                        {Number(product.harga).toLocaleString("id-ID", {
-                          style: 'currency',
-                          currency: 'IDR',
-                          minimumFractionDigits: 0
-                        })}
-                      </div>
+                  <div className="p-3 text-center">
+                    <h3 className="font-black text-sm">{product.nama_produk}</h3>
+                    <div className="text-rose-600 font-black text-base my-2">
+                      {Number(product.harga).toLocaleString("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                      })}
                     </div>
 
-                    {/* Order Button - Small */}
                     <button
                       onClick={() => handlePayment(product)}
-                      className="w-full bg-gradient-to-r from-rose-600 to-orange-600 text-white py-2 rounded-lg font-bold text-xs hover:from-rose-700 hover:to-orange-700 transition-all duration-300 hover:scale-105 shadow-md"
+                      className="w-full bg-gradient-to-r from-rose-600 to-orange-600 text-white py-2 rounded-lg text-xs font-bold"
                     >
                       Order
                     </button>
@@ -580,18 +574,26 @@ export default function Home() {
             ))}
           </div>
 
-          {/* CTA Section - Compact */}
+          {/* CTA */}
           <div className="text-center mt-10">
-            <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-3 rounded-xl font-bold text-base hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-lg inline-flex items-center gap-2">
-              Lihat Semua Menu
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+            {!showAll ? (
+              <button
+                onClick={() => setShowAll(true)}
+                className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-3 rounded-xl font-bold hover:scale-105 transition"
+              >
+                Lihat Semua Menu
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowAll(false)}
+                className="bg-gray-300 text-gray-800 px-8 py-3 rounded-xl font-bold hover:bg-gray-400 transition"
+              >
+                Tutup Menu
+              </button>
+            )}
           </div>
         </div>
       </section>
-
 
       {/* GALERI SECTION */}
       <section id="galeri" className="py-24 px-6 lg:px-16 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
@@ -633,7 +635,7 @@ export default function Home() {
             {(showAll ? gallery : gallery.slice(0, 4)).map((item) => (
               <div key={item.id} className="group relative overflow-hidden rounded-3xl shadow-xl aspect-[4/3]">
                 <img
-                  src={item.gambar}
+                  src={`http://localhost:5000/images/gallery/${item.gambar}`}
                   alt={item.judul}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -774,7 +776,7 @@ export default function Home() {
                     {/* Logo Container */}
                     <div className="h-28 flex items-center justify-center mb-4 relative z-10">
                       <img
-                        src={partner.logo}
+                        src={`http://localhost:5000/images/partners/${partner.logo}`}
                         alt={partner.name}
                         className="max-h-24 max-w-[180px] object-contain grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110 drop-shadow-lg"
                       />
@@ -803,12 +805,22 @@ export default function Home() {
       <section id="artikel" className="py-20 px-6 lg:px-16 bg-white relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48), linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48)', backgroundSize: '60px 60px', backgroundPosition: '0 0, 30px 30px' }}></div>
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48), linear-gradient(45deg, #e11d48 25%, transparent 25%, transparent 75%, #e11d48 75%, #e11d48)",
+              backgroundSize: "60px 60px",
+              backgroundPosition: "0 0, 30px 30px",
+            }}
+          ></div>
         </div>
 
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-16">
-            <span className="text-rose-600 font-bold text-sm uppercase tracking-wider">Latest News</span>
+            <span className="text-rose-600 font-extrabold text-xs uppercase tracking-widest bg-gradient-to-r from-rose-100 to-orange-100 px-6 py-3 rounded-full border-2 border-rose-200/50">
+              Latest News
+            </span>
             <h2 className="text-5xl font-black text-gray-900 mt-2 mb-6">
               Artikel & <span className="text-rose-600">Berita</span>
             </h2>
@@ -816,13 +828,15 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {articles.map((article) => (
-              <div key={article.id} className="group bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-2">
-
+            {(showAllArticles ? articles : articles.slice(0, 3)).map((article) => (
+              <div
+                key={article.id}
+                className="group bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-2"
+              >
                 {/* Image */}
-                <div className="h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
+                <div className="h-48 bg-gray-100 overflow-hidden">
                   <img
-                    src={article.thumbnail}
+                    src={`http://localhost:5000/images/artikel/${article.thumbnail}`}
                     alt={article.judul}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                   />
@@ -850,21 +864,32 @@ export default function Home() {
                   >
                     Baca Selengkapnya →
                   </a>
-
                 </div>
               </div>
             ))}
-
           </div>
 
           {/* CTA Button */}
           <div className="text-center mt-12">
-            <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-4 rounded-xl font-bold hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-xl">
-              Lihat Semua Artikel
-            </button>
+            {!showAllArticles ? (
+              <button
+                onClick={() => setShowAllArticles(true)}
+                className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-4 rounded-xl font-bold hover:from-rose-700 hover:to-orange-700 transition-all hover:scale-105 shadow-xl"
+              >
+                Lihat Semua Artikel
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowAllArticles(false)}
+                className="bg-gray-300 text-gray-800 px-8 py-4 rounded-xl font-bold hover:bg-gray-400 transition"
+              >
+                Tutup Artikel
+              </button>
+            )}
           </div>
         </div>
       </section>
+
 
       {/* Section Event */}
       <section
@@ -907,7 +932,7 @@ export default function Home() {
                     {/* Gambar */}
                     {event.gambar && (
                       <img
-                        src={event.gambar}
+                        src={`http://localhost:5000/images/event/${event.gambar}`}
                         alt={event.judul}
                         className="w-full h-48 object-cover rounded-xl mb-4"
                       />
@@ -978,8 +1003,8 @@ export default function Home() {
 
               <div className="space-y-6">
                 <div className="flex items-center gap-4 bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
-                  <div className="bg-white text-rose-600 w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0">
-                    //
+                  <div className="bg-white text-rose-600 w-12 h-12 rounded-full flex items-center justify-center text-xl flex-shrink-0">
+                    <FaEnvelope />
                   </div>
                   <div>
                     <div className="text-sm text-white/70">Email</div>
@@ -988,8 +1013,8 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-center gap-4 bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
-                  <div className="bg-white text-rose-600 w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0">
-                    //
+                  <div className="bg-white text-rose-600 w-12 h-12 rounded-full flex items-center justify-center text-xl flex-shrink-0">
+                    <FaInstagram />
                   </div>
                   <div>
                     <div className="text-sm text-white/70">Instagram</div>
@@ -998,8 +1023,8 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-center gap-4 bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
-                  <div className="bg-white text-rose-600 w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0">
-                    //
+                  <div className="bg-white text-rose-600 w-12 h-12 rounded-full flex items-center justify-center text-xl flex-shrink-0">
+                    <FaPhoneAlt />
                   </div>
                   <div>
                     <div className="text-sm text-white/70">Phone</div>
@@ -1008,8 +1033,8 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-center gap-4 bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
-                  <div className="bg-white text-rose-600 w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0">
-                    //
+                  <div className="bg-white text-rose-600 w-12 h-12 rounded-full flex items-center justify-center text-xl flex-shrink-0">
+                    <FaMapMarkerAlt />
                   </div>
                   <div>
                     <div className="text-sm text-white/70">Address</div>
@@ -1070,21 +1095,35 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             <div>
               <h3 className="text-3xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-orange-400">
-                Mie Wizzmie
+                Wizzmie
               </h3>
               <p className="text-gray-400 mb-4">
                 Brand kuliner pilihan dengan cita rasa khas dan harga terjangkau.
               </p>
               <div className="flex gap-3">
-                {['facebook', 'instagram', 'twitter'].map((social, i) => (
-                  <button key={i} className="w-10 h-10 bg-white/10 rounded-full hover:bg-rose-600 transition-colors flex items-center justify-center">
-                    <span className="text-lg">
-                      {social === 'facebook' && '📘'}
-                      {social === 'instagram' && '📷'}
-                      {social === 'twitter' && '🐦'}
-                    </span>
-                  </button>
-                ))}
+                <div className="flex gap-3">
+                  <div className="flex gap-3">
+                    <a
+                      href="https://www.facebook.com/wizzmie.id"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 bg-white/10 rounded-full hover:bg-rose-600 transition-colors flex items-center justify-center"
+                    >
+                      <FaFacebookF />
+                    </a>
+
+                    <a
+                      href="https://www.instagram.com/wizzmie"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 bg-white/10 rounded-full hover:bg-rose-600 transition-colors flex items-center justify-center"
+                    >
+                      <FaInstagram />
+                    </a>
+                  </div>
+
+                </div>
+
               </div>
             </div>
 
@@ -1112,17 +1151,20 @@ export default function Home() {
               <h4 className="font-bold text-lg mb-4">Contact</h4>
               <ul className="space-y-2 text-gray-400">
                 <li className="flex items-center gap-2">
-                  <span>📧</span>
-                  <span>info@mie-wizzmie.com</span>
+                  <FaEnvelope />
+                  <span>corphrm@wizzmie.com.</span>
                 </li>
+
                 <li className="flex items-center gap-2">
-                  <span>📱</span>
-                  <span>@mie.wizzmie</span>
+                  <FaInstagram />
+                  <span>@wizzmie</span>
                 </li>
+
                 <li className="flex items-center gap-2">
-                  <span>📞</span>
+                  <FaPhoneAlt />
                   <span>+62 812-3456-7890</span>
                 </li>
+
               </ul>
             </div>
           </div>

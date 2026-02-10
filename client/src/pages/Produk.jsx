@@ -6,18 +6,24 @@ const ProdukAdmin = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [form, setForm] = useState({
-   nama_produk: "",
-   deskripsi: "",
-   harga: "",
-   tipe: "",
-   image: "",
-});
-
   const [editId, setEditId] = useState(null);
+
+  const [imageFile, setImageFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+
+  const [form, setForm] = useState({
+    nama_produk: "",
+    deskripsi: "",
+    harga: "",
+    tipe: "",
+    image: "",
+  });
+
   const TIPE_PRODUK = ["noodle", "beverage", "dimsum"];
 
-
+  /* =====================
+     FETCH PRODUK
+  ===================== */
   const fetchProduk = async () => {
     try {
       const res = await fetch("http://localhost:5000/api/produk");
@@ -34,67 +40,84 @@ const ProdukAdmin = () => {
     fetchProduk();
   }, []);
 
+  /* =====================
+     DELETE PRODUK
+  ===================== */
   const handleDelete = async (id) => {
     if (!confirm("Yakin hapus produk ini?")) return;
 
-    try {
-      await fetch(`http://localhost:5000/api/produk/${id}`, {
-        method: "DELETE",
-      });
-      fetchProduk();
-    } catch (err) {
-      console.error(err);
-    }
+    await fetch(`http://localhost:5000/api/produk/${id}`, {
+      method: "DELETE",
+    });
+
+    fetchProduk();
   };
 
+  /* =====================
+     SUBMIT (FormData)
+  ===================== */
   const handleSubmit = async () => {
-  try {
     const url = isEdit
       ? `http://localhost:5000/api/produk/${editId}`
       : "http://localhost:5000/api/produk";
 
     const method = isEdit ? "PUT" : "POST";
 
+    const data = new FormData();
+    data.append("nama_produk", form.nama_produk);
+    data.append("deskripsi", form.deskripsi);
+    data.append("harga", form.harga);
+    data.append("tipe", form.tipe);
+
+    if (imageFile) {
+      data.append("image", imageFile); // ⬅️ sesuai upload.single("image")
+    }
+
     await fetch(url, {
       method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
+      body: data,
     });
 
     setShowModal(false);
-    setForm({ nama_produk: "", tipe: "", harga: "" });
     setIsEdit(false);
+    setEditId(null);
+    setImageFile(null);
+    setPreview(null);
+    setForm({
+      nama_produk: "",
+      deskripsi: "",
+      harga: "",
+      tipe: "",
+      image: "",
+    });
+
     fetchProduk();
-  } catch (err) {
-    console.error(err);
-  }
-};
+  };
 
-
-  if (loading) {
-    return <p className="text-center mt-10">Loading produk...</p>;
-  }
+  if (loading) return <p className="text-center mt-10">Loading produk...</p>;
 
   return (
     <div className="min-h-screen flex bg-gray-100">
       <AdminSidebar />
 
       <main className="flex-1 p-8">
-        {/* HEADER */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">
-            Manajemen Produk
-          </h1>
-
+        <div className="flex justify-between mb-6">
+          <h1 className="text-3xl font-bold">Manajemen Produk</h1>
           <button
             onClick={() => {
               setIsEdit(false);
-              setForm({ nama_produk: "", tipe: "", harga: "" });
+              setForm({
+                nama_produk: "",
+                deskripsi: "",
+                harga: "",
+                tipe: "",
+                image: "",
+              });
+              setPreview(null);
+              setImageFile(null);
               setShowModal(true);
             }}
-            className="bg-[#EC008C] text-white px-5 py-2 rounded-lg hover:bg-pink-600"
+            className="bg-[#EC008C] text-white px-5 py-2 rounded"
           >
             + Tambah Produk
           </button>
@@ -102,150 +125,163 @@ const ProdukAdmin = () => {
 
         {/* TABLE */}
         <div className="bg-white rounded-xl shadow overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-gray-100 text-gray-600">
+          <table className="w-full">
+            <thead className="bg-gray-100">
               <tr>
-                <th>Nama</th>
-                <th>Produk</th>
-                 <th>Tipe</th>
-              <th>Harga</th>
+                <th className="p-4">Gambar</th>
+                <th className="p-4">Nama</th>
+                <th className="p-4">Tipe</th>
+                <th className="p-4">Harga</th>
                 <th className="p-4 text-center">Aksi</th>
               </tr>
             </thead>
 
-           <tbody>
-  {produk.map((item) => (
-    <tr key={item.id} className="border-t hover:bg-gray-50">
-      <td className="p-4 font-semibold">
-        {item.nama_produk}
-      </td>
+            <tbody>
+              {produk.map((item) => (
+                <tr key={item.id} className="border-t">
+                  <td className="p-4">
+                    <img
+                      src={
+                        item.image
+                          ? `http://localhost:5000/images/produk/${item.image}`
+                          : "/images/no-image.png"
+                      }
+                      className="w-20 h-16 object-cover rounded"
+                      alt={item.nama_produk}
+                    />
+                  </td>
+                  <td className="p-4 font-semibold">{item.nama_produk}</td>
+                  <td className="p-4 capitalize">{item.tipe}</td>
+                  <td className="p-4">
+                    Rp {Number(item.harga).toLocaleString("id-ID")}
+                  </td>
+                  <td className="p-4 flex gap-2 justify-center">
+                    <button
+                      onClick={() => {
+                        setIsEdit(true);
+                        setEditId(item.id);
+                        setForm(item);
+                        setPreview(
+                          item.image
+                            ? `http://localhost:5000/images/produk/${item.image}`
+                            : null
+                        );
+                        setImageFile(null);
+                        setShowModal(true);
+                      }}
+                      className="bg-blue-500 text-white px-3 py-1 rounded"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded"
+                    >
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
 
-      {/* GAMBAR */}
-      <td className="p-4">
-        {item.image ? (
-          <img
-            src={item.image}
-            alt={item.nama_produk}
-            className="w-20 h-20 object-cover rounded-lg"
-          />
-        ) : (
-          <span className="text-gray-400 italic">No Image</span>
-        )}
-      </td>
-
-      <td className="p-4 capitalize">{item.tipe}</td>
-
-      <td className="p-4">
-        Rp {Number(item.harga).toLocaleString("id-ID")}
-      </td>
-
-      <td className="p-4 flex justify-center gap-2">
-        <button
-          onClick={() => {
-            setIsEdit(true);
-            setEditId(item.id);
-            setForm({
-              nama_produk: item.nama_produk,
-              deskripsi: item.deskripsi,
-              harga: item.harga,
-              tipe: item.tipe,
-              image: item.image,
-            });
-            setShowModal(true);
-          }}
-          className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Edit
-        </button>
-
-        <button
-          onClick={() => handleDelete(item.id)}
-          className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          Hapus
-        </button>
-      </td>
-    </tr>
-  ))}
-
-  {produk.length === 0 && (
-    <tr>
-      <td colSpan="5" className="p-6 text-center text-gray-500">
-        Belum ada produk
-      </td>
-    </tr>
-  )}
-</tbody>
-
+              {produk.length === 0 && (
+                <tr>
+                  <td colSpan="5" className="p-6 text-center text-gray-500">
+                    Belum ada produk
+                  </td>
+                </tr>
+              )}
+            </tbody>
           </table>
-          {showModal && (
-  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-    <div className="bg-white rounded-xl p-6 w-full max-w-md">
-      <h2 className="text-xl font-bold mb-4">
-        {isEdit ? "Edit Produk" : "Tambah Produk"}
-      </h2>
+        </div>
 
-      <input
-        className="w-full mb-3 p-3 border rounded"
-        placeholder="Nama Produk"
-        value={form.nama_produk}
-        onChange={(e) =>
-          setForm({ ...form, nama_produk: e.target.value })
-        }
-      />
-      <input
-  type="text"
-  className="w-full mb-4 p-3 border rounded"
-  placeholder="/images/nama-gambar.png"
-  value={form.image}
-  onChange={(e) =>
-    setForm({ ...form, image: e.target.value })
-  }
-/>
+        {/* MODAL */}
+        {showModal && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+            <div className="bg-white p-6 rounded w-full max-w-md">
+              <h2 className="text-xl font-bold mb-4">
+                {isEdit ? "Edit Produk" : "Tambah Produk"}
+              </h2>
 
-      <select
-      className="w-full mb-3 p-3 border rounded bg-white"
-      value={form.tipe}
-      onChange={(e) =>
-        setForm({ ...form, tipe: e.target.value })
-      }
-    >
-      <option value="">-- Pilih Tipe Produk --</option>
-      {TIPE_PRODUK.map((tipe) => (
-        <option key={tipe} value={tipe}>
-          {tipe.toUpperCase()}
-        </option>
-      ))}
-    </select>
-                <input
-                  type="number"
-                  className="w-full mb-4 p-3 border rounded"
-                  placeholder="Harga"
-                  value={form.harga}
-                  onChange={(e) =>
-                    setForm({ ...form, harga: e.target.value })
-                  }
+              <input
+                className="w-full mb-3 p-3 border rounded"
+                placeholder="Nama Produk"
+                value={form.nama_produk}
+                onChange={(e) =>
+                  setForm({ ...form, nama_produk: e.target.value })
+                }
+              />
+
+              {/* FILE INPUT */}
+              <input
+                type="file"
+                accept="image/*"
+                className="w-full mb-3 p-3 border rounded"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setImageFile(file);
+                  setPreview(URL.createObjectURL(file));
+                }}
+              />
+
+              {preview && (
+                <img
+                  src={preview}
+                  className="w-full h-40 object-cover rounded mb-3"
+                  alt="Preview"
                 />
+              )}
 
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 bg-gray-300 rounded"
-                  >
-                    Batal
-                  </button>
+              <select
+                className="w-full mb-3 p-3 border rounded"
+                value={form.tipe}
+                onChange={(e) =>
+                  setForm({ ...form, tipe: e.target.value })
+                }
+              >
+                <option value="">-- Pilih Tipe --</option>
+                {TIPE_PRODUK.map((t) => (
+                  <option key={t} value={t}>
+                    {t.toUpperCase()}
+                  </option>
+                ))}
+              </select>
 
-                  <button
-                    onClick={handleSubmit}
-                    className="px-4 py-2 bg-[#EC008C] text-white rounded"
-                  >
-                    Simpan
-                  </button>
-                </div>
+              <input
+                type="number"
+                className="w-full mb-3 p-3 border rounded"
+                placeholder="Harga"
+                value={form.harga}
+                onChange={(e) =>
+                  setForm({ ...form, harga: e.target.value })
+                }
+              />
+
+              <textarea
+                className="w-full mb-4 p-3 border rounded"
+                placeholder="Deskripsi"
+                value={form.deskripsi}
+                onChange={(e) =>
+                  setForm({ ...form, deskripsi: e.target.value })
+                }
+              />
+
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="bg-gray-300 px-4 py-2 rounded"
+                >
+                  Batal
+                </button>
+                <button
+                  onClick={handleSubmit}
+                  className="bg-[#EC008C] text-white px-4 py-2 rounded"
+                >
+                  Simpan
+                </button>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );

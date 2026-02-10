@@ -14,6 +14,8 @@ import contactRoutes from "./routes/contactRoutes.js";
 import checkoutRoutes from "./routes/checkoutRoutes.js";
 
 
+
+
 dotenv.config();
 const app = express();
 
@@ -23,12 +25,13 @@ app.use(express.json());
 // Routes
 app.use("/api/admin", adminRoutes);
 app.use("/api/contacts", contactRoutes);
-app.use("/api/artikel", artikelRoutes);
-app.use("/api/events", eventsRoutes);
-app.use("/api/gallery", galleryRoutes);
-app.use("/api/partners", partnersRoutes);
-app.use("/api/produk", produkRoutes);
+app.use("/api/articles", artikelRoutes);      // ✅ artikel → articles
+app.use("/api/events", eventsRoutes);          // ✅ sudah benar
+app.use("/api/gallery", galleryRoutes);        // ✅ sudah benar
+app.use("/api/partners", partnersRoutes);      // ✅ sudah benar
+app.use("/api/products", produkRoutes);        // ✅ produk → products
 app.use("/api/checkout", checkoutRoutes);
+app.use("/images", express.static("public/images"));
 
 // Route test
 app.get("/", (req, res) => {
@@ -40,3 +43,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+

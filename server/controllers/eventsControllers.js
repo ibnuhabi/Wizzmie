@@ -9,9 +9,7 @@ export const getAllEvent = (req, res) => {
   db.query(sql, (err, results) => {
     if (err) {
       console.error("ERROR DB:", err);
-      return res.status(500).json({
-        message: "Gagal mengambil data event",
-      });
+      return res.status(500).json({ message: "Gagal mengambil data event" });
     }
     res.json(results);
   });
@@ -21,7 +19,8 @@ export const getAllEvent = (req, res) => {
    CREATE EVENT
 ===================== */
 export const createEvent = (req, res) => {
-  const { judul, deskripsi, tanggal, lokasi, gambar, link } = req.body;
+  const { judul, deskripsi, tanggal, lokasi, link } = req.body;
+  const gambar = req.file ? req.file.filename : null; // ⬅️ dari multer
 
   if (!judul || !tanggal || !lokasi) {
     return res.status(400).json({
@@ -40,9 +39,7 @@ export const createEvent = (req, res) => {
     (err, result) => {
       if (err) {
         console.error("ERROR DB:", err);
-        return res.status(500).json({
-          message: "Gagal menambah event",
-        });
+        return res.status(500).json({ message: "Gagal menambah event" });
       }
 
       res.json({
@@ -58,7 +55,9 @@ export const createEvent = (req, res) => {
 ===================== */
 export const updateEvent = (req, res) => {
   const { id } = req.params;
-  const { judul, deskripsi, tanggal, lokasi, gambar, link } = req.body;
+  const { judul, deskripsi, tanggal, lokasi, link } = req.body;
+
+  const gambar = req.file ? req.file.filename : req.body.gambar;
 
   const sql = `
     UPDATE events 
@@ -72,15 +71,11 @@ export const updateEvent = (req, res) => {
     (err, result) => {
       if (err) {
         console.error("ERROR DB:", err);
-        return res.status(500).json({
-          message: "Gagal update event",
-        });
+        return res.status(500).json({ message: "Gagal update event" });
       }
 
       if (result.affectedRows === 0) {
-        return res.status(404).json({
-          message: "Event tidak ditemukan",
-        });
+        return res.status(404).json({ message: "Event tidak ditemukan" });
       }
 
       res.json({ message: "Event berhasil diupdate" });
@@ -99,15 +94,11 @@ export const deleteEvent = (req, res) => {
   db.query(sql, [id], (err, result) => {
     if (err) {
       console.error("ERROR DB:", err);
-      return res.status(500).json({
-        message: "Gagal menghapus event",
-      });
+      return res.status(500).json({ message: "Gagal menghapus event" });
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({
-        message: "Event tidak ditemukan",
-      });
+      return res.status(404).json({ message: "Event tidak ditemukan" });
     }
 
     res.json({ message: "Event berhasil dihapus" });

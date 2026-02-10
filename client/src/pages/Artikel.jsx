@@ -8,12 +8,15 @@ const Artikel = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
 
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+
   const [form, setForm] = useState({
     judul: "",
     slug: "",
     isi: "",
-    thumbnail: "",
     penulis: "",
+    thumbnail: "",
   });
 
   /* =====================
@@ -49,7 +52,7 @@ const Artikel = () => {
   };
 
   /* =====================
-     SUBMIT
+     SUBMIT (FormData)
   ===================== */
   const handleSubmit = async () => {
     const url = isEdit
@@ -58,21 +61,34 @@ const Artikel = () => {
 
     const method = isEdit ? "PUT" : "POST";
 
+    const data = new FormData();
+    data.append("judul", form.judul);
+    data.append("slug", form.slug);
+    data.append("isi", form.isi);
+    data.append("penulis", form.penulis);
+
+    if (thumbnailFile) {
+      data.append("thumbnail", thumbnailFile);
+    }
+
     await fetch(url, {
       method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: data,
     });
 
     setShowModal(false);
     setIsEdit(false);
+    setEditId(null);
+    setThumbnailFile(null);
+    setPreview(null);
     setForm({
       judul: "",
       slug: "",
       isi: "",
-      thumbnail: "",
       penulis: "",
+      thumbnail: "",
     });
+
     fetchArtikel();
   };
 
@@ -92,9 +108,11 @@ const Artikel = () => {
                 judul: "",
                 slug: "",
                 isi: "",
-                thumbnail: "",
                 penulis: "",
+                thumbnail: "",
               });
+              setPreview(null);
+              setThumbnailFile(null);
               setShowModal(true);
             }}
             className="bg-pink-600 text-white px-5 py-2 rounded"
@@ -119,9 +137,13 @@ const Artikel = () => {
                 <tr key={item.id} className="border-t">
                   <td className="p-4">
                     <img
-                      src={item.thumbnail || "/images/no-image.png"}
-                            className="w-24 h-20 object-cover rounded-xl shadow-md group-hover:shadow-xl transition-shadow"
-                            alt={item.judul}
+                      src={
+                        item.thumbnail
+                          ? `http://localhost:5000/images/artikel/${item.thumbnail}`
+                          : "/images/no-image.png"
+                      }
+                      className="w-24 h-20 object-cover rounded"
+                      alt={item.judul}
                     />
                   </td>
                   <td className="p-4 font-semibold">{item.judul}</td>
@@ -132,6 +154,12 @@ const Artikel = () => {
                         setIsEdit(true);
                         setEditId(item.id);
                         setForm(item);
+                        setPreview(
+                          item.thumbnail
+                            ? `http://localhost:5000/images/artikel/${item.thumbnail}`
+                            : null
+                        );
+                        setThumbnailFile(null);
                         setShowModal(true);
                       }}
                       className="bg-blue-500 text-white px-3 py-1 rounded"
@@ -177,14 +205,25 @@ const Artikel = () => {
                 }
               />
 
+              {/* FILE INPUT */}
               <input
+                type="file"
+                accept="image/*"
                 className="w-full mb-3 p-2 border rounded"
-                placeholder="Thumbnail"
-                value={form.thumbnail}
-                onChange={(e) =>
-                  setForm({ ...form, thumbnail: e.target.value })
-                }
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setThumbnailFile(file);
+                  setPreview(URL.createObjectURL(file));
+                }}
               />
+
+              {preview && (
+                <img
+                  src={preview}
+                  className="w-full h-48 object-cover rounded mb-3"
+                  alt="Preview"
+                />
+              )}
 
               <input
                 className="w-full mb-3 p-2 border rounded"

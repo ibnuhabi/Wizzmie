@@ -3,26 +3,55 @@ import AdminSidebar from "../components/admin/AdminSidebar";
 
 const Galeri = () => {
   const [galeri, setGaleri] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
 
+  const [gambarFile, setGambarFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+
   const [form, setForm] = useState({
     judul: "",
-    gambar: "",
     keterangan: "",
+    gambar: "",
   });
 
+  /* =====================
+     FETCH GALERI
+  ===================== */
   const fetchGaleri = async () => {
-    const res = await fetch("http://localhost:5000/api/gallery");
-    const data = await res.json();
-    setGaleri(data);
+    try {
+      const res = await fetch("http://localhost:5000/api/gallery");
+      const data = await res.json();
+      setGaleri(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchGaleri();
   }, []);
 
+  /* =====================
+     DELETE GALERI
+  ===================== */
+  const handleDelete = async (id) => {
+    if (!confirm("Yakin hapus galeri ini?")) return;
+
+    await fetch(`http://localhost:5000/api/gallery/${id}`, {
+      method: "DELETE",
+    });
+
+    fetchGaleri();
+  };
+
+  /* =====================
+     SUBMIT (FormData)
+  ===================== */
   const handleSubmit = async () => {
     const url = isEdit
       ? `http://localhost:5000/api/gallery/${editId}`
@@ -30,26 +59,34 @@ const Galeri = () => {
 
     const method = isEdit ? "PUT" : "POST";
 
+    const data = new FormData();
+    data.append("judul", form.judul);
+    data.append("keterangan", form.keterangan);
+
+    if (gambarFile) {
+      data.append("gambar", gambarFile); // ⬅️ sesuai upload.single("gambar")
+    }
+
     await fetch(url, {
       method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: data,
     });
 
     setShowModal(false);
     setIsEdit(false);
-    setForm({ judul: "", gambar: "", keterangan: "" });
-    fetchGaleri();
-  };
-
-  const handleDelete = async (id) => {
-    if (!confirm("Yakin hapus galeri ini?")) return;
-
-    await fetch(`http://localhost:5000/api/gallery/${id}`, {
-      method: "DELETE",
+    setEditId(null);
+    setGambarFile(null);
+    setPreview(null);
+    setForm({
+      judul: "",
+      keterangan: "",
+      gambar: "",
     });
+
     fetchGaleri();
   };
+
+  if (loading) return <p className="text-center mt-10">Loading galeri...</p>;
 
   return (
     <div className="min-h-screen flex bg-gray-100">
@@ -61,7 +98,9 @@ const Galeri = () => {
           <button
             onClick={() => {
               setIsEdit(false);
-              setForm({ judul: "", gambar: "", keterangan: "" });
+              setForm({ judul: "", keterangan: "", gambar: "" });
+              setPreview(null);
+              setGambarFile(null);
               setShowModal(true);
             }}
             className="bg-[#EC008C] text-white px-5 py-2 rounded-lg"
@@ -70,6 +109,7 @@ const Galeri = () => {
           </button>
         </div>
 
+        {/* TABLE */}
         <div className="bg-white rounded-xl shadow overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-100">
@@ -85,8 +125,13 @@ const Galeri = () => {
                 <tr key={item.id} className="border-t">
                   <td className="p-4">
                     <img
-                      src={item.gambar}
+                      src={
+                        item.gambar
+                          ? `http://localhost:5000/images/gallery/${item.gambar}`
+                          : "/images/no-image.png"
+                      }
                       className="w-20 h-16 object-cover rounded"
+                      alt={item.judul}
                     />
                   </td>
                   <td className="p-4 font-semibold">{item.judul}</td>
@@ -96,6 +141,12 @@ const Galeri = () => {
                         setIsEdit(true);
                         setEditId(item.id);
                         setForm(item);
+                        setPreview(
+                          item.gambar
+                            ? `http://localhost:5000/images/gallery/${item.gambar}`
+                            : null
+                        );
+                        setGambarFile(null);
                         setShowModal(true);
                       }}
                       className="bg-blue-500 text-white px-3 py-1 rounded"
@@ -123,6 +174,7 @@ const Galeri = () => {
           </table>
         </div>
 
+        {/* MODAL */}
         {showModal && (
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-xl w-full max-w-md">
@@ -139,14 +191,25 @@ const Galeri = () => {
                 }
               />
 
+              {/* FILE INPUT */}
               <input
+                type="file"
+                accept="image/*"
                 className="w-full mb-3 p-3 border rounded"
-                placeholder="Nama file gambar (contoh: mie1.jpg)"
-                value={form.gambar}
-                onChange={(e) =>
-                  setForm({ ...form, gambar: e.target.value })
-                }
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setGambarFile(file);
+                  setPreview(URL.createObjectURL(file));
+                }}
               />
+
+              {preview && (
+                <img
+                  src={preview}
+                  className="w-full h-40 object-cover rounded mb-3"
+                  alt="Preview"
+                />
+              )}
 
               <textarea
                 className="w-full mb-4 p-3 border rounded"

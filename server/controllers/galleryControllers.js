@@ -9,9 +9,7 @@ export const getAllGaleri = (req, res) => {
   db.query(sql, (err, results) => {
     if (err) {
       console.error("ERROR DB:", err);
-      return res.status(500).json({
-        message: "Gagal mengambil data galeri",
-      });
+      return res.status(500).json({ message: "Gagal mengambil data galeri" });
     }
     res.json(results);
   });
@@ -21,12 +19,11 @@ export const getAllGaleri = (req, res) => {
    CREATE GALERI
 ===================== */
 export const createGaleri = (req, res) => {
-  const { judul, gambar, keterangan } = req.body;
+  const { judul, keterangan } = req.body;
+  const gambar = req.file ? req.file.filename : null;
 
   if (!judul || !gambar) {
-    return res.status(400).json({
-      message: "Judul dan gambar wajib diisi",
-    });
+    return res.status(400).json({ message: "Judul dan gambar wajib diisi" });
   }
 
   const sql = `
@@ -37,15 +34,10 @@ export const createGaleri = (req, res) => {
   db.query(sql, [judul, gambar, keterangan], (err, result) => {
     if (err) {
       console.error("ERROR DB:", err);
-      return res.status(500).json({
-        message: "Gagal menambah galeri",
-      });
+      return res.status(500).json({ message: "Gagal menambah galeri" });
     }
 
-    res.json({
-      message: "Galeri berhasil ditambahkan",
-      id: result.insertId,
-    });
+    res.json({ message: "Galeri berhasil ditambahkan", id: result.insertId });
   });
 };
 
@@ -54,7 +46,9 @@ export const createGaleri = (req, res) => {
 ===================== */
 export const updateGaleri = (req, res) => {
   const { id } = req.params;
-  const { judul, gambar, keterangan } = req.body;
+  const { judul, keterangan } = req.body;
+
+  const gambar = req.file ? req.file.filename : req.body.gambar;
 
   const sql = `
     UPDATE gallery 
@@ -65,15 +59,11 @@ export const updateGaleri = (req, res) => {
   db.query(sql, [judul, gambar, keterangan, id], (err, result) => {
     if (err) {
       console.error("ERROR DB:", err);
-      return res.status(500).json({
-        message: "Gagal update galeri",
-      });
+      return res.status(500).json({ message: "Gagal update galeri" });
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({
-        message: "Galeri tidak ditemukan",
-      });
+      return res.status(404).json({ message: "Galeri tidak ditemukan" });
     }
 
     res.json({ message: "Galeri berhasil diupdate" });
@@ -91,15 +81,11 @@ export const deleteGaleri = (req, res) => {
   db.query(sql, [id], (err, result) => {
     if (err) {
       console.error("ERROR DB:", err);
-      return res.status(500).json({
-        message: "Gagal menghapus galeri",
-      });
+      return res.status(500).json({ message: "Gagal menghapus galeri" });
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({
-        message: "Galeri tidak ditemukan",
-      });
+      return res.status(404).json({ message: "Galeri tidak ditemukan" });
     }
 
     res.json({ message: "Galeri berhasil dihapus" });

@@ -8,13 +8,16 @@ const EventAdmin = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
 
+  const [gambarFile, setGambarFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+
   const [form, setForm] = useState({
     judul: "",
     tanggal: "",
     lokasi: "",
-    gambar: "",
     deskripsi: "",
-    link: "",  // tambah ini
+    link: "",
+    gambar: "",
   });
 
   /* =====================
@@ -42,65 +45,65 @@ const EventAdmin = () => {
   const handleDelete = async (id) => {
     if (!confirm("Yakin hapus event ini?")) return;
 
-    try {
-      await fetch(`http://localhost:5000/api/events/${id}`, {
-        method: "DELETE",
-      });
-      fetchEvents();
-    } catch (err) {
-      console.error(err);
-    }
+    await fetch(`http://localhost:5000/api/events/${id}`, {
+      method: "DELETE",
+    });
+
+    fetchEvents();
   };
 
   /* =====================
-     SUBMIT (CREATE / UPDATE)
+     SUBMIT (FormData)
   ===================== */
   const handleSubmit = async () => {
-    try {
-      const url = isEdit
-        ? `http://localhost:5000/api/events/${editId}`
-        : "http://localhost:5000/api/events";
+    const url = isEdit
+      ? `http://localhost:5000/api/events/${editId}`
+      : "http://localhost:5000/api/events";
 
-      const method = isEdit ? "PUT" : "POST";
+    const method = isEdit ? "PUT" : "POST";
 
-      await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+    const data = new FormData();
+    data.append("judul", form.judul);
+    data.append("tanggal", form.tanggal);
+    data.append("lokasi", form.lokasi);
+    data.append("deskripsi", form.deskripsi);
+    data.append("link", form.link);
 
-      setShowModal(false);
-      setIsEdit(false);
-      setForm({
-        judul: "",
-        tanggal: "",
-        lokasi: "",
-        gambar: "",
-        deskripsi: "",
-      });
-      fetchEvents();
-    } catch (err) {
-      console.error(err);
+    if (gambarFile) {
+      data.append("gambar", gambarFile);
     }
+
+    await fetch(url, {
+      method,
+      body: data,
+    });
+
+    setShowModal(false);
+    setIsEdit(false);
+    setEditId(null);
+    setGambarFile(null);
+    setPreview(null);
+    setForm({
+      judul: "",
+      tanggal: "",
+      lokasi: "",
+      deskripsi: "",
+      link: "",
+      gambar: "",
+    });
+
+    fetchEvents();
   };
 
-  if (loading) {
-    return <p className="text-center mt-10">Loading event...</p>;
-  }
+  if (loading) return <p className="text-center mt-10">Loading event...</p>;
 
   return (
     <div className="min-h-screen flex bg-gray-100">
       <AdminSidebar />
 
       <main className="flex-1 p-8">
-        {/* HEADER */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">
-            Manajemen Event
-          </h1>
-
+        <div className="flex justify-between mb-6">
+          <h1 className="text-3xl font-bold">Manajemen Event</h1>
           <button
             onClick={() => {
               setIsEdit(false);
@@ -108,12 +111,15 @@ const EventAdmin = () => {
                 judul: "",
                 tanggal: "",
                 lokasi: "",
-                gambar: "",
                 deskripsi: "",
+                link: "",
+                gambar: "",
               });
+              setPreview(null);
+              setGambarFile(null);
               setShowModal(true);
             }}
-            className="bg-[#EC008C] text-white px-5 py-2 rounded-lg hover:bg-pink-600"
+            className="bg-pink-600 text-white px-5 py-2 rounded"
           >
             + Tambah Event
           </button>
@@ -121,8 +127,8 @@ const EventAdmin = () => {
 
         {/* TABLE */}
         <div className="bg-white rounded-xl shadow overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-gray-100 text-gray-600">
+          <table className="w-full">
+            <thead className="bg-gray-100">
               <tr>
                 <th className="p-4">Gambar</th>
                 <th className="p-4">Judul</th>
@@ -131,126 +137,116 @@ const EventAdmin = () => {
                 <th className="p-4 text-center">Aksi</th>
               </tr>
             </thead>
-
             <tbody>
               {events.map((item) => (
-                <tr key={item.id} className="border-t hover:bg-gray-50">
-  {/* GAMBAR */}
-  <td className="p-4">
-    <img
-      src={item.gambar}
-      alt={item.judul}
-      className="w-20 h-16 object-cover rounded"
-      onError={(e) => {
-        e.target.src = "/images/no-image.png";
-      }}
-    />
-  </td>
-
-  <td className="p-4 font-semibold">{item.judul}</td>
-
-  <td className="p-4">
-    {new Date(item.tanggal).toLocaleDateString("id-ID")}
-  </td>
-
-  <td className="p-4">{item.lokasi}</td>
-
-  <td className="p-4 flex justify-center gap-2">
-    <button
-      onClick={() => {
-        setIsEdit(true);
-        setEditId(item.id);
-        setForm({
-          judul: item.judul,
-          tanggal: item.tanggal,
-          lokasi: item.lokasi,
-          gambar: item.gambar,
-          deskripsi: item.deskripsi,
-        });
-        setShowModal(true);
-      }}
-      className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
-    >
-      Edit
-    </button>
-
-    <button
-      onClick={() => handleDelete(item.id)}
-      className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
-    >
-      Hapus
-    </button>
-  </td>
-</tr>
-
-              ))}
-
-              {events.length === 0 && (
-                <tr>
-                  <td colSpan="4" className="p-6 text-center text-gray-500">
-                    Belum ada event
+                <tr key={item.id} className="border-t">
+                  <td className="p-4">
+                    <img
+                      src={
+                        item.gambar
+                          ? `http://localhost:5000/images/event/${item.gambar}`
+                          : "/images/no-image.png"
+                      }
+                      className="w-24 h-20 object-cover rounded"
+                      alt={item.judul}
+                    />
+                  </td>
+                  <td className="p-4 font-semibold">{item.judul}</td>
+                  <td className="p-4">
+                    {new Date(item.tanggal).toLocaleDateString("id-ID")}
+                  </td>
+                  <td className="p-4">{item.lokasi}</td>
+                  <td className="p-4 flex justify-center gap-2">
+                    <button
+                      onClick={() => {
+                        setIsEdit(true);
+                        setEditId(item.id);
+                        setForm(item);
+                        setPreview(
+                          item.gambar
+                            ? `http://localhost:5000/images/event/${item.gambar}`
+                            : null
+                        );
+                        setGambarFile(null);
+                        setShowModal(true);
+                      }}
+                      className="bg-blue-500 text-white px-3 py-1 rounded"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded"
+                    >
+                      Hapus
+                    </button>
                   </td>
                 </tr>
-              )}
+              ))}
             </tbody>
           </table>
         </div>
 
         {/* MODAL */}
         {showModal && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl p-6 w-full max-w-md">
+          <div className="fixed inset-0 bg-black/40 flex justify-center items-center">
+            <div className="bg-white p-6 rounded w-full max-w-lg">
               <h2 className="text-xl font-bold mb-4">
                 {isEdit ? "Edit Event" : "Tambah Event"}
               </h2>
 
               <input
-                className="w-full mb-3 p-3 border rounded"
-                placeholder="Judul Event"
+                className="w-full mb-3 p-2 border rounded"
+                placeholder="Judul"
                 value={form.judul}
-                onChange={(e) =>
-                  setForm({ ...form, judul: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, judul: e.target.value })}
               />
 
               <input
                 type="date"
-                className="w-full mb-3 p-3 border rounded"
+                className="w-full mb-3 p-2 border rounded"
                 value={form.tanggal}
-                onChange={(e) =>
-                  setForm({ ...form, tanggal: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, tanggal: e.target.value })}
               />
 
               <input
-                className="w-full mb-3 p-3 border rounded"
+                className="w-full mb-3 p-2 border rounded"
                 placeholder="Lokasi"
                 value={form.lokasi}
-                onChange={(e) =>
-                  setForm({ ...form, lokasi: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, lokasi: e.target.value })}
               />
 
+              {/* FILE INPUT */}
               <input
-                className="w-full mb-3 p-3 border rounded"
-                placeholder="/images/events/gambar.png"
-                value={form.gambar}
-                onChange={(e) =>
-                  setForm({ ...form, gambar: e.target.value })
-                }
+                type="file"
+                accept="image/*"
+                className="w-full mb-3 p-2 border rounded"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setGambarFile(file);
+                  setPreview(URL.createObjectURL(file));
+                }}
               />
 
-              <input
-  className="w-full mb-3 p-3 border rounded"
-  placeholder="Link Event (optional)"
-  value={form.link || ""}
-  onChange={(e) => setForm({ ...form, link: e.target.value })}
-/>
+              {preview && (
+                <img
+                  src={preview}
+                  className="w-full h-48 object-cover rounded mb-3"
+                  alt="Preview"
+                />
+              )}
 
+              <input
+                className="w-full mb-3 p-2 border rounded"
+                placeholder="Link Event (opsional)"
+                value={form.link || ""}
+                onChange={(e) => setForm({ ...form, link: e.target.value })}
+              />
 
               <textarea
-                className="w-full mb-4 p-3 border rounded"
+                className="w-full mb-4 p-2 border rounded"
                 placeholder="Deskripsi"
+                rows="4"
                 value={form.deskripsi}
                 onChange={(e) =>
                   setForm({ ...form, deskripsi: e.target.value })
@@ -260,14 +256,13 @@ const EventAdmin = () => {
               <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 bg-gray-300 rounded"
+                  className="bg-gray-300 px-4 py-2 rounded"
                 >
                   Batal
                 </button>
-
                 <button
                   onClick={handleSubmit}
-                  className="px-4 py-2 bg-[#EC008C] text-white rounded"
+                  className="bg-pink-600 text-white px-4 py-2 rounded"
                 >
                   Simpan
                 </button>

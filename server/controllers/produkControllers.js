@@ -1,7 +1,7 @@
 import db from "../db/connection.js";
 
 /* =====================
-   GET ALL PRODUCTS
+   GET ALL PRODUK
 ===================== */
 export const getAllProduk = (req, res) => {
   const sql = "SELECT * FROM products ORDER BY nama_produk ASC";
@@ -16,14 +16,15 @@ export const getAllProduk = (req, res) => {
 };
 
 /* =====================
-   CREATE PRODUCT
+   CREATE PRODUK
 ===================== */
 export const createProduk = (req, res) => {
-  const { nama_produk, deskripsi, harga, tipe, image } = req.body;
+  const { nama_produk, deskripsi, harga, tipe } = req.body;
+  const image = req.file ? req.file.filename : null;
 
-  if (!nama_produk || !harga || !tipe) {
+  if (!nama_produk || !harga || !tipe || !image) {
     return res.status(400).json({
-      message: "Nama, harga, dan tipe wajib diisi",
+      message: "Nama, harga, tipe, dan gambar wajib diisi",
     });
   }
 
@@ -45,13 +46,14 @@ export const createProduk = (req, res) => {
   });
 };
 
-
 /* =====================
-   UPDATE PRODUCT
+   UPDATE PRODUK
 ===================== */
 export const updateProduk = (req, res) => {
   const { id } = req.params;
-  const { nama_produk, deskripsi, harga, tipe, image } = req.body;
+  const { nama_produk, deskripsi, harga, tipe } = req.body;
+
+  const image = req.file ? req.file.filename : req.body.image;
 
   const sql = `
     UPDATE products 
@@ -78,7 +80,7 @@ export const updateProduk = (req, res) => {
 };
 
 /* =====================
-   DELETE PRODUCT
+   DELETE PRODUK
 ===================== */
 export const deleteProduk = (req, res) => {
   const { id } = req.params;

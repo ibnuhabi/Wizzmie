@@ -1,23 +1,17 @@
 import express from "express";
+import upload from "../middlewares/upload.js";
 import {
   getAllGaleri,
   createGaleri,
   updateGaleri,
   deleteGaleri,
-} from "../controllers/galleryControllers.js";  // PERHATIAN: "galleryControllers.js" bukan "galeriControllers.js"
+} from "../controllers/galleryControllers.js";
 
 const router = express.Router();
 
-// READ
 router.get("/", getAllGaleri);
-
-// CREATE
-router.post("/", createGaleri);
-
-// UPDATE
-router.put("/:id", updateGaleri);
-
-// DELETE
+router.post("/", upload.single("gambar"), createGaleri);
+router.put("/:id", upload.single("gambar"), updateGaleri);
 router.delete("/:id", deleteGaleri);
 
 export default router;

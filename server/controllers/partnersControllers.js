@@ -19,7 +19,8 @@ export const getAllPartners = (req, res) => {
    CREATE PARTNER
 ===================== */
 export const createPartner = (req, res) => {
-  const { name, logo } = req.body;
+  const { name } = req.body;
+  const logo = req.file?.filename; // ⬅️ dari multer
 
   if (!name || !logo) {
     return res.status(400).json({ message: "Nama dan logo wajib diisi" });
@@ -43,20 +44,27 @@ export const createPartner = (req, res) => {
   });
 };
 
+
 /* =====================
    UPDATE PARTNER
 ===================== */
 export const updatePartner = (req, res) => {
   const { id } = req.params;
-  const { name, logo } = req.body;
+  const { name } = req.body;
+  const logo = req.file?.filename; // bisa null
 
-  const sql = `
-    UPDATE partners 
-    SET name=?, logo=?
-    WHERE id=?
-  `;
+  let sql = `UPDATE partners SET name=?`;
+  const params = [name];
 
-  db.query(sql, [name, logo, id], (err, result) => {
+  if (logo) {
+    sql += `, logo=?`;
+    params.push(logo);
+  }
+
+  sql += ` WHERE id=?`;
+  params.push(id);
+
+  db.query(sql, params, (err, result) => {
     if (err) {
       console.error("ERROR DB:", err);
       return res.status(500).json({ message: "Gagal update partner" });
@@ -69,6 +77,7 @@ export const updatePartner = (req, res) => {
     res.json({ message: "Partner berhasil diupdate" });
   });
 };
+
 
 /* =====================
    DELETE PARTNER
