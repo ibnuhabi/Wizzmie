@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
       cb(null, "public/images/partners");
     } else if (req.baseUrl.includes("gallery")) {
       cb(null, "public/images/gallery");
-    } else if (req.baseUrl.includes("produk")) {
+    } else if (req.baseUrl.includes("products")) {
       cb(null, "public/images/produk");
     } else {
       cb(null, "public/images"); // default

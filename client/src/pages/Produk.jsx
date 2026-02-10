@@ -26,7 +26,7 @@ const ProdukAdmin = () => {
   ===================== */
   const fetchProduk = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/produk");
+      const res = await fetch("http://localhost:5000/api/products");
       const data = await res.json();
       setProduk(data);
     } catch (err) {
@@ -46,7 +46,7 @@ const ProdukAdmin = () => {
   const handleDelete = async (id) => {
     if (!confirm("Yakin hapus produk ini?")) return;
 
-    await fetch(`http://localhost:5000/api/produk/${id}`, {
+    await fetch(`http://localhost:5000/api/products/${id}`, {
       method: "DELETE",
     });
 
@@ -58,8 +58,8 @@ const ProdukAdmin = () => {
   ===================== */
   const handleSubmit = async () => {
     const url = isEdit
-      ? `http://localhost:5000/api/produk/${editId}`
-      : "http://localhost:5000/api/produk";
+      ? `http://localhost:5000/api/products/${editId}`
+      : "http://localhost:5000/api/products";
 
     const method = isEdit ? "PUT" : "POST";
 

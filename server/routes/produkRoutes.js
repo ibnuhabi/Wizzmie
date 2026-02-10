@@ -1,5 +1,5 @@
 import express from "express";
-import upload from "../middlewares/upload.js";
+import uploadProduk from "../middlewares/uploadProduk.js";
 import {
   getAllProduk,
   createProduk,
@@ -10,8 +10,8 @@ import {
 const router = express.Router();
 
 router.get("/", getAllProduk);
-router.post("/", upload.single("image"), createProduk);
-router.put("/:id", upload.single("image"), updateProduk);
+router.post("/", uploadProduk.single("image"), createProduk);
+router.put("/:id", uploadProduk.single("image"), updateProduk);
 router.delete("/:id", deleteProduk);
 
 export default router;

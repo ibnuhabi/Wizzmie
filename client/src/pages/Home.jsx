@@ -93,7 +93,7 @@ export default function Home() {
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/api/produk")
+    fetch("http://localhost:5000/api/products")
       .then((res) => res.json())
       .then(setProducts)
       .catch(console.error);
