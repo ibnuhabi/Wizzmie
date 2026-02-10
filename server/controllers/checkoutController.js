@@ -50,7 +50,7 @@ export const createCheckout = async (req, res) => {
     
     try {
       // Cek apakah order sudah ada
-      const [existingOrders] = await db.execute(
+      const [existingOrders] = await db.execute (
         'SELECT id FROM orders WHERE order_code = ?',
         [orderId]
       );

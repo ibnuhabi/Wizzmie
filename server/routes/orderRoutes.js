@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getAllOrders,
+  createOrder,
   getOrderStats,
   getOrderById,
   updateOrderStatus,
@@ -8,6 +9,8 @@ import {
 } from "../controllers/orderController.js";
 
 const router = express.Router();
+
+router.post('/', createOrder);
 
 // GET all orders with pagination & filters
 router.get("/", getAllOrders);

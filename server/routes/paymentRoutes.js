@@ -1,5 +1,4 @@
 import express from "express";
-// import { authenticateAdmin } from "../middleware/auth.js";
 import db from "../db/connection.js";
 
 const router = express.Router();
@@ -11,46 +10,43 @@ router.get('/', async (req, res) => {
         const offset = (page - 1) * limit;
 
         let query = `
-      SELECT 
-        pm.*,
-        o.order_code,
-        o.status as order_status,
-        p.name as product_name
-      FROM payments pm
-      LEFT JOIN orders o ON pm.order_id = o.id
-      LEFT JOIN products p ON o.product_id = p.id
-      WHERE 1=1
-    `;
+            SELECT 
+                pm.*,
+                o.order_code,
+                o.status as order_status,
+                p.nama_produk as product_name
+            FROM payments pm
+            LEFT JOIN orders o ON pm.order_id = o.id
+            LEFT JOIN products p ON o.product_id = p.id
+            WHERE 1=1
+        `;
 
         const params = [];
-        let paramIndex = 1;
 
-        if (status) {
-            query += ` AND pm.status = $${paramIndex}`;
+        if (status && status.trim() !== '') {
+            query += ` AND pm.status = ?`;
             params.push(status);
-            paramIndex++;
         }
 
-        query += ` ORDER BY pm.created_at DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
-        params.push(limit, offset);
+        query += ` ORDER BY pm.created_at DESC LIMIT ${parseInt(limit)} OFFSET ${parseInt(offset)}`;
 
-        const payments = await db.query(query, params);
+        const [payments] = await db.execute(query, params);
 
         // Get total count
         let countQuery = `SELECT COUNT(*) as total FROM payments pm WHERE 1=1`;
         const countParams = [];
 
-        if (status) {
-            countQuery += ` AND pm.status = $1`;
+        if (status && status.trim() !== '') {
+            countQuery += ` AND pm.status = ?`;
             countParams.push(status);
         }
 
-        const totalResult = await db.query(countQuery, countParams);
-        const total = parseInt(totalResult.rows[0].total);
+        const [totalResult] = await db.execute(countQuery, countParams);
+        const total = parseInt(totalResult[0].total);
 
         res.json({
             success: true,
-            data: payments.rows,
+            data: payments,
             pagination: {
                 page: parseInt(page),
                 limit: parseInt(limit),
@@ -59,8 +55,8 @@ router.get('/', async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Error fetching payments:', error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        console.error('❌ Error fetching payments:', error);
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 
@@ -70,28 +66,28 @@ router.get('/:id', async (req, res) => {
         const { id } = req.params;
 
         const query = `
-      SELECT 
-        pm.*,
-        o.order_code,
-        o.price as order_price,
-        o.status as order_status,
-        p.name as product_name
-      FROM payments pm
-      LEFT JOIN orders o ON pm.order_id = o.id
-      LEFT JOIN products p ON o.product_id = p.id
-      WHERE pm.id = $1
-    `;
+            SELECT 
+                pm.*,
+                o.order_code,
+                o.price as order_price,
+                o.status as order_status,
+                p.nama_produk as product_name
+            FROM payments pm
+            LEFT JOIN orders o ON pm.order_id = o.id
+            LEFT JOIN products p ON o.product_id = p.id
+            WHERE pm.id = ?
+        `;
 
-        const result = await db.query(query, [id]);
+        const [result] = await db.execute(query, [id]);
 
-        if (result.rows.length === 0) {
+        if (result.length === 0) {
             return res.status(404).json({ success: false, message: 'Payment not found' });
         }
 
-        res.json({ success: true, data: result.rows[0] });
+        res.json({ success: true, data: result[0] });
     } catch (error) {
-        console.error('Error fetching payment:', error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        console.error('❌ Error fetching payment:', error);
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 
@@ -106,24 +102,20 @@ router.patch('/:id/status', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid status' });
         }
 
-        const query = `
-      UPDATE payments 
-      SET status = $1, updated_at = NOW()
-      WHERE id = $2
-      RETURNING *
-    `;
+        const [result] = await db.execute(
+            `UPDATE payments SET status = ? WHERE id = ?`,
+            [status, id]
+        );
 
-        const result = await db.query(query, [status, id]);
-
-        if (result.rows.length === 0) {
+        if (result.affectedRows === 0) {
             return res.status(404).json({ success: false, message: 'Payment not found' });
         }
 
-        res.json({ success: true, data: result.rows[0] });
+        res.json({ success: true, message: 'Payment status updated' });
     } catch (error) {
-        console.error('Error updating payment:', error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        console.error('❌ Error updating payment:', error);
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 
-export default router
+export default router;
