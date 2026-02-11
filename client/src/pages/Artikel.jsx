@@ -137,6 +137,7 @@ const Artikel = () => {
       console.error("- Full error:", error);
 
       alert(`❌ Gagal menyimpan artikel: ${error.message}`);
+      
     }
   };
 
