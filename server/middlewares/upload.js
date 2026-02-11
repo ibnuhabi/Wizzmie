@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
     // bisa pakai req.baseUrl atau req.path buat ngecek route
     if (req.baseUrl.includes("event")) {
       cb(null, "public/images/event");
-    } else if (req.baseUrl.includes("artikel")) {
+    } else if (req.baseUrl.includes("artikel") || req.baseUrl.includes("articles")) {
       cb(null, "public/images/artikel");
     } else if (req.baseUrl.includes("partners")) {
       cb(null, "public/images/partners");

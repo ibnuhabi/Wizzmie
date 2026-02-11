@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
     // 3️⃣ INSERT ORDER KE DATABASE
     const [orderResult] = await db.execute(
       `INSERT INTO orders (order_code, product_id, price, quantity, status) 
-       VALUES (?, ?, ?, ?, 'pending')`,
+        VALUES (?, ?, ?, ?, 'pending')`,
       [orderCode, product_id, grossAmount, quantity]
     );
 
@@ -54,17 +54,17 @@ router.post("/", async (req, res) => {
 
     // 4️⃣ INSERT PAYMENT KE DATABASE
     const customerName = `${customer.firstName} ${customer.lastName || ''}`.trim();
-    
+
     const [paymentResult] = await db.execute(
       `INSERT INTO payments (
-        order_id, 
-        customer_name, 
-        customer_email, 
-        customer_phone, 
-        gateway,
-        amount, 
-        status
-      ) VALUES (?, ?, ?, ?, 'midtrans', ?, 'pending')`,
+          order_id, 
+          customer_name, 
+          customer_email, 
+          customer_phone, 
+          gateway,
+          amount, 
+          status
+        ) VALUES (?, ?, ?, ?, 'midtrans', ?, 'pending')`,
       [order_id, customerName, customer.email, customer.phone, grossAmount]
     );
 
@@ -74,7 +74,7 @@ router.post("/", async (req, res) => {
     const parameter = {
       transaction_details: {
         order_id: orderCode,
-        gross_amount: grossAmount,
+        gross_amount: parseInt(grossAmount),
       },
       customer_details: {
         first_name: customer.firstName,
@@ -82,13 +82,24 @@ router.post("/", async (req, res) => {
         email: customer.email,
         phone: customer.phone,
       },
-      item_details: itemDetails,
+      item_details: itemDetails.map(item => ({
+        id: item.id.toString(),
+        price: parseInt(item.price),
+        quantity: parseInt(item.quantity),
+        name: item.name
+      })),
+      callbacks: {
+        finish: "https://ungentlemanlike-hsiu-amphibologically.ngrok-free.dev/payment-success",
+        error: "https://ungentlemanlike-hsiu-amphibologically.ngrok-free.dev/payment-error",
+        pending: "https://ungentlemanlike-hsiu-amphibologically.ngrok-free.dev/payment-pending"
+      }
     };
 
     console.log("🔄 Creating Midtrans transaction...");
-    
+    console.log("📤 Webhook URL: https://ungentlemanlike-hsiu-amphibologically.ngrok-free.dev/api/webhook/midtrans-notification");
+
     const transaction = await snap.createTransaction(parameter);
-    
+
     console.log("✅ Midtrans transaction created:", transaction.token);
 
     // 6️⃣ UPDATE PAYMENT DENGAN TRANSACTION ID
@@ -111,7 +122,7 @@ router.post("/", async (req, res) => {
 
   } catch (error) {
     console.error("❌ Checkout Error:", error);
-    
+
     res.status(500).json({
       success: false,
       message: "Failed to create transaction",
