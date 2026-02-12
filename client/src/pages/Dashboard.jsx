@@ -26,7 +26,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
-    if (!token) navigate("/login");
+    if (!token) navigate("/admin/login");
 
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
 
