@@ -24,7 +24,7 @@ export default function App() {
       </Route>
 
       {/* ===== ADMIN (TANPA LAYOUT) ===== */}
-      <Route path="/login" element={<Login />} />
+      <Route path="/admin/login" element={<Login />} />
       <Route path="/admin/dashboard" element={<Dashboard />} />
       <Route path="/admin/products" element={<Produk />} />
       <Route path="/admin/gallery" element={<Galeri />} />

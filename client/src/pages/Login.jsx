@@ -101,15 +101,15 @@ export default function Login() {
           </form>
 
           <div className="mt-6 text-center space-y-3">
-  <p className="text-gray-500">Login khusus Admin Panel</p>
+            <p className="text-gray-500">Login khusus Admin Panel</p>
 
-  <Link
-    to="/"
-    className="inline-flex items-center justify-center gap-2 text-cyan-600 hover:text-blue-600 font-semibold transition"
-  >
-    ← Kembali ke Home
-  </Link>
-</div>
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center gap-2 text-cyan-600 hover:text-blue-600 font-semibold transition"
+            >
+              ← Kembali ke Home
+            </Link>
+          </div>
 
         </div>
       </div>

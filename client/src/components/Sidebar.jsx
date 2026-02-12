@@ -12,7 +12,7 @@ export default function Sidebar({ isOpen, onClose }) {
   ];
 
   const authItems = [
-    { icon: "", label: "Login", path: "/login" },
+    { icon: "", label: "Login", path: "/admin/login" },
   ];
 
   const isActive = (path) => location.pathname === path;
